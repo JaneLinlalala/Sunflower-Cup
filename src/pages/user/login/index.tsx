@@ -150,18 +150,19 @@ class Login extends Component<LoginProps, LoginState> {
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="user-login.login.remember-me" />
             </Checkbox>
+
             <a style={{ float: 'right' }} href="">
               <FormattedMessage id="user-login.login.forgot-password" />
             </a>
+            <div style={{ float: 'right', marginRight: '5px' }}>
+              <Link className={styles.register} to="/user/register">
+                <FormattedMessage id="user-login.login.signup" />
+              </Link>
+            </div>
           </div>
           <Submit loading={submitting}>
             <FormattedMessage id="user-login.login.login" />
           </Submit>
-          <div className={styles.other}>
-            <Link className={styles.register} to="/user/register">
-              <FormattedMessage id="user-login.login.signup" />
-            </Link>
-          </div>
         </LoginComponents>
       </div>
     );
