@@ -34,3 +34,5 @@ screenshot
 .eslintcache
 
 build
+
+src/pages/.umi/*
