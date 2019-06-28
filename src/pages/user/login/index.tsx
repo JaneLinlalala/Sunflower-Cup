@@ -1,4 +1,4 @@
-import { Alert, Checkbox, Icon } from 'antd';
+import { Alert, Checkbox, Icon, Radio } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 
@@ -145,6 +145,25 @@ class Login extends Component<LoginProps, LoginState> {
                 this.loginForm && this.loginForm.validateFields(this.handleSubmit)
               }
             />
+            <Radio.Group
+              style={{
+                width: '100%',
+                marginBottom: '24px',
+                paddingLeft: '12px',
+                paddingRight: '12px',
+                textAlign: 'center',
+              }}
+            >
+              <Radio style={{ float: 'left', marginRight: '0' }} value="1">
+                <FormattedMessage id="参赛选手" />
+              </Radio>
+              <Radio style={{ position: 'static', margin: '0 auto' }} value="2">
+                <FormattedMessage id="校团委" />
+              </Radio>
+              <Radio style={{ float: 'right', marginRight: '0' }} value="3">
+                <FormattedMessage id="专家" />
+              </Radio>
+            </Radio.Group>
           </div>
           <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
