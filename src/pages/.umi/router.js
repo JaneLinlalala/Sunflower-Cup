@@ -50,6 +50,21 @@ models: () => [
             "exact": true
           },
           {
+            "name": "登录",
+            "path": "/user/login-2",
+            "component": __IS_BROWSER
+              ? _dvaDynamic({
+                app: require('@tmp/dva').getApp(),
+                models: () => [
+                  import(/* webpackChunkName: 'p__user__login__model.ts' */'D:/Project/Sunflower-Cup/src/pages/user/login-2/model.ts').then(m => { return { namespace: 'model',...m.default}})
+                ],
+                component: () => import(/* webpackChunkName: "p__user__login" */'../user/login-2'),
+                LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
+              })
+              : require('../user/login-2').default,
+            "exact": true
+          },
+          {
             "name": "register-result",
             "path": "/user/register-result",
             "component": __IS_BROWSER
@@ -74,6 +89,21 @@ models: () => [
       LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
     })
     : require('../user/register').default,
+            "exact": true
+          },
+          {
+            "name": "register-expert",
+            "path": "/user/register-expert",
+            "component": __IS_BROWSER
+              ? _dvaDynamic({
+                app: require('@tmp/dva').getApp(),
+                models: () => [
+                  import(/* webpackChunkName: 'p__user__register__model.ts' */'D:/Project/Sunflower-Cup/src/pages/user/register-expert/model.ts').then(m => { return { namespace: 'model',...m.default}})
+                ],
+                component: () => import(/* webpackChunkName: "p__user__register" */'../user/register-expert'),
+                LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
+              })
+              : require('../user/register-expert').default,
             "exact": true
           },
           {
@@ -152,6 +182,22 @@ models: () => [
                 LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
               })
               : require('../participant/advanced').default,
+            "exact": true
+          },
+          {
+            "path": "/participant/basic-list",
+            "name": "作品列表2",
+            "icon": "profile",
+            "component": __IS_BROWSER
+              ? _dvaDynamic({
+                app: require('@tmp/dva').getApp(),
+                models: () => [
+                  import(/* webpackChunkName: 'p__dashboard__analysis__model.tsx' */'D:/Project/Sunflower-Cup/src/pages/participant/basic-list/model.ts').then(m => { return { namespace: 'model',...m.default}})
+                ],
+                component: () => import(/* webpackChunkName: "layouts__BasicLayout" */'../participant/basic-list'),
+                LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
+              })
+              : require('../participant/basic-list').default,
             "exact": true
           },
           {
