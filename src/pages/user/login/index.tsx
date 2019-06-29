@@ -24,7 +24,7 @@ interface LoginState {
 }
 export interface FromDataType {
   userName: string;
-  password: string;
+  passwords: string;
   mobile: string;
   captcha: string;
 }
@@ -133,7 +133,7 @@ class Login extends Component<LoginProps, LoginState> {
               ]}
             />
             <Password
-              name="password"
+              name="passwords"
               placeholder={`${formatMessage({ id: 'user-login.login.password' })}: ant.design`}
               rules={[
                 {
