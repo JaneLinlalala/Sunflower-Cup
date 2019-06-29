@@ -56,11 +56,15 @@ interface userRegisterState {
 }
 
 export interface UserRegisterParams {
-  mail: string;
+  studentNumber: string;
   password: string;
   confirm: string;
+  studentName: string;
+  college:string;
+  major:string;
+  entryYear:string;
   mobile: string;
-  captcha: string;
+  email:string;
   prefix: string;
 }
 
@@ -222,21 +226,17 @@ class Register extends Component<userRegisterProps, userRegisterState> {
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('mail', {
+            {getFieldDecorator('studentNumber', {
               rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'user-register.email.required' }),
-                },
-                {
-                  type: 'email',
-                  message: formatMessage({ id: 'user-register.email.wrong-format' }),
+                  message: "请输入学号！",
                 },
               ],
             })(
               <Input
                 size="large"
-                placeholder={formatMessage({ id: 'user-register.email.placeholder' })}
+                placeholder={"学号"}
               />,
             )}
           </FormItem>
@@ -271,7 +271,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
                 <Input
                   size="large"
                   type="password"
-                  placeholder={formatMessage({ id: 'user-register.password.placeholder' })}
+                  placeholder={"密码区分大小写"}
                 />,
               )}
             </Popover>
@@ -292,6 +292,66 @@ class Register extends Component<userRegisterProps, userRegisterState> {
                 size="large"
                 type="password"
                 placeholder={formatMessage({ id: 'user-register.confirm-password.placeholder' })}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('studentName', {
+              rules: [
+                {
+                  required: true,
+                  message: "请输入姓名！",
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"姓名"}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('college', {
+              rules: [
+                {
+                  required: true,
+                  message: "请输入院系！",
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"院系"}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('major', {
+              rules: [
+                {
+                  required: true,
+                  message: "请输入专业！",
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"专业"}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('entryYear', {
+              rules: [
+                {
+                  required: true,
+                  message: "请输入入学年份！",
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"入学年份"}
               />,
             )}
           </FormItem>
@@ -327,37 +387,23 @@ class Register extends Component<userRegisterProps, userRegisterState> {
             </InputGroup>
           </FormItem>
           <FormItem>
-            <Row gutter={8}>
-              <Col span={16}>
-                {getFieldDecorator('captcha', {
-                  rules: [
-                    {
-                      required: true,
-                      message: formatMessage({ id: 'user-register.verification-code.required' }),
-                    },
-                  ],
-                })(
-                  <Input
-                    size="large"
-                    placeholder={formatMessage({
-                      id: 'user-register.verification-code.placeholder',
-                    })}
-                  />,
-                )}
-              </Col>
-              <Col span={8}>
-                <Button
-                  size="large"
-                  disabled={!!count}
-                  className={styles.getCaptcha}
-                  onClick={this.onGetCaptcha}
-                >
-                  {count
-                    ? `${count} s`
-                    : formatMessage({ id: 'user-register.register.get-verification-code' })}
-                </Button>
-              </Col>
-            </Row>
+            {getFieldDecorator('email', {
+              rules: [
+                {
+                  required: true,
+                  message: formatMessage({ id: 'user-register.email.required' }),
+                },
+                {
+                  type: 'email',
+                  message: formatMessage({ id: 'user-register.email.wrong-format' }),
+                },
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"邮箱"}
+              />,
+            )}
           </FormItem>
           <FormItem>
             <Button

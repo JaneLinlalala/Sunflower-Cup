@@ -139,6 +139,22 @@ models: () => [
             "exact": true
           },
           {
+            "path": "/participant/advanced",
+            "name": "作品详情",
+            "icon": "table",
+            "component": __IS_BROWSER
+              ? _dvaDynamic({
+                app: require('@tmp/dva').getApp(),
+                models: () => [
+                  import(/* webpackChunkName: 'p__dashboard__analysis__model.tsx' */'D:/Project/Sunflower-Cup/src/pages/participant/advanced/model.ts').then(m => { return { namespace: 'model',...m.default}})
+                ],
+                component: () => import(/* webpackChunkName: "layouts__BasicLayout" */'../participant/advanced'),
+                LoadingComponent: require('D:/Project/Sunflower-Cup/src/components/PageLoading/index').default,
+              })
+              : require('../participant/advanced').default,
+            "exact": true
+          },
+          {
             "path": "/dashboard",
             "name": "dashboard",
             "icon": "dashboard",

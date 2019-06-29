@@ -86,21 +86,16 @@ class TableList extends Component<TableListProps, TableListState> {
 
   columns: StandardTableColumnProps[] = [
     {
-      title: '规则名称',
+      title: '项目名称',
       dataIndex: 'name',
     },
     {
-      title: '描述',
+      title: '参赛作者',
       dataIndex: 'desc',
     },
     {
-      title: '服务调用次数',
+      title: '项目类别',
       dataIndex: 'callNo',
-      sorter: true,
-      align: 'right',
-      render: (val: string) => `${val} 万`,
-      // mark to display a total number
-      needTotal: true,
     },
     {
       title: '状态',
@@ -128,7 +123,7 @@ class TableList extends Component<TableListProps, TableListState> {
       },
     },
     {
-      title: '上次调度时间',
+      title: '上次修改时间',
       dataIndex: 'updatedAt',
       sorter: true,
       render: (val: string) => <span>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</span>,
@@ -137,9 +132,11 @@ class TableList extends Component<TableListProps, TableListState> {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          <a onClick={() => this.handleUpdateModalVisible(true, record)}>配置</a>
+          <a onClick={() => this.handleUpdateModalVisible(true, record)}>修改</a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a href="">提交</a>
+          <Divider type="vertical" />
+          <a href="">删除</a>
         </Fragment>
       ),
     },
@@ -343,7 +340,7 @@ class TableList extends Component<TableListProps, TableListState> {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="规则名称">
+            <FormItem label="名称">
               {getFieldDecorator('name')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
@@ -441,11 +438,7 @@ class TableList extends Component<TableListProps, TableListState> {
       <PageHeaderWrapper>
         <Card bordered={false}>
           <div className={styles.tableList}>
-            <div className={styles.tableListForm}>{this.renderForm()}</div>
             <div className={styles.tableListOperator}>
-              <Button icon="plus" type="primary" onClick={() => this.handleModalVisible(true)}>
-                新建
-              </Button>
               {selectedRows.length > 0 && (
                 <span>
                   <Button>批量操作</Button>
