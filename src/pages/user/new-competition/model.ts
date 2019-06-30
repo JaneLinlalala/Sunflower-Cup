@@ -34,6 +34,7 @@ const Model: ModelType = {
   effects: {
     *submit({ payload }, { call, put }) {
       const response = yield call(NewCompetitionSubmit, payload);
+      console.log(response);
       yield put({
         type: 'newCompetitionSubmitHandle',
         payload: response,
@@ -43,9 +44,10 @@ const Model: ModelType = {
 
   reducers: {
     newCompetitionSubmitHandle(state, { payload }) {
+      console.log('payload', payload);
       return {
         ...state,
-        status: payload.status,
+        status: payload === 'success' ? 'ok' : 'error',
       };
     },
   },

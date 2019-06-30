@@ -31,6 +31,8 @@ export interface NewCompetitionParams {
   competitionName: string;
   time: string;
   description: string;
+  startTime: string;
+  endTime: string;
   // prefix: string;
 }
 
@@ -68,6 +70,7 @@ class NewCompetition extends Component<
     const { newCompetition, form } = this.props;
     const account = form.getFieldValue('mail');
     if (newCompetition.status === 'ok') {
+      newCompetition.status = undefined;
       message.success('提交成功！');
       router.push({
         pathname: '/user/new-competition-result',
@@ -75,7 +78,8 @@ class NewCompetition extends Component<
           account,
         },
       });
-    } else {
+    } else if (newCompetition.status === 'error') {
+      newCompetition.status = undefined;
       message.error('竞赛名称冲突！');
       this.props.form.setFieldsValue({
         competitionName: '',
@@ -102,12 +106,16 @@ class NewCompetition extends Component<
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { form, dispatch } = this.props;
+    const startTime = form.getFieldsValue().time[0];
+    const endTime = form.getFieldsValue().time[1];
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
         // const { prefix } = this.state;
         dispatch({
           type: 'newCompetition/submit',
           payload: {
+            startTime,
+            endTime,
             ...values,
             // prefix,
           },
