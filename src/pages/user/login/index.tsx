@@ -1,32 +1,33 @@
-import { Alert, Checkbox, Icon, Radio } from 'antd';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
+import {Button, Col, Form, Input, Popover, Progress, Row, Select, message, Radio, Checkbox} from 'antd';
 import React, { Component } from 'react';
-
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import Link from 'umi/link';
 import { connect } from 'dva';
+import router from 'umi/router';
+
 import { StateType } from './model';
-import LoginComponents from './components/Login';
 import styles from './style.less';
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = LoginComponents;
+const FormItem = Form.Item;
 
-interface LoginProps {
+interface userLoginProps extends FormComponentProps {
   dispatch: Dispatch<any>;
   userLogin: StateType;
   submitting: boolean;
 }
-interface LoginState {
-  type: string;
-  autoLogin: boolean;
+interface userLoginState {
+  count: number;
+  confirmDirty: boolean;
+  visible: boolean;
+  help: string;
+  prefix: string;
 }
-export interface FromDataType {
-  userName: string;
-  password: string;
-  mobile: string;
-  captcha: string;
+
+export interface UserLoginParams {
+  userNumber: string;
+  passwords: string;
+  userType: string;
 }
 
 @connect(
@@ -42,150 +43,156 @@ export interface FromDataType {
     };
   }) => ({
     userLogin,
-    submitting: loading.effects['userLogin/login'],
+    submitting: loading.effects['userLogin/submit'],
   }),
 )
-class Login extends Component<LoginProps, LoginState> {
-  loginForm: FormComponentProps['form'] | undefined | null = undefined;
-
-  state: LoginState = {
-    type: 'account',
-    autoLogin: true,
+class Register extends Component<userLoginProps, userLoginState> {
+  state: userLoginState = {
+    count: 0,
+    confirmDirty: false,
+    visible: false,
+    help: '',
+    prefix: '86',
   };
 
-  changeAutoLogin = (e: CheckboxChangeEvent) => {
-    this.setState({
-      autoLogin: e.target.checked,
-    });
-  };
+  interval: number | undefined = undefined;
 
-  handleSubmit = (err: any, values: FromDataType) => {
-    const { type } = this.state;
-    if (!err) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'userLogin/login',
-        payload: {
-          ...values,
-          type,
+  componentDidUpdate() {
+    const { userLogin, form } = this.props;
+    const account = form.getFieldValue('mail');
+    if (userLogin.status === 'ok') {
+      message.success('注册成功！');
+      router.push({
+        pathname: '/user/register-result',
+        state: {
+          account,
         },
       });
     }
-  };
+  }
 
-  onTabChange = (type: string) => {
-    this.setState({ type });
-  };
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
 
-  onGetCaptcha = () =>
-    new Promise((resolve, reject) => {
-      if (!this.loginForm) {
-        return;
+  onGetCaptcha = () => {
+    let count = 59;
+    this.setState({ count });
+    this.interval = window.setInterval(() => {
+      count -= 1;
+      this.setState({ count });
+      if (count === 0) {
+        clearInterval(this.interval);
       }
-      this.loginForm.validateFields(['mobile'], {}, (err: any, values: FromDataType) => {
-        if (err) {
-          reject(err);
-        } else {
-          const { dispatch } = this.props;
-          ((dispatch({
-            type: 'userLogin/getCaptcha',
-            payload: values.mobile,
-          }) as unknown) as Promise<any>)
-            .then(resolve)
-            .catch(reject);
-        }
-      });
-    });
+    }, 1000);
+  };
 
-  renderMessage = (content: string) => (
-    <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
-  );
+
+  handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { form, dispatch } = this.props;
+    form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        const { prefix } = this.state;
+        dispatch({
+          type: 'userLogin/submit',
+          payload: {
+            ...values,
+            prefix,
+          },
+        });
+      }
+    });
+  };
 
   render() {
-    const { userLogin, submitting } = this.props;
-    const { status, type: loginType } = userLogin;
-    const { type, autoLogin } = this.state;
+    const { form, submitting } = this.props;
+    const { getFieldDecorator } = form;
     return (
       <div className={styles.main}>
-        <LoginComponents
-          defaultActiveKey={type}
-          onTabChange={this.onTabChange}
-          onSubmit={this.handleSubmit}
-          ref={(form: any) => {
-            this.loginForm = form;
-          }}
-        >
-          <div key="account">
-            {status === 'error' &&
-              loginType === 'account' &&
-              !submitting &&
-              this.renderMessage(
-                formatMessage({ id: 'user-login.login.message-invalid-credentials' }),
-              )}
-            <UserName
-              name="userName"
-              placeholder={`${formatMessage({ id: 'user-login.login.userName' })}: admin or user`}
-              rules={[
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem>
+            {getFieldDecorator('userName', {
+              rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'user-login.userName.required' }),
+                  message: "请输入用户名！",
                 },
-              ]}
-            />
-            <Password
-              name="password"
-              placeholder={`${formatMessage({ id: 'user-login.login.password' })}: ant.design`}
-              rules={[
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"用户名"}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('passwords', {
+              rules: [
                 {
                   required: true,
-                  message: formatMessage({ id: 'user-login.password.required' }),
+                  message: "请输入密码！",
                 },
-              ]}
-              onPressEnter={() =>
-                this.loginForm && this.loginForm.validateFields(this.handleSubmit)
-              }
-            />
-            <Radio.Group
-              style={{
-                width: '100%',
-                marginBottom: '24px',
-                paddingLeft: '12px',
-                paddingRight: '12px',
-                textAlign: 'center',
-              }}
-            >
-              <Radio style={{ float: 'left', marginRight: '0' }} value="1">
-                <FormattedMessage id="参赛选手" />
-              </Radio>
-              <Radio style={{ position: 'static', margin: '0 auto' }} value="2">
-                <FormattedMessage id="校团委" />
-              </Radio>
-              <Radio style={{ float: 'right', marginRight: '0' }} value="3">
-                <FormattedMessage id="专家" />
-              </Radio>
-            </Radio.Group>
-          </div>
-          <div>
-            <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
-              <FormattedMessage id="user-login.login.remember-me" />
-            </Checkbox>
-
-            <a style={{ float: 'right' }} href="">
-              <FormattedMessage id="user-login.login.forgot-password" />
+              ],
+            })(
+              <Input
+                size="large"
+                placeholder={"密码"}
+              />,
+            )}
+          </FormItem>
+          <FormItem>
+            {getFieldDecorator('userType', {
+              rules: [
+                {
+                  required: true,
+                  message: "请选择身份！",
+                },
+              ],
+            })(
+              <Radio.Group
+                style={{
+                  width: '100%',
+                  paddingLeft: '12px',
+                  paddingRight: '12px',
+                  textAlign: 'center',
+                }}
+              >
+                <Radio style={{ float: 'left', marginRight: '0' }} value="0">
+                  参赛选手
+                </Radio>
+                <Radio style={{ float: 'left', marginLeft: '17%' }} value="1">
+                  专家
+                </Radio>
+                <Radio style={{ float: 'right', marginRight: '0' }} value="2">
+                  校团委
+                </Radio>
+              </Radio.Group>,
+            )}
+          </FormItem>
+          <FormItem>
+            <a style={{ float: 'left',marginLeft:'20px' }} href="">
+              忘记密码
             </a>
-            <div style={{ float: 'right', marginRight: '5px' }}>
+            <div style={{ float: 'right', marginRight: '20px' }}>
               <Link className={styles.register} to="/user/register">
-                <FormattedMessage id="user-login.login.signup" />
+                用户注册
               </Link>
             </div>
-          </div>
-          <Submit loading={submitting}>
-            <FormattedMessage id="user-login.login.login" />
-          </Submit>
-        </LoginComponents>
+          </FormItem>
+            <Button
+              size="large"
+              loading={submitting}
+              className={styles.submit}
+              type="primary"
+              htmlType="submit"
+            >
+              登录
+            </Button>
+        </Form>
       </div>
     );
   }
 }
 
-export default Login;
+export default Form.create<userLoginProps>()(Register);
