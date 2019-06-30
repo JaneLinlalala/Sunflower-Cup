@@ -100,7 +100,7 @@ export default {
             {
               name: 'login',
               path: '/user/login',
-              component: './user/login',
+              component: './user/login-2',
             },
             {
               name: 'register-result',
