@@ -94,11 +94,12 @@ export default {
               redirect: '/user/login',
             },
             {
+              name: '新建竞赛',
               path: '/user/new-competition',
               component: './user/new-competition',
             },
             {
-              name: 'new-competition-result',
+              name: '新建竞赛结果',
               path: '/user/new-competition-result',
               component: './user/new-competition-result',
             },
