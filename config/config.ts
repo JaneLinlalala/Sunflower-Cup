@@ -154,12 +154,6 @@ export default {
               component: './participant/advanced',
             },
             {
-              path: '/first-trial',
-              name: '初审',
-              icon: 'table',
-              component: './first-trial',
-            },
-            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
