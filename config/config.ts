@@ -94,6 +94,10 @@ export default {
               redirect: '/user/login',
             },
             {
+              path: '/user/new-competition',
+              component: './user/new-competition',
+            },
+            {
               name: 'login',
               path: '/user/login',
               component: './user/login',
