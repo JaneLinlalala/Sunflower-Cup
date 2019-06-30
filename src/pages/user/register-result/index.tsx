@@ -4,6 +4,7 @@ import Link from 'umi/link';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
+// eslint-disable-next-line sort-imports
 import Result from './Result';
 import styles from './style.less';
 
@@ -11,12 +12,18 @@ const actions = (
   <div className={styles.actions}>
     <a href="">
       <Button size="large" type="primary">
-        <FormattedMessage id="user-register-result.register-result.view-mailbox" />
+        <FormattedMessage
+          // @ts-ignore
+          id="user-register-result.register-result.view-mailbox"
+        />
       </Button>
     </a>
     <Link to="/">
       <Button size="large">
-        <FormattedMessage id="user-register-result.register-result.back-home" />
+        <FormattedMessage
+          // @ts-ignore
+          id="user-register-result.register-result.back-home"
+        />
       </Button>
     </Link>
   </div>
@@ -29,12 +36,15 @@ const RegisterResult: React.SFC<RouteChildrenProps> = ({ location }) => (
     title={
       <div className={styles.title}>
         <FormattedMessage
+          // @ts-ignore
           id="user-register-result.register-result.msg"
           values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }}
         />
       </div>
     }
-    description={formatMessage({ id: 'user-register-result.register-result.activation-email' })}
+    description={formatMessage({
+      id: 'user-register-result.register-result.activation-email',
+    })}
     actions={actions}
     style={{ marginTop: 56 }}
   />
