@@ -76,7 +76,10 @@ class NewCompetition extends Component<
         },
       });
     } else {
-      // TODO
+      message.error('竞赛名称冲突！');
+      this.props.form.setFieldsValue({
+        competitionName: '',
+      });
     }
   }
 
