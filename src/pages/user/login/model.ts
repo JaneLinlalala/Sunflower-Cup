@@ -1,6 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
+// @ts-ignore
 import { Register } from './service';
 
 export interface StateType {
