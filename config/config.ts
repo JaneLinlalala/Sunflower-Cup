@@ -154,6 +154,12 @@ export default {
               component: './participant/advanced',
             },
             {
+              path: '/expert-assign',
+              name: '分配专家',
+              icon: 'table',
+              component: './expert-assign',
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
