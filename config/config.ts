@@ -98,6 +98,11 @@ export default {
               component: './user/new-competition',
             },
             {
+              name: 'new-competition-result',
+              path: '/user/new-competition-result',
+              component: './user/new-competition-result',
+            },
+            {
               name: 'login',
               path: '/user/login',
               component: './user/login-2',
