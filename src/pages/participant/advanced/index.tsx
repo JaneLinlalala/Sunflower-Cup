@@ -36,21 +36,6 @@ const menu = (
   </Menu>
 );
 
-const action = (
-  <Fragment>
-    <ButtonGroup>
-      <Button>操作</Button>
-      <Button>操作</Button>
-      <Dropdown overlay={menu} placement="bottomRight">
-        <Button>
-          <Icon type="ellipsis" />
-        </Button>
-      </Dropdown>
-    </ButtonGroup>
-    <Button type="primary">主操作</Button>
-  </Fragment>
-);
-
 const extra = (
   <Row
     style={{
@@ -59,7 +44,7 @@ const extra = (
   >
     <Col xs={24} sm={12}>
       <div className={styles.textSecondary}>状态</div>
-      <div className={styles.heading}>待审批</div>
+      <div className={styles.heading}>已提交</div>
     </Col>
     <Col xs={24} sm={12}>
       <div className={styles.textSecondary}>订单金额</div>
@@ -275,19 +260,18 @@ class Advanced extends Component<
     };
     return (
       <PageHeaderWrapper
-        title="单号：234231029431"
-        extra={action}
+        title="作品名称"
         content={description}
         extraContent={extra}
         tabActiveKey="detail"
         tabList={[
           {
             key: 'detail',
-            tab: '详情',
+            tab: '申报者信息',
           },
           {
             key: 'rule',
-            tab: '规则',
+            tab: '作品信息',
           },
         ]}
       >

@@ -129,6 +129,30 @@ export default {
           authority: ['admin', 'user'],
           routes: [
             {
+              path: '/participant/step-form',
+              name: '添加作品',
+              icon: 'form',
+              component: './participant/step-form',
+            },
+            {
+              path: '/participant/table-list',
+              name: '作品列表',
+              icon: 'profile',
+              component: './participant/table-list',
+            },
+            {
+              path: '/participant/basic-list',
+              name: '作品列表2',
+              icon: 'profile',
+              component: './participant/basic-list',
+            },
+            {
+              path: '/participant/advanced',
+              name: '作品详情',
+              icon: 'table',
+              component: './participant/advanced',
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
