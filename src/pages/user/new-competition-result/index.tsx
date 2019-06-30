@@ -7,6 +7,7 @@ import {
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
+// eslint-disable-next-line sort-imports
 import Result from './Result';
 import styles from './style.less';
 
