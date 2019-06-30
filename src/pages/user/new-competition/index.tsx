@@ -29,9 +29,9 @@ interface NewCompetitionProps extends FormComponentProps {
 // }
 
 export interface NewCompetitionParams {
-  competitionType: string;
   competitionName: string;
   time: string;
+  description: string;
   // prefix: string;
 }
 
@@ -76,6 +76,8 @@ class NewCompetition extends Component<
           account,
         },
       });
+    } else {
+      // TODO
     }
   }
 
@@ -124,35 +126,6 @@ class NewCompetition extends Component<
           />
         </h3>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('competitionType', {
-              rules: [
-                {
-                  required: true,
-                  message: '请选择竞赛类别！',
-                },
-              ],
-            })(
-              <Select
-                showSearch
-                style={{ width: '100%' }}
-                placeholder="竞赛类别"
-                optionFilterProp="children"
-                // onChange={onChange}
-                // onFocus={onFocus}
-                // onBlur={onBlur}
-                // onSearch={onSearch}
-                filterOption={(input, option) =>
-                  // @ts-ignore
-                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                }
-              >
-                <Option value="jack">Jack</Option>
-                <Option value="lucy">Lucy</Option>
-                <Option value="tom">Tom</Option>
-              </Select>,
-            )}
-          </FormItem>
           <FormItem>
             {getFieldDecorator('competitionName', {
               rules: [
