@@ -69,9 +69,9 @@ class NewCompetition extends Component<
     const { newCompetition, form } = this.props;
     const account = form.getFieldValue('mail');
     if (newCompetition.status === 'ok') {
-      message.success('注册成功！');
+      message.success('提交成功！');
       router.push({
-        pathname: '/user/register-result',
+        pathname: '/user/new-competition-result',
         state: {
           account,
         },
