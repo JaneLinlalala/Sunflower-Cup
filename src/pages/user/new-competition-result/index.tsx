@@ -35,7 +35,10 @@ const RegisterResult: React.SFC<RouteChildrenProps> = ({ location }) => (
         {/*  id="user-register-result.register-result.msg" */}
         {/*  values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }} */}
         {/* /> */}
-        <FormattedMessage id="提交成功" />
+        <FormattedMessage
+          // @ts-ignore
+          id="提交成功"
+        />
       </div>
     }
     // description={formatMessage({ id: 'user-register-result.register-result.activation-email' })}
