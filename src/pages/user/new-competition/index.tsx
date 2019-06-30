@@ -1,85 +1,61 @@
-import {
-  Button,
-  DatePicker,
-  Form,
-  Input,
-  // Progress,
-  Select,
-  message,
-} from 'antd';
-
+import { Button, Form, Input, Select, message, DatePicker } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
-// eslint-disable-next-line sort-imports
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import router from 'umi/router';
-
-// eslint-disable-next-line sort-imports
 import { StateType } from './model';
+
 import styles from './style.less';
 
-const { TextArea } = Input;
 const { RangePicker } = DatePicker;
-
-const FormItem = Form.Item;
+const { TextArea } = Input;
 const { Option } = Select;
-// const InputGroup = Input.Group;
-
-// const passwordProgressMap: {
-//   ok: 'success';
-//   pass: 'normal';
-//   poor: 'exception';
-// } = {
-//   ok: 'success',
-//   pass: 'normal',
-//   poor: 'exception',
-// };
+const FormItem = Form.Item;
 
 interface NewCompetitionProps extends FormComponentProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
-  userRegister: StateType;
+  newCompetition: StateType;
   submitting: boolean;
 }
 
-// interface UserRegisterState {
+// interface NewCompetitionState {
 //   count: number;
 //   confirmDirty: boolean;
 //   visible: boolean;
 //   help: string;
 //   prefix: string;
 // }
-//
+
 export interface NewCompetitionParams {
-  competitionName: string;
   competitionType: string;
+  competitionName: string;
   time: string;
-  description: string;
+  // prefix: string;
 }
 
 @connect(
   ({
-    userRegister,
+    newCompetition,
     loading,
   }: {
-    userRegister: StateType;
+    newCompetition: StateType;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
   }) => ({
-    userRegister,
-    submitting: loading.effects['userRegister/submit'],
+    newCompetition,
+    submitting: loading.effects['newCompetition/submit'],
   }),
 )
 class NewCompetition extends Component<
   NewCompetitionProps
-  // , UserRegisterState
+  // , NewCompetitionState
 > {
-  // state: UserRegisterState = {
+  // state: NewCompetitionState = {
   //   count: 0,
   //   confirmDirty: false,
   //   visible: false,
@@ -90,9 +66,9 @@ class NewCompetition extends Component<
   interval: number | undefined = undefined;
 
   componentDidUpdate() {
-    const { userRegister, form } = this.props;
+    const { newCompetition, form } = this.props;
     const account = form.getFieldValue('mail');
-    if (userRegister.status === 'ok') {
+    if (newCompetition.status === 'ok') {
       message.success('注册成功！');
       router.push({
         pathname: '/user/register-result',
@@ -119,24 +95,12 @@ class NewCompetition extends Component<
   //   }, 1000);
   // };
 
-  // getPasswordStatus = () => {
-  //   const { form } = this.props;
-  //   const value = form.getFieldValue('password');
-  //   if (value && value.length > 9) {
-  //     return 'ok';
-  //   }
-  //   if (value && value.length > 5) {
-  //     return 'pass';
-  //   }
-  //   return 'poor';
-  // };
-
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { form, dispatch } = this.props;
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
-        // const {prefix} = this.state;
+        // const { prefix } = this.state;
         dispatch({
           type: 'newCompetition/submit',
           payload: {
@@ -148,71 +112,9 @@ class NewCompetition extends Component<
     });
   };
 
-  // checkConfirm = (rule: any, value: string, callback: (messgae?: string) => void) => {
-  //   const { form } = this.props;
-  //   if (value && value !== form.getFieldValue('password')) {
-  //     callback(formatMessage({ id: 'user-register.password.twice' }));
-  //   } else {
-  //     callback();
-  //   }
-  // };
-  //
-  // checkPassword = (rule: any, value: string, callback: (messgae?: string) => void) => {
-  //   const { visible, confirmDirty } = this.state;
-  //   if (!value) {
-  //     this.setState({
-  //       help: formatMessage({ id: 'user-register.password.required' }),
-  //       visible: !!value,
-  //     });
-  //     callback('error');
-  //   } else {
-  //     this.setState({
-  //       help: '',
-  //     });
-  //     if (!visible) {
-  //       this.setState({
-  //         visible: !!value,
-  //       });
-  //     }
-  //     if (value.length < 6) {
-  //       callback('error');
-  //     } else {
-  //       const { form } = this.props;
-  //       if (value && confirmDirty) {
-  //         form.validateFields(['confirm'], { force: true });
-  //       }
-  //       callback();
-  //     }
-  //   }
-  // };
-
-  // changePrefix = (value: string) => {
-  //   this.setState({
-  //     prefix: value,
-  //   });
-  // };
-  //
-  // renderPasswordProgress = () => {
-  //   const { form } = this.props;
-  //   const value = form.getFieldValue('password');
-  //   const passwordStatus = this.getPasswordStatus();
-  //   return value && value.length ? (
-  //     <div className={styles[`progress-${passwordStatus}`]}>
-  //       <Progress
-  //         status={passwordProgressMap[passwordStatus]}
-  //         className={styles.progress}
-  //         strokeWidth={6}
-  //         percent={value.length * 10 > 100 ? 100 : value.length * 10}
-  //         showInfo={false}
-  //       />
-  //     </div>
-  //   ) : null;
-  // };
-
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
-    // const { count, prefix, help, visible } = this.state;
     return (
       <div className={styles.main}>
         <h3>
@@ -273,7 +175,7 @@ class NewCompetition extends Component<
               <RangePicker
                 style={{ width: '100%' }}
                 showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD HH:mm"
+                format="YYYY-MM-DD"
                 placeholder={['竞赛开始时间', '竞赛结束时间']}
                 // onChange={onChange}
                 // onOk={onOk}
@@ -310,5 +212,4 @@ class NewCompetition extends Component<
   }
 }
 
-// @ts-ignore
 export default Form.create<NewCompetitionProps>()(NewCompetition);

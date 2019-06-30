@@ -35,7 +35,7 @@ const Model: ModelType = {
     *submit({ payload }, { call, put }) {
       const response = yield call(fakeRegister, payload);
       yield put({
-        type: 'registerHandle',
+        type: 'newCompetitionSubmitHandle',
         payload: response,
       });
     },
