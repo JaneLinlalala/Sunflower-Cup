@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, message, DatePicker } from 'antd';
+import { Button, Form, Input, message, DatePicker } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
@@ -11,7 +11,6 @@ import styles from './style.less';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
-const { Option } = Select;
 const FormItem = Form.Item;
 
 interface NewCompetitionProps extends FormComponentProps {
