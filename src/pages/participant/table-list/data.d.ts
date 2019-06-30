@@ -1,13 +1,14 @@
 export interface TableListItem {
+  id:string;
   key: number;
   disabled?: boolean;
   href: string;
   avatar: string;
-  name: string;
+  projectName: string;
   title: string;
   owner: string;
-  desc: string;
-  callNo: number;
+  studentName: string;
+  competitionType: number;
   status: number;
   updatedAt: Date;
   createdAt: Date;
@@ -31,4 +32,8 @@ export interface TableListParams {
   name: string;
   pageSize: number;
   currentPage: number;
+}
+
+export interface TableListId {
+  id:string;
 }

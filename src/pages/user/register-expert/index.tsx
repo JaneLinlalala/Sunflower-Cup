@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Popover, Progress, Row, Select, message } from 'antd';
+import { Button, Form, Input, Popover, Progress, message } from 'antd'; //删除ca及row、select
 import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
@@ -11,8 +11,8 @@ import { StateType } from './model';
 import styles from './style.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
-const InputGroup = Input.Group;
+//const { Option } = Select;
+//const InputGroup = Input.Group;
 
 const passwordStatusMap = {
   ok: (
@@ -55,16 +55,11 @@ interface userRegisterState {
   prefix: string;
 }
 
-export interface UserRegisterParams {
-  studentNumber: string;
-  password: string;
+export interface userRegisterParams {
+  email: string;
+  passwords: string;
   confirm: string;
-  studentName: string;
-  college:string;
-  major:string;
-  entryYear:string;
-  mobile: string;
-  email:string;
+  captcha: string;
   prefix: string;
 }
 
@@ -97,7 +92,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
 
   componentDidUpdate() {
     const { userRegister, form } = this.props;
-    const account = form.getFieldValue('mail');
+    const account = form.getFieldValue('email');
     if (userRegister.status === 'ok') {
       message.success('注册成功！');
       router.push({
@@ -127,7 +122,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
 
   getPasswordStatus = () => {
     const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const value = form.getFieldValue('passwords');
     if (value && value.length > 9) {
       return 'ok';
     }
@@ -156,7 +151,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
 
   checkConfirm = (rule: any, value: string, callback: (messgae?: string) => void) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
+    if (value && value !== form.getFieldValue('passwords')) {
       callback(formatMessage({ id: 'user-register.password.twice' }));
     } else {
       callback();
@@ -218,7 +213,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
-    const { count, prefix, help, visible } = this.state;
+    const { help, visible } = this.state; //删除count、prefix
     return (
       <div className={styles.main}>
         <h3>
@@ -226,17 +221,21 @@ class Register extends Component<userRegisterProps, userRegisterState> {
         </h3>
         <Form onSubmit={this.handleSubmit}>
           <FormItem>
-            {getFieldDecorator('studentNumber', {
+            {getFieldDecorator('email', {
               rules: [
                 {
                   required: true,
-                  message: "请输入学号！",
+                  message: formatMessage({ id: 'user-register.email.required' }),
+                },
+                {
+                  type: 'email',
+                  message: formatMessage({ id: 'user-register.email.wrong-format' }),
                 },
               ],
             })(
               <Input
                 size="large"
-                placeholder={"学号"}
+                placeholder={formatMessage({ id: 'user-register.email.placeholder' })}
               />,
             )}
           </FormItem>
@@ -261,7 +260,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
               placement="right"
               visible={visible}
             >
-              {getFieldDecorator('password', {
+              {getFieldDecorator('passwords', {
                 rules: [
                   {
                     validator: this.checkPassword,
@@ -271,7 +270,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
                 <Input
                   size="large"
                   type="password"
-                  placeholder={"密码区分大小写"}
+                  placeholder={formatMessage({ id: 'user-register.password.placeholder' })}
                 />,
               )}
             </Popover>
@@ -292,116 +291,6 @@ class Register extends Component<userRegisterProps, userRegisterState> {
                 size="large"
                 type="password"
                 placeholder={formatMessage({ id: 'user-register.confirm-password.placeholder' })}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('studentName', {
-              rules: [
-                {
-                  required: true,
-                  message: "请输入姓名！",
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={"姓名"}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('college', {
-              rules: [
-                {
-                  required: true,
-                  message: "请输入院系！",
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={"院系"}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('major', {
-              rules: [
-                {
-                  required: true,
-                  message: "请输入专业！",
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={"专业"}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('entryYear', {
-              rules: [
-                {
-                  required: true,
-                  message: "请输入入学年份！",
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={"入学年份"}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            <InputGroup compact>
-              <Select
-                size="large"
-                value={prefix}
-                onChange={this.changePrefix}
-                style={{ width: '20%' }}
-              >
-                <Option value="86">+86</Option>
-                <Option value="87">+87</Option>
-              </Select>
-              {getFieldDecorator('mobile', {
-                rules: [
-                  {
-                    required: true,
-                    message: formatMessage({ id: 'user-register.phone-number.required' }),
-                  },
-                  {
-                    pattern: /^\d{11}$/,
-                    message: formatMessage({ id: 'user-register.phone-number.wrong-format' }),
-                  },
-                ],
-              })(
-                <Input
-                  size="large"
-                  style={{ width: '80%' }}
-                  placeholder={formatMessage({ id: 'user-register.phone-number.placeholder' })}
-                />,
-              )}
-            </InputGroup>
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('email', {
-              rules: [
-                {
-                  required: true,
-                  message: formatMessage({ id: 'user-register.email.required' }),
-                },
-                {
-                  type: 'email',
-                  message: formatMessage({ id: 'user-register.email.wrong-format' }),
-                },
-              ],
-            })(
-              <Input
-                size="large"
-                placeholder={"邮箱"}
               />,
             )}
           </FormItem>
