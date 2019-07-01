@@ -148,6 +148,18 @@ export default {
               component: './participant/advanced',
             },
             {
+              path: '/expert/basic-list',
+              name: '作品列表-专家',
+              icon: 'profile',
+              component: './expert/basic-list',
+            },
+            {
+              path: '/expert/advanced',
+              name: '作品详情-专家',
+              icon: 'table',
+              component: './expert/advanced',
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',

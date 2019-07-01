@@ -235,6 +235,9 @@ class Advanced extends Component<
           <Button icon="download" type="primary" onClick={e=>{this.download()}}>
             下载
           </Button>
+          <Button icon="edit" type="primary" onClick={e=>{this.download()}} style={{marginLeft:'3%'}}>
+            评审
+          </Button>
         </div>
       </PageHeaderWrapper>
     );
