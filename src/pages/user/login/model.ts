@@ -47,7 +47,7 @@ const Model: ModelType = {
       console.log('payload', payload);
       return {
         ...state,
-        status: payload === 'failed' ? 'error' : payload,
+        status: payload === 'success' ? 'ok' : 'error',
       };
     },
   },

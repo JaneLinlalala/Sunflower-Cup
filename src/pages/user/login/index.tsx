@@ -64,8 +64,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
   componentDidUpdate() {
     const { userLogin, form } = this.props;
     const account = form.getFieldValue('mail');
-    if (userLogin.status !== 'error') {
-      document.cookie = `tiket=${userLogin.status};max-age=60*60*24*7`;
+    if (userLogin.status === 'ok') {
       message.success('登录成功！');
       let path = '';
       const type = form.getFieldsValue().userType;
