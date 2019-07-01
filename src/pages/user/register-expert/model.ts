@@ -45,7 +45,7 @@ const Model: ModelType = {
     registerHandle(state, { payload }) {
       return {
         ...state,
-        status: payload.status,
+        status: payload === 'success' ? 'ok' : 'error',
       };
     },
   },
