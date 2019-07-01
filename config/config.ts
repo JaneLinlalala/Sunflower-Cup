@@ -109,6 +109,11 @@ export default {
               component: './user/register',
             },
             {
+              name: 'register-expert',
+              path: '/user/register-expert',
+              component: './user/register-expert',
+            },
+            {
               component: '404',
             },
           ],
