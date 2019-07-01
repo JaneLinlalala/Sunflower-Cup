@@ -46,6 +46,7 @@ export interface AdvancedOperation3 {
 
 export interface AdvancedProfileData {
   data:{};
+  file: File;
   advancedOperation1: AdvancedOperation1[];
   advancedOperation2: AdvancedOperation2[];
   advancedOperation3: AdvancedOperation3[];

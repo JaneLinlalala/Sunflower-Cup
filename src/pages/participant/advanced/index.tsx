@@ -18,12 +18,10 @@ import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { Component, Fragment } from 'react';
 
 import { Dispatch } from 'redux';
-import classNames from 'classnames';
 import { connect } from 'dva';
 import { AdvancedProfileData,ListItemDataType } from './data.d';
 import styles from './style.less';
-import {BasicListItemDataType} from "@/pages/participant/basic-list/data";
-import moment from "@/pages/participant/basic-list";
+import {file} from "@babel/types";
 
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
@@ -64,10 +62,11 @@ const columns = [
     profileAdvanced,
     loading: loading.effects['profileAdvanced/fetchAdvanced'],
     data:profileAdvanced.data,
+    file:profileAdvanced.file,
   }))
 
 class Advanced extends Component<
-  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; dispatch: Dispatch<any> },
+  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; file:File; dispatch: Dispatch<any> },
   {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
@@ -118,9 +117,18 @@ class Advanced extends Component<
     }
   };
 
+  download = () =>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'profileAdvanced/downloadFile',
+      payload: {
+      },
+    });
+  }
+
   render() {
     const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
-    const { profileAdvanced, loading, data} = this.props;
+    const { profileAdvanced, loading, data, file} = this.props;
     const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
 
     const extra = (
@@ -196,10 +204,7 @@ class Advanced extends Component<
               </Descriptions>
             </Card>
           </GridContent>
-          <button>
-            下载
-          </button>
-          <Button>
+          <Button icon="download" type="primary" onClick={e=>{this.download()}}>
             下载
           </Button>
         </div>

@@ -15,7 +15,7 @@ export async function queryFakeList(params: ParamsType) {
 export async function deleteFakeList(params: ParamsType) {
   return request('http://liuterry.cn:8080/api/DeleteWork', {
     method: 'POST',
-    data:{"id":13}
+    data:{"id":11}
   });
 }
 
