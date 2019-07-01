@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Radio } from 'antd';
+import { Button, Form, Input, Radio, message } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -65,9 +65,15 @@ class Register extends Component<UserLoginProps, UserLoginState> {
     const { userLogin, form } = this.props;
     const account = form.getFieldValue('mail');
     if (userLogin.status === 'ok') {
-      message.success('注册成功！');
+      message.success('登录成功！');
+      let path = '';
+      const type = form.getFieldsValue().userType;
+      if (type === '0') path = '/participant/step-form';
+      else if (type === '1') path = '/expert-assign';
+      else path = '/new-competition';
+
       router.push({
-        pathname: '/user/register-result',
+        pathname: path,
         state: {
           account,
         },

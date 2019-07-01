@@ -94,16 +94,6 @@ export default {
               redirect: '/user/login',
             },
             {
-              name: '新建竞赛',
-              path: '/user/new-competition',
-              component: './user/new-competition',
-            },
-            {
-              name: '新建竞赛结果',
-              path: '/user/new-competition-result',
-              component: './user/new-competition-result',
-            },
-            {
               name: 'login',
               path: '/user/login',
               component: './user/login',
@@ -117,6 +107,11 @@ export default {
               name: 'register',
               path: '/user/register',
               component: './user/register',
+            },
+            {
+              name: 'register-expert',
+              path: '/user/register-expert',
+              component: './user/register-expert',
             },
             {
               component: '404',
@@ -148,6 +143,7 @@ export default {
               component: './participant/advanced',
             },
             {
+<<<<<<< HEAD
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
@@ -158,6 +154,22 @@ export default {
               name: '作品详情-专家',
               icon: 'table',
               component: './expert/advanced',
+=======
+              path: '/expert-assign',
+              name: '分配专家',
+              icon: 'table',
+              component: './expert-assign',
+            },
+            {
+              name: '新建竞赛',
+              path: '/new-competition',
+              component: './new-competition',
+            },
+            {
+              name: '新建竞赛结果',
+              path: '/new-competition-result',
+              component: './new-competition-result',
+>>>>>>> 918511dbcdf044e16e9d0ece0afb2aa627f9a925
             },
             {
               path: '/dashboard',

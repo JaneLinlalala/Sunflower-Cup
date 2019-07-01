@@ -44,9 +44,10 @@ const Model: ModelType = {
 
   reducers: {
     loginHandle(state, { payload }) {
+      console.log('payload', payload);
       return {
         ...state,
-        status: payload.status,
+        status: payload === 'success' ? 'ok' : 'error',
       };
     },
   },
