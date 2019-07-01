@@ -1,5 +1,8 @@
 import request from 'umi-request';
 
-export async function queryBasicProfile() {
-  return request('/api/profile/basic');
+export async function fakeSubmitForm(params: any) {
+  return request('/api/forms', {
+    method: 'POST',
+    data: params,
+  });
 }

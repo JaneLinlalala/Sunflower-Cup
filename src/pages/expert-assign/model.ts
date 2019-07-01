@@ -1,11 +1,16 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { BasicGood } from './data';
-import { queryBasicProfile } from './service';
+import { fakeSubmitForm } from './service';
 
 export interface StateType {
-  basicGoods: BasicGood[];
+  current?: string;
+  step?: {
+    payAccount: string;
+    receiverAccount: string;
+    receiverName: string;
+    amount: string;
+  };
 }
 
 export type Effect = (
@@ -17,35 +22,56 @@ export interface ModelType {
   namespace: string;
   state: StateType;
   effects: {
-    fetchBasic: Effect;
+    submitStepForm: Effect;
   };
   reducers: {
-    show: Reducer<StateType>;
+    saveStepFormData: Reducer<StateType>;
+    saveCurrentStep: Reducer<StateType>;
   };
 }
 
 const Model: ModelType = {
-  namespace: 'profileBasic',
+  namespace: 'formStepForm',
 
   state: {
-    basicGoods: [],
+    current: 'info',
+    step: {
+      payAccount: 'ant-design@alipay.com',
+      receiverAccount: 'test@example.com',
+      receiverName: 'Alex',
+      amount: '500',
+    },
   },
 
   effects: {
-    *fetchBasic(_, { call, put }) {
-      const response = yield call(queryBasicProfile);
+    *submitStepForm({ payload }, { call, put }) {
+      yield call(fakeSubmitForm, payload);
       yield put({
-        type: 'show',
-        payload: response,
+        type: 'saveStepFormData',
+        payload,
+      });
+      yield put({
+        type: 'saveCurrentStep',
+        payload: 'result',
       });
     },
   },
 
   reducers: {
-    show(state, { payload }) {
+    saveCurrentStep(state, { payload }) {
       return {
         ...state,
-        ...payload,
+        current: payload,
+      };
+    },
+
+    saveStepFormData(state, { payload }) {
+      return {
+        ...state,
+        step: {
+          ...(state as StateType).step,
+          ...payload,
+        },
       };
     },
   },
