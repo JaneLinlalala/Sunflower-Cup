@@ -24,6 +24,7 @@ const Model: ModelType = {
   namespace: 'profileAdvanced',
 
   state: {
+    data: {},
     advancedOperation1: [],
     advancedOperation2: [],
     advancedOperation3: [],
@@ -41,11 +42,13 @@ const Model: ModelType = {
 
   reducers: {
     show(state, { payload }) {
+      console.log(payload);
       return {
         ...state,
-        ...payload,
+        data: payload,
       };
     },
+
   },
 };
 

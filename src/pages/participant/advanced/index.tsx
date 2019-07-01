@@ -8,7 +8,7 @@ import {
   Dropdown,
   Icon,
   Menu,
-  Popover,
+  Popover, Progress,
   Row,
   Steps,
   Table,
@@ -20,169 +20,54 @@ import React, { Component, Fragment } from 'react';
 import { Dispatch } from 'redux';
 import classNames from 'classnames';
 import { connect } from 'dva';
-import { AdvancedProfileData } from './data.d';
+import { AdvancedProfileData,ListItemDataType } from './data.d';
 import styles from './style.less';
+import {BasicListItemDataType} from "@/pages/participant/basic-list/data";
+import moment from "@/pages/participant/basic-list";
 
-const { Step } = Steps;
-const ButtonGroup = Button.Group;
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
-
-const menu = (
-  <Menu>
-    <Menu.Item key="1">选项一</Menu.Item>
-    <Menu.Item key="2">选项二</Menu.Item>
-    <Menu.Item key="3">选项三</Menu.Item>
-  </Menu>
-);
-
-const extra = (
-  <Row
-    style={{
-      minWidth: 400,
-    }}
-  >
-    <Col xs={24} sm={12}>
-      <div className={styles.textSecondary}>状态</div>
-      <div className={styles.heading}>已提交</div>
-    </Col>
-    <Col xs={24} sm={12}>
-      <div className={styles.textSecondary}>订单金额</div>
-      <div className={styles.heading}>¥ 568.08</div>
-    </Col>
-  </Row>
-);
-
-const description = (
-  <Descriptions className={styles.headerList} size="small" column={2}>
-    <Descriptions.Item label="创建人">曲丽丽</Descriptions.Item>
-    <Descriptions.Item label="订购产品">XX 服务</Descriptions.Item>
-    <Descriptions.Item label="创建时间">2017-07-07</Descriptions.Item>
-    <Descriptions.Item label="关联单据">
-      <a href="">12421</a>
-    </Descriptions.Item>
-    <Descriptions.Item label="生效日期">2017-07-07 ~ 2017-08-08</Descriptions.Item>
-    <Descriptions.Item label="备注">请于两个工作日内确认</Descriptions.Item>
-  </Descriptions>
-);
-
-const desc1 = (
-  <div className={classNames(styles.textSecondary, styles.stepDescription)}>
-    <Fragment>
-      曲丽丽
-      <Icon type="dingding-o" style={{ marginLeft: 8 }} />
-    </Fragment>
-    <div>2016-12-12 12:32</div>
-  </div>
-);
-
-const desc2 = (
-  <div className={styles.stepDescription}>
-    <Fragment>
-      周毛毛
-      <Icon type="dingding-o" style={{ color: '#00A0E9', marginLeft: 8 }} />
-    </Fragment>
-    <div>
-      <a href="">催一下</a>
-    </div>
-  </div>
-);
-
-const popoverContent = (
-  <div style={{ width: 160 }}>
-    吴加号
-    <span className={styles.textSecondary} style={{ float: 'right' }}>
-      <Badge status="default" text={<span style={{ color: 'rgba(0, 0, 0, 0.45)' }}>未响应</span>} />
-    </span>
-    <div className={styles.textSecondary} style={{ marginTop: 4 }}>
-      耗时：2小时25分钟
-    </div>
-  </div>
-);
-
-const customDot = (
-  dot: React.ReactNode,
-  {
-    status,
-  }: {
-    status: string;
-  },
-) => {
-  if (status === 'process') {
-    return (
-      <Popover placement="topLeft" arrowPointAtCenter content={popoverContent}>
-        {dot}
-      </Popover>
-    );
-  }
-  return dot;
-};
-
-const operationTabList = [
-  {
-    key: 'tab1',
-    tab: '操作日志一',
-  },
-  {
-    key: 'tab2',
-    tab: '操作日志二',
-  },
-  {
-    key: 'tab3',
-    tab: '操作日志三',
-  },
-];
+const comType = ['科技发明制作', '调查报告和学术论文'];
+const proType = ['机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）', '信息技术（包括计算机、电信、通讯、电子等）','数理（包括数学、物理、地球与空间科学等）','生命科学(包括生物､农学､药学､医学､健康､卫生､食品等)','能源化工（包括能源、材料、石油、化学、化工、生态、环保等）','哲学社会科学（包括哲学、经济、社会、法律、教育、管理）'];
+const subStatus=['未提交','已提交']
 
 const columns = [
   {
-    title: '操作类型',
+    title: '姓名',
     dataIndex: 'type',
     key: 'type',
   },
   {
-    title: '操作人',
+    title: '学号',
     dataIndex: 'name',
     key: 'name',
   },
   {
-    title: '执行结果',
+    title: '现学历',
     dataIndex: 'status',
     key: 'status',
-    render: (text: string) => {
-      if (text === 'agree') {
-        return <Badge status="success" text="成功" />;
-      }
-      return <Badge status="error" text="驳回" />;
-    },
   },
   {
-    title: '操作时间',
+    title: '联系电话',
     dataIndex: 'updatedAt',
     key: 'updatedAt',
   },
   {
-    title: '备注',
+    title: '邮箱',
     dataIndex: 'memo',
     key: 'memo',
   },
 ];
 
-@connect(
-  ({
-    profileAdvanced,
-    loading,
-  }: {
-    profileAdvanced: AdvancedProfileData;
-    loading: {
-      effects: { [key: string]: boolean };
-    };
-  }) => ({
+// @ts-ignore
+@connect(({profileAdvanced, loading}) => ({
     profileAdvanced,
     loading: loading.effects['profileAdvanced/fetchAdvanced'],
-  }),
-)
+    data:profileAdvanced.data,
+  }))
+
 class Advanced extends Component<
-  { loading: boolean; profileAdvanced: AdvancedProfileData; dispatch: Dispatch<any> },
+  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; dispatch: Dispatch<any> },
   {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
@@ -191,9 +76,15 @@ class Advanced extends Component<
   public state: {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
+    testName: string;
+    loadingStatus: true;
+    buttonDisabled: false;
   } = {
     operationKey: 'tab1',
     stepDirection: 'horizontal',
+    testName:'xxx',
+    loadingStatus: true,
+    buttonDisabled: false,
   };
 
   componentDidMount() {
@@ -201,7 +92,6 @@ class Advanced extends Component<
     dispatch({
       type: 'profileAdvanced/fetchAdvanced',
     });
-
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection, { passive: true });
   }
@@ -229,51 +119,37 @@ class Advanced extends Component<
   };
 
   render() {
-    const { stepDirection, operationKey } = this.state;
-    const { profileAdvanced, loading } = this.props;
+    const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
+    const { profileAdvanced, loading, data} = this.props;
     const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
-    const contentList = {
-      tab1: (
-        <Table
-          pagination={false}
-          loading={loading}
-          dataSource={advancedOperation1}
-          columns={columns}
-        />
-      ),
-      tab2: (
-        <Table
-          pagination={false}
-          loading={loading}
-          dataSource={advancedOperation2}
-          columns={columns}
-        />
-      ),
-      tab3: (
-        <Table
-          pagination={false}
-          loading={loading}
-          dataSource={advancedOperation3}
-          columns={columns}
-        />
-      ),
-    };
+
+    const extra = (
+      <Row
+        style={{
+          minWidth: 400,
+        }}
+      >
+        <Col xs={24} sm={12}>
+          <div className={styles.textSecondary}>状态</div>
+          <div className={styles.heading}>{subStatus[data.submitStatus]}</div>
+        </Col>
+      </Row>
+    );
+
+    const description = (
+      <Descriptions className={styles.headerList} size="small" column={2}>
+        <Descriptions.Item label="申报者">{data.studentName}</Descriptions.Item>
+        <Descriptions.Item label="作品编码">{data.id}</Descriptions.Item>
+        <Descriptions.Item label="院系名称">{data.college}</Descriptions.Item>
+        <Descriptions.Item label="作品类别">{comType[data.competitionType]}</Descriptions.Item>
+      </Descriptions>
+    );
+
     return (
       <PageHeaderWrapper
         title="作品名称"
         content={description}
         extraContent={extra}
-        tabActiveKey="detail"
-        tabList={[
-          {
-            key: 'detail',
-            tab: '申报者信息',
-          },
-          {
-            key: 'rule',
-            tab: '作品信息',
-          },
-        ]}
       >
         <div
           style={{
@@ -283,84 +159,49 @@ class Advanced extends Component<
           className={styles.main}
         >
           <GridContent>
-            <Card title="流程进度" style={{ marginBottom: 24 }}>
-              <Steps direction={stepDirection} progressDot={customDot} current={1}>
-                <Step title="创建项目" description={desc1} />
-                <Step title="部门初审" description={desc2} />
-                <Step title="财务复核" />
-                <Step title="完成" />
-              </Steps>
-            </Card>
-            <Card title="用户信息" style={{ marginBottom: 24 }} bordered={false}>
+            <Card title="申报者信息" style={{ marginBottom: 24 }} bordered={false}>
               <Descriptions style={{ marginBottom: 24 }}>
-                <Descriptions.Item label="用户姓名">付小小</Descriptions.Item>
-                <Descriptions.Item label="会员卡号">32943898021309809423</Descriptions.Item>
-                <Descriptions.Item label="身份证">3321944288191034921</Descriptions.Item>
-                <Descriptions.Item label="联系方式">18112345678</Descriptions.Item>
-                <Descriptions.Item label="联系地址">
-                  曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口
-                </Descriptions.Item>
+                <Descriptions.Item label="姓名">{data.studentName}</Descriptions.Item>
+                <Descriptions.Item label="学号">{data.studentNumber}</Descriptions.Item>
+                <Descriptions.Item label="出生年月">{data.birthDay}</Descriptions.Item>
+                <Descriptions.Item label="现学历">{data.education}</Descriptions.Item>
+                <Descriptions.Item label="专业">{data.major}</Descriptions.Item>
+                <Descriptions.Item label="入学时间">{data.entryYear}</Descriptions.Item>
+                <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
+                <Descriptions.Item label="联系电话">{data.phone}</Descriptions.Item>
+                <Descriptions.Item label="邮箱">{data.email}</Descriptions.Item>
+                <Descriptions.Item label="通讯地址">{data.address}</Descriptions.Item>
               </Descriptions>
-              <Descriptions style={{ marginBottom: 24 }} title="信息组">
-                <Descriptions.Item label="某某数据">725</Descriptions.Item>
-                <Descriptions.Item label="该数据更新时间">2017-08-08</Descriptions.Item>
-                <Descriptions.Item
-                  label={
-                    <span>
-                      某某数据
-                      <Tooltip title="数据说明">
-                        <Icon
-                          style={{ color: 'rgba(0, 0, 0, 0.43)', marginLeft: 4 }}
-                          type="info-circle-o"
-                        />
-                      </Tooltip>
-                    </span>
-                  }
-                >
-                  725
-                </Descriptions.Item>
-                <Descriptions.Item label="该数据更新时间">2017-08-08</Descriptions.Item>
-              </Descriptions>
-              <h4 style={{ marginBottom: 16 }}>信息组</h4>
-              <Card type="inner" title="多层级信息组">
-                <Descriptions style={{ marginBottom: 16 }} title="组名称">
-                  <Descriptions.Item label="负责人">林东东</Descriptions.Item>
-                  <Descriptions.Item label="角色码">1234567</Descriptions.Item>
-                  <Descriptions.Item label="所属部门">XX公司 - YY部</Descriptions.Item>
-                  <Descriptions.Item label="过期时间">2017-08-08</Descriptions.Item>
-                  <Descriptions.Item label="描述">
-                    这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长...
-                  </Descriptions.Item>
-                </Descriptions>
-                <Divider style={{ margin: '16px 0' }} />
-                <Descriptions style={{ marginBottom: 16 }} title="组名称" column={1}>
-                  <Descriptions.Item label="学名">
-                    Citrullus lanatus (Thunb.) Matsum. et
-                    Nakai一年生蔓生藤本；茎、枝粗壮，具明显的棱。卷须较粗..
-                  </Descriptions.Item>
-                </Descriptions>
-                <Divider style={{ margin: '16px 0' }} />
-                <Descriptions title="组名称">
-                  <Descriptions.Item label="负责人">付小小</Descriptions.Item>
-                  <Descriptions.Item label="角色码">1234568</Descriptions.Item>
-                </Descriptions>
-              </Card>
-            </Card>
-            <Card title="用户近半年来电记录" style={{ marginBottom: 24 }} bordered={false}>
-              <div className={styles.noData}>
-                <Icon type="frown-o" />
-                暂无数据
-              </div>
             </Card>
             <Card
-              className={styles.tabsCard}
+              title="合作作者信息"
               bordered={false}
-              tabList={operationTabList}
-              onTabChange={this.onOperationTabChange}
+              style={{ marginBottom: 24 }}
             >
-              {contentList[operationKey]}
+              <Table
+                style={{ marginBottom: 16 }}
+                pagination={false}
+                loading={loading}
+                dataSource={advancedOperation1}
+                columns={columns}
+              />
+            </Card>
+            <Card title="作品信息" style={{ marginBottom: 24 }} bordered={false}>
+              <Descriptions style={{ marginBottom: 24 }} column={1}>
+                <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
+                <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item>
+                <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item>
+                <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item>
+                <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item>
+              </Descriptions>
             </Card>
           </GridContent>
+          <button>
+            下载
+          </button>
+          <Button>
+            下载
+          </Button>
         </div>
       </PageHeaderWrapper>
     );

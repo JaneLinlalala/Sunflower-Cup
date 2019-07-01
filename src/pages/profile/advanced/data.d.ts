@@ -26,6 +26,7 @@ export interface AdvancedOperation3 {
 }
 
 export interface AdvancedProfileData {
+  data:{};
   advancedOperation1: AdvancedOperation1[];
   advancedOperation2: AdvancedOperation2[];
   advancedOperation3: AdvancedOperation3[];
