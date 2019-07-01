@@ -126,14 +126,8 @@ export default {
               component: './participant/step-form',
             },
             {
-              path: '/participant/table-list',
-              name: '作品列表',
-              icon: 'profile',
-              component: './participant/table-list',
-            },
-            {
               path: '/participant/basic-list',
-              name: '作品列表2',
+              name: '作品列表',
               icon: 'profile',
               component: './participant/basic-list',
             },

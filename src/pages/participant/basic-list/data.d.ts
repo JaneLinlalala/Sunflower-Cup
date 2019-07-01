@@ -50,5 +50,5 @@ export interface BasicListItemDataType {
   videoUrl: string;
   averageScore: string;
   submitStatus: string;
-  studentId: 5
+  studentId: string;
 }
