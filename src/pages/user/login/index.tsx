@@ -1,4 +1,4 @@
-import {Button, Col, Form, Input, Popover, Progress, Row, Select, message, Radio, Checkbox} from 'antd';
+import { Button, Form, Input, message, Radio } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -11,12 +11,12 @@ import styles from './style.less';
 
 const FormItem = Form.Item;
 
-interface userLoginProps extends FormComponentProps {
+interface UserLoginProps extends FormComponentProps {
   dispatch: Dispatch<any>;
   userLogin: StateType;
   submitting: boolean;
 }
-interface userLoginState {
+interface UserLoginState {
   count: number;
   confirmDirty: boolean;
   visible: boolean;
@@ -46,11 +46,15 @@ export interface UserLoginParams {
     submitting: loading.effects['userLogin/submit'],
   }),
 )
-class Register extends Component<userLoginProps, userLoginState> {
-  state: userLoginState = {
+class Register extends Component<UserLoginProps, UserLoginState> {
+  state: UserLoginState = {
+    // eslint-disable-next-line react/no-unused-state
     count: 0,
+    // eslint-disable-next-line react/no-unused-state
     confirmDirty: false,
+    // eslint-disable-next-line react/no-unused-state
     visible: false,
+    // eslint-disable-next-line react/no-unused-state
     help: '',
     prefix: '86',
   };
@@ -77,16 +81,17 @@ class Register extends Component<userLoginProps, userLoginState> {
 
   onGetCaptcha = () => {
     let count = 59;
+    // eslint-disable-next-line react/no-unused-state
     this.setState({ count });
     this.interval = window.setInterval(() => {
       count -= 1;
+      // eslint-disable-next-line react/no-unused-state
       this.setState({ count });
       if (count === 0) {
         clearInterval(this.interval);
       }
     }, 1000);
   };
-
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,37 +121,27 @@ class Register extends Component<userLoginProps, userLoginState> {
               rules: [
                 {
                   required: true,
-                  message: "请输入用户名！",
+                  message: '请输入用户名！',
                 },
               ],
-            })(
-              <Input
-                size="large"
-                placeholder={"用户名"}
-              />,
-            )}
+            })(<Input size="large" placeholder="用户名" />)}
           </FormItem>
           <FormItem>
             {getFieldDecorator('passwords', {
               rules: [
                 {
                   required: true,
-                  message: "请输入密码！",
+                  message: '请输入密码！',
                 },
               ],
-            })(
-              <Input
-                size="large"
-                placeholder={"密码"}
-              />,
-            )}
+            })(<Input size="large" placeholder="密码" />)}
           </FormItem>
           <FormItem>
             {getFieldDecorator('userType', {
               rules: [
                 {
                   required: true,
-                  message: "请选择身份！",
+                  message: '请选择身份！',
                 },
               ],
             })(
@@ -171,7 +166,7 @@ class Register extends Component<userLoginProps, userLoginState> {
             )}
           </FormItem>
           <FormItem>
-            <a style={{ float: 'left',marginLeft:'20px' }} href="">
+            <a style={{ float: 'left', marginLeft: '20px' }} href="">
               忘记密码
             </a>
             <div style={{ float: 'right', marginRight: '20px' }}>
@@ -180,19 +175,19 @@ class Register extends Component<userLoginProps, userLoginState> {
               </Link>
             </div>
           </FormItem>
-            <Button
-              size="large"
-              loading={submitting}
-              className={styles.submit}
-              type="primary"
-              htmlType="submit"
-            >
-              登录
-            </Button>
+          <Button
+            size="large"
+            loading={submitting}
+            className={styles.submit}
+            type="primary"
+            htmlType="submit"
+          >
+            登录
+          </Button>
         </Form>
       </div>
     );
   }
 }
 
-export default Form.create<userLoginProps>()(Register);
+export default Form.create<UserLoginProps>()(Register);

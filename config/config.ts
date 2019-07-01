@@ -94,6 +94,16 @@ export default {
               redirect: '/user/login',
             },
             {
+              name: '新建竞赛',
+              path: '/user/new-competition',
+              component: './user/new-competition',
+            },
+            {
+              name: '新建竞赛结果',
+              path: '/user/new-competition-result',
+              component: './user/new-competition-result',
+            },
+            {
               name: 'login',
               path: '/user/login',
               component: './user/login',
@@ -123,25 +133,25 @@ export default {
               path: '/participant/step-form',
               name: '添加作品',
               icon: 'form',
-              component:'./participant/step-form',
+              component: './participant/step-form',
             },
             {
               path: '/participant/table-list',
               name: '作品列表',
               icon: 'profile',
-              component:'./participant/table-list',
+              component: './participant/table-list',
             },
             {
               path: '/participant/basic-list',
               name: '作品列表2',
               icon: 'profile',
-              component:'./participant/basic-list',
+              component: './participant/basic-list',
             },
             {
               path: '/participant/advanced',
               name: '作品详情',
               icon: 'table',
-              component:'./participant/advanced',
+              component: './participant/advanced',
             },
             {
               path: '/dashboard',

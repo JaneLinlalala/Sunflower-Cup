@@ -1,8 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-// @ts-ignore
-import { Register } from './service';
+import { NewCompetitionSubmit } from './service';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -21,12 +20,12 @@ export interface ModelType {
     submit: Effect;
   };
   reducers: {
-    loginHandle: Reducer<StateType>;
+    newCompetitionSubmitHandle: Reducer<StateType>;
   };
 }
 
 const Model: ModelType = {
-  namespace: 'userLogin',
+  namespace: 'newCompetition',
 
   state: {
     status: undefined,
@@ -34,19 +33,21 @@ const Model: ModelType = {
 
   effects: {
     *submit({ payload }, { call, put }) {
-      const response = yield call(Register, payload);
+      const response = yield call(NewCompetitionSubmit, payload);
+      console.log(response);
       yield put({
-        type: 'loginHandle',
+        type: 'newCompetitionSubmitHandle',
         payload: response,
       });
     },
   },
 
   reducers: {
-    loginHandle(state, { payload }) {
+    newCompetitionSubmitHandle(state, { payload }) {
+      console.log('payload', payload);
       return {
         ...state,
-        status: payload.status,
+        status: payload === 'success' ? 'ok' : 'error',
       };
     },
   },
