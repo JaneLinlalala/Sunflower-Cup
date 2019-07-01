@@ -73,7 +73,7 @@ class NewCompetition extends Component<
       newCompetition.status = undefined;
       message.success('提交成功！');
       router.push({
-        pathname: '/user/new-competition-result',
+        pathname: '/new-competition-result',
         state: {
           account,
         },
