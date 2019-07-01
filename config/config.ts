@@ -94,16 +94,6 @@ export default {
               redirect: '/user/login',
             },
             {
-              name: '新建竞赛',
-              path: '/user/new-competition',
-              component: './user/new-competition',
-            },
-            {
-              name: '新建竞赛结果',
-              path: '/user/new-competition-result',
-              component: './user/new-competition-result',
-            },
-            {
               name: 'login',
               path: '/user/login',
               component: './user/login',
@@ -158,6 +148,16 @@ export default {
               name: '分配专家',
               icon: 'table',
               component: './expert-assign',
+            },
+            {
+              name: '新建竞赛',
+              path: '/new-competition',
+              component: './new-competition',
+            },
+            {
+              name: '新建竞赛结果',
+              path: '/new-competition-result',
+              component: './new-competition-result',
             },
             {
               path: '/dashboard',
