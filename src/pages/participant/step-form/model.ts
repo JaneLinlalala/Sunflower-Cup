@@ -1,15 +1,30 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { fakeSubmitForm } from './service';
+import { Submit } from './service';
 
 export interface StateType {
   current?: string;
   step?: {
-    payAccount: string;
-    receiverAccount: string;
-    receiverName: string;
-    amount: string;
+    id: string;
+    projectName: string;
+    college: string;
+    competitionType: number;
+    studentName: string;
+    studentNumber: string;
+    birthDay: string;
+    education: string;
+    major: string;
+    entryYear: string;
+    projectFullName: string;
+    address: string;
+    phone: string;
+    email: string;
+    friends: [];
+    projectType: number;
+    details: string;
+    invention: string;
+    keywords: string;
   };
 }
 
@@ -32,20 +47,36 @@ export interface ModelType {
 
 const Model: ModelType = {
   namespace: 'formStepForm',
-
   state: {
     current: 'info',
+    // @ts-ignore
     step: {
-      payAccount: 'ant-design@alipay.com',
-      receiverAccount: 'test@example.com',
-      receiverName: 'Alex',
-      amount: '500',
+      id: '7',
+      projectName: '',
+      college: '',
+      competitionType: '',
+      studentName: '',
+      studentNumber: '',
+      birthDay: '',
+      education: '',
+      major: '',
+      entryYear: '',
+      projectFullName: '',
+      address: '',
+      phone: '',
+      email: '',
+      friends: [],
+      projectType: '',
+      details: '',
+      invention: '',
+      keywords: '',
     },
   },
 
   effects: {
     *submitStepForm({ payload }, { call, put }) {
-      yield call(fakeSubmitForm, payload);
+      // console.log('payload', payload);
+      yield call(Submit, JSON.stringify(payload));
       yield put({
         type: 'saveStepFormData',
         payload,
