@@ -1,7 +1,6 @@
 import { Card, Steps } from 'antd';
 import React, { Component, Fragment } from 'react';
 
-import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import { StateType } from './model';
 import Step1 from './components/Step1';
@@ -11,7 +10,7 @@ import styles from './style.less';
 
 const { Step } = Steps;
 
-interface StepFormProps {
+export interface StepFormProps {
   current: StateType['current'];
 }
 
@@ -44,18 +43,16 @@ class StepForm extends Component<StepFormProps> {
       stepComponent = <Step1 />;
     }
     return (
-      <PageHeaderWrapper content="将一个冗长或用户不熟悉的表单任务分成多个步骤，指导用户完成。">
-        <Card bordered={false}>
-          <Fragment>
-            <Steps current={currentStep} className={styles.steps}>
-              <Step title="填写转账信息" />
-              <Step title="确认转账信息" />
-              <Step title="完成" />
-            </Steps>
-            {stepComponent}
-          </Fragment>
-        </Card>
-      </PageHeaderWrapper>
+      <Card bordered={false}>
+        <Fragment>
+          <Steps current={currentStep} className={styles.steps}>
+            <Step title="填写填报信息" />
+            <Step title="确认填报信息" />
+            <Step title="保存填报信息" />
+          </Steps>
+          {stepComponent}
+        </Fragment>
+      </Card>
     );
   }
 }
