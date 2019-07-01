@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, DatePicker } from 'antd';
+import { Card, Button, Form, Input, message, DatePicker } from 'antd';
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
@@ -128,69 +128,65 @@ class NewCompetition extends Component<
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
     return (
-      <div className={styles.main}>
-        <h3>
-          <FormattedMessage
-            // @ts-ignore
-            id="新建竞赛"
-          />
-        </h3>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('competitionName', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入竞赛名称！',
-                },
-              ],
-            })(<Input placeholder="竞赛名称" />)}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('time', {
-              rules: [
-                {
-                  required: true,
-                  message: '请填写竞赛时间！',
-                },
-              ],
-            })(
-              <RangePicker
-                style={{ width: '100%' }}
-                showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD"
-                placeholder={['竞赛开始时间', '竞赛结束时间']}
-                // onChange={onChange}
-                // onOk={onOk}
-              />,
-            )}
-          </FormItem>
-          <FormItem>
-            {getFieldDecorator('description', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入竞赛描述！',
-                },
-              ],
-            })(<TextArea placeholder="竞赛描述" rows={4} />)}
-          </FormItem>
-          <FormItem>
-            <Button
-              size="large"
-              loading={submitting}
-              className={styles.submit}
-              type="primary"
-              htmlType="submit"
-            >
-              <FormattedMessage
-                // @ts-ignore
-                id="提交"
-              />
-            </Button>
-          </FormItem>
-        </Form>
-      </div>
+      <Card title="新建竞赛">
+        <Card bordered={false} className={styles.main}>
+          <Form onSubmit={this.handleSubmit}>
+            <FormItem>
+              {getFieldDecorator('competitionName', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入竞赛名称！',
+                  },
+                ],
+              })(<Input placeholder="竞赛名称" />)}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('time', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请填写竞赛时间！',
+                  },
+                ],
+              })(
+                <RangePicker
+                  style={{ width: '100%' }}
+                  showTime={{ format: 'HH:mm' }}
+                  format="YYYY-MM-DD"
+                  placeholder={['竞赛开始时间', '竞赛结束时间']}
+                  // onChange={onChange}
+                  // onOk={onOk}
+                />,
+              )}
+            </FormItem>
+            <FormItem>
+              {getFieldDecorator('description', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入竞赛描述！',
+                  },
+                ],
+              })(<TextArea placeholder="竞赛描述" rows={4} />)}
+            </FormItem>
+            <FormItem>
+              <Button
+                size="large"
+                loading={submitting}
+                className={styles.submit}
+                type="primary"
+                htmlType="submit"
+              >
+                <FormattedMessage
+                  // @ts-ignore
+                  id="提交"
+                />
+              </Button>
+            </FormItem>
+          </Form>
+        </Card>
+      </Card>
     );
   }
 }

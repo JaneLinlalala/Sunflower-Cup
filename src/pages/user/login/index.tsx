@@ -116,6 +116,10 @@ class Register extends Component<UserLoginProps, UserLoginState> {
     });
   };
 
+  test = ()=>{
+    document.cookie="ticket=b7f63523588a457ba9a41c5ec83b6c16;max-age=60*60*24*7";
+  };
+
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
@@ -190,6 +194,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
           >
             登录
           </Button>
+          <Button type="primary" onClick={this.test}>Primary</Button>
         </Form>
       </div>
     );

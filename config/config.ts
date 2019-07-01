@@ -143,7 +143,6 @@ export default {
               component: './participant/advanced',
             },
             {
-<<<<<<< HEAD
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
@@ -154,27 +153,30 @@ export default {
               name: '作品详情-专家',
               icon: 'table',
               component: './expert/advanced',
-=======
-              path: '/expert-assign',
-              name: '分配专家',
-              icon: 'table',
-              component: './expert-assign',
             },
             {
-              name: '新建竞赛',
+              name: '新建竞赛-管理员',
               path: '/new-competition',
+              icon: 'form',
               component: './new-competition',
             },
             {
               name: '新建竞赛结果',
               path: '/new-competition-result',
               component: './new-competition-result',
->>>>>>> 918511dbcdf044e16e9d0ece0afb2aa627f9a925
+              hideInMenu: true,
+            },
+            {
+              path: '/expert-assign',
+              name: '专家列表-管理员',
+              icon: 'profile',
+              component: './expert-assign',
             },
             {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'analysis',
@@ -197,6 +199,7 @@ export default {
               path: '/form',
               icon: 'form',
               name: 'form',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'basic-form',
@@ -219,6 +222,7 @@ export default {
               path: '/list',
               icon: 'table',
               name: 'list',
+              hideInMenu: true,
               routes: [
                 {
                   path: '/list/search',
@@ -267,6 +271,7 @@ export default {
               path: '/profile',
               name: 'profile',
               icon: 'profile',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'basic',
@@ -284,6 +289,7 @@ export default {
               name: 'result',
               icon: 'check-circle-o',
               path: '/result',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'success',
@@ -301,6 +307,7 @@ export default {
               name: 'exception',
               icon: 'warning',
               path: '/exception',
+              hideInMenu: true,
               routes: [
                 {
                   name: '404',
@@ -318,6 +325,7 @@ export default {
               name: 'account',
               icon: 'user',
               path: '/account',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'center',
@@ -335,6 +343,7 @@ export default {
               name: 'editor',
               icon: 'highlight',
               path: '/editor',
+              hideInMenu: true,
               routes: [
                 {
                   name: 'flow',
