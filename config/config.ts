@@ -129,6 +129,14 @@ export default {
               name: '添加作品',
               icon: 'form',
               component: './participant/step-form',
+              hideInMenu: true,
+            },
+            {
+              path: '/participant/step-form-2',
+              name: '添加作品',
+              icon: 'form',
+              component: './participant/step-form-2',
+              hideInMenu: true,
             },
             {
               path: '/participant/basic-list',
@@ -141,6 +149,7 @@ export default {
               name: '作品详情',
               icon: 'table',
               component: './participant/advanced',
+              hideInMenu: true,
             },
             {
               path: '/expert/basic-list',
@@ -159,6 +168,7 @@ export default {
               name: '分配专家',
               icon: 'table',
               component: './expert-assign',
+              hideInMenu: true,
             },
             {
               name: '新建竞赛-管理员',
@@ -177,6 +187,7 @@ export default {
               name: '专家列表-管理员',
               icon: 'profile',
               component: './expert-assign',
+              hideInMenu: true,
             },
             {
               path: '/dashboard',

@@ -1,4 +1,4 @@
-import { Button, Form, Input, Radio, message } from 'antd';
+import {Button, Form, Input, Radio, message, Popover} from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -64,7 +64,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
   componentDidUpdate() {
     const { userLogin, form } = this.props;
     const account = form.getFieldValue('mail');
-    if (userLogin.status === 'ok') {
+    if (userLogin.status != 'error' && userLogin.status !=null) {
       message.success('登录成功！');
       let path = '';
       const type = form.getFieldsValue().userType;
@@ -78,6 +78,9 @@ class Register extends Component<UserLoginProps, UserLoginState> {
           account,
         },
       });
+    }
+    else if(userLogin.status === 'error'){
+      message.success('密码错误！');
     }
   }
 
@@ -116,12 +119,9 @@ class Register extends Component<UserLoginProps, UserLoginState> {
     });
   };
 
-  test = ()=>{
-    document.cookie="ticket=b7f63523588a457ba9a41c5ec83b6c16;max-age=60*60*24*7";
-  };
-
   render() {
     const { form, submitting } = this.props;
+    const { visible } = this.state;
     const { getFieldDecorator } = form;
     return (
       <div className={styles.main}>
@@ -144,7 +144,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
                   message: '请输入密码！',
                 },
               ],
-            })(<Input size="large" placeholder="密码" />)}
+            })(<Input type="password" size="large" placeholder="密码" />)}
           </FormItem>
           <FormItem>
             {getFieldDecorator('userType', {
@@ -194,7 +194,6 @@ class Register extends Component<UserLoginProps, UserLoginState> {
           >
             登录
           </Button>
-          <Button type="primary" onClick={this.test}>Primary</Button>
         </Form>
       </div>
     );

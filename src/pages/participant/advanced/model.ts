@@ -62,14 +62,6 @@ const Model: ModelType = {
     down(state, { payload }) {
       console.log(payload);
       console.log("test1");
-      payload.blob().then(blob => {
-        console.log("test")
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = "filename.xlsx";
-        a.click();
-      });
       return {
         ...state,
         file: payload,

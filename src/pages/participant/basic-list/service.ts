@@ -8,6 +8,18 @@ interface ParamsType extends Partial<BasicListItemDataType> {
 export async function queryFakeList(params: ParamsType) {
   return request('http://liuterry.cn:8080/api/ViewWorkList', {
     method: 'POST',
+    headers: {
+      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
+    },
+    data:{"studentId":5}
+  });
+}
+export async function createFakeList() {
+  return request('http://liuterry.cn:8080/api/CreateWork', {
+    method: 'POST',
+    headers: {
+      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
+    },
     data:{"studentId":5}
   });
 }
@@ -15,14 +27,20 @@ export async function queryFakeList(params: ParamsType) {
 export async function deleteFakeList(params: ParamsType) {
   return request('http://liuterry.cn:8080/api/DeleteWork', {
     method: 'POST',
-    data:{"id":11}
+    headers: {
+      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
+    },
+    data:{"id":8}
   });
 }
 
 export async function submitFakeList(params: ParamsType) {
   return request('http://liuterry.cn:8080/api/FinishWork', {
     method: 'POST',
-    data:{"id":11}
+    headers: {
+      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
+    },
+    data:{"id":5}
   });
 }
 

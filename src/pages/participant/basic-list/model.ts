@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList } from './service';
+import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
 import {Simulate} from "react-dom/test-utils";
@@ -22,6 +22,7 @@ export interface ModelType {
     fetch: Effect;
     delete: Effect;
     up: Effect;
+    new:Effect;
     appendFetch: Effect;
     submit: Effect;
   };
@@ -55,6 +56,13 @@ const Model: ModelType = {
     },
     *up({ payload }, { call, put }) {
       const response = yield call(submitFakeList, payload);
+      yield put({
+        type: 'queryList',
+        payload: Array.isArray(response) ? response : [],
+      });
+    },
+    *new({ payload }, { call, put }) {
+      const response = yield call(createFakeList, payload);
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],

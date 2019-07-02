@@ -28,7 +28,7 @@ import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['未提交','已提交']
+const subStatus=['已提交','未提交']
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -133,7 +133,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         type: 'listBasicList/delete',
         payload: {
         },
-      })},
+      })
+        this.componentDidMount() },
     });
   };
 
@@ -149,6 +150,16 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         payload: {
         },
       })},
+    });
+  };
+
+  newProject = ()=>{
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'listBasicList/new',
+      payload: {
+        count: 5,
+      },
     });
   };
 
@@ -190,7 +201,9 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a href="/participant/step-form">修改</a>
+            <a href="http://liuterry.cn/#/participant/step-form-2">修改</a>
+            <Divider type="vertical" />
+            <a href="http://liuterry.cn/#/participant/advanced">详情</a>
             <Divider type="vertical" />
             <a key="submit" onClick={e=>{this.submitItem()}}>提交</a>
             <Divider type="vertical" />
@@ -210,7 +223,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Button icon="plus" type="primary"  href="/participant/step-form" style={{ marginTop: '3%', marginBottom:'3%'}}>
+              <Button icon="plus" type="primary" onClick={e=>{this.newProject()}} style={{ marginTop: '3%', marginBottom:'3%'}}>
                 新建
               </Button>
               <Table columns={columns} dataSource={list}/>
