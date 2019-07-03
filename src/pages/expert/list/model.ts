@@ -12,7 +12,7 @@ export interface ExpertListItemDataType {
 
 export interface StateType {
   list: ExpertListItemDataType[];
-  status: string;
+  status?: string;
 }
 
 export type Effect = (
@@ -63,7 +63,6 @@ const Model: ModelType = {
       return {
         ...state,
         list: action.payload,
-        status: '',
       };
     },
     handleSubmit(state, action) {

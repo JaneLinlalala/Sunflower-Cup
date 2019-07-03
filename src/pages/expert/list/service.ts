@@ -19,8 +19,9 @@ export async function submitExpertList(params: string[]) {
   if (config.debug) {
     return fakeData.submitResult;
   }
-  return request(`${config.domain}/api/FinishWork`, {
+  const status = request(`${config.domain}/api/FinishWork`, {
     method: 'POST',
     data: JSON.stringify(params),
   });
+  return { status };
 }

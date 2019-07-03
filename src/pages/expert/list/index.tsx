@@ -13,15 +13,13 @@ interface BasicListProps extends FormComponentProps {
   listState: StateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
-  loading: boolean;
 }
 
-@connect(({ listState }: { listState: StateType }) => ({
-  listState,
-}))
+@connect(({ listState }: { listState: StateType }) => ({ listState }))
 class BasicList extends Component<BasicListProps> {
   state = {
     selectedRowKeys: [],
+    loading: false,
   };
 
   componentDidMount() {
@@ -34,6 +32,7 @@ class BasicList extends Component<BasicListProps> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    this.setState({ loading: true });
     const { dispatch } = this.props;
     if (this.state.selectedRowKeys.length >= 3) {
       Modal.confirm({
@@ -42,6 +41,7 @@ class BasicList extends Component<BasicListProps> {
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
+          this.setState({ loading: false });
           const selectedEmail: string[] = [];
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
             selectedEmail.push(this.props.listState.list[i].email);
@@ -50,6 +50,9 @@ class BasicList extends Component<BasicListProps> {
             type: 'listState/submit',
             payload: selectedEmail,
           });
+        },
+        onCancel: () => {
+          this.setState({ loading: false });
         },
       });
     } else {
@@ -60,6 +63,9 @@ class BasicList extends Component<BasicListProps> {
             <p> 选择的专家少于3人，请重新选择 </p>
           </div>
         ),
+        onOk: () => {
+          this.setState({ loading: false });
+        },
       });
     }
   };
@@ -71,6 +77,7 @@ class BasicList extends Component<BasicListProps> {
   };
 
   render() {
+    const { loading } = this.state;
     const { list } = this.props.listState;
     const columns = [
       {
@@ -96,23 +103,21 @@ class BasicList extends Component<BasicListProps> {
     };
     // @ts-ignore
     return (
-      <>
-        <PageHeaderWrapper>
-          <div className={styles.standardList}>
-            <Card
-              className={styles.listCard}
-              bordered={false}
-              style={{ marginTop: 24 }}
-              bodyStyle={{ padding: '0 32px 40px 32px' }}
-            >
-              <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
-              <Button type="primary" onClick={this.handleSubmit}>
-                发送邮件
-              </Button>
-            </Card>
-          </div>
-        </PageHeaderWrapper>
-      </>
+      <PageHeaderWrapper>
+        <div className={styles.standardList}>
+          <Card
+            className={styles.listCard}
+            bordered={false}
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '0 32px 40px 32px' }}
+          >
+            <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
+            <Button type="primary" onClick={this.handleSubmit} loading={loading}>
+              发送邮件
+            </Button>
+          </Card>
+        </div>
+      </PageHeaderWrapper>
     );
   }
 }
