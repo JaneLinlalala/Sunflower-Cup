@@ -14,33 +14,33 @@ export async function queryFakeList(params: ParamsType) {
     data:{"studentId":5}
   });
 }
-export async function createFakeList() {
+export async function createFakeList(params) {
   return request('http://liuterry.cn:8080/api/CreateWork', {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
     },
-    data:{"studentId":5}
+    data:params,
   });
 }
 
-export async function deleteFakeList(params: ParamsType) {
+export async function deleteFakeList(params) {
   return request('http://liuterry.cn:8080/api/DeleteWork', {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
     },
-    data:{"id":8}
+    data:params,
   });
 }
 
-export async function submitFakeList(params: ParamsType) {
+export async function submitFakeList(params) {
   return request('http://liuterry.cn:8080/api/FinishWork', {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
     },
-    data:{"id":5}
+    data:params
   });
 }
 

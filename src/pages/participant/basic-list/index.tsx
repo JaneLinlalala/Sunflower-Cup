@@ -125,7 +125,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  deleteItem = () => {
+  deleteItem = (pid:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除任务',
@@ -135,13 +135,14 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {dispatch({
         type: 'listBasicList/delete',
         payload: {
+          id:pid,
         },
       })
         this.componentDidMount() },
     });
   };
 
-  submitItem = () => {
+  submitItem = (pid:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '提交作品',
@@ -151,18 +152,29 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {dispatch({
         type: 'listBasicList/up',
         payload: {
+          id:pid,
         },
       })},
     });
   };
 
-  newProject = ()=>{
+  newProject = (sid:number)=>{
     const { dispatch } = this.props;
+    console.log(sid);
     dispatch({
       type: 'listBasicList/new',
       payload: {
-        count: 5,
+        studentId: sid,
       },
+      callback:(res:number)=>{
+        console.log(res)
+        dispatch(
+          routerRedux.push({
+            pathname: `/participant/step-form/${res}`,
+            state:{res}
+          })
+        );
+      }
     });
   };
 
@@ -215,15 +227,13 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.id)}>查看详情</a>
+            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!record.submitStatus}>修改</a>
             <Divider type="vertical" />
-            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!this.state.status}>修改</a>
+            <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
-            <a href="http://liuterry.cn/#/participant/advanced">详情</a>
+            <a key="submit" onClick={e=>{this.submitItem(record.id)}}>提交</a>
             <Divider type="vertical" />
-            <a key="submit" onClick={e=>{this.submitItem()}}>提交</a>
-            <Divider type="vertical" />
-            <a key="delete" onClick={e=>{this.deleteItem()}}>删除</a>
+            <a key="delete" onClick={e=>{this.deleteItem(record.id)}}>删除</a>
           </Fragment>
         ),
       },
@@ -239,7 +249,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Button icon="plus" type="primary" onClick={e=>{this.newProject()}} style={{ marginTop: '3%', marginBottom:'3%'}}>
+              <Button icon="plus" type="primary" onClick={e=>{this.newProject(list[0].studentId)}} style={{ marginTop: '3%', marginBottom:'3%'}}>
                 新建
               </Button>
               <Table columns={columns} dataSource={list}/>

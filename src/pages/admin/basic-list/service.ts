@@ -47,6 +47,7 @@ export async function submitFakeList(params: ParamsType) {
 
 export async function testFakeList() {
   const curToken = token.get();
+  // @ts-ignore
   return request('http://180.76.233.101:8080/testCookie', {
     method: 'POST',
     headers: {

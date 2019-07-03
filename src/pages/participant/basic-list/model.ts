@@ -61,10 +61,17 @@ const Model: ModelType = {
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *new({ payload }, { call, put }) {
+    *new({ payload,callback }, { call, put }) {
       const response = yield call(createFakeList, payload);
+      if (response) {
+        if (callback && typeof callback === 'function') {
+          callback(response); // 返回结果
+        }
+      } else {
+        console.log("新建失败")
+        };
       yield put({
-        type: 'queryList',
+        type: 'appendList',
         payload: Array.isArray(response) ? response : [],
       });
     },

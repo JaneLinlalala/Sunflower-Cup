@@ -131,7 +131,7 @@ export default {
               authority: ['admin', 'user','expert'],
             },
             {
-              path: '/participant/step-form',
+              path: '/participant/step-form/:pid',
               name: '添加作品',
               icon: 'form',
               component: './participant/step-form',
