@@ -172,6 +172,12 @@ export default {
               component: './expert/advanced',
             },
             {
+              path: '/expert/list',
+              name: '专家列表',
+              icon: 'table',
+              component: './expert/list',
+            },
+            {
               path: '/expert-assign',
               name: '分配专家',
               icon: 'table',
