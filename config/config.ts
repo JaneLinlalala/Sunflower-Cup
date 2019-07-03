@@ -122,37 +122,42 @@ export default {
           path: '/',
           component: '../layouts/BasicLayout',
           Routes: ['src/pages/Authorized'],
-          authority: ['admin', 'user'],
           routes: [
             {
               path: '/workplace',
               name: '首页',
               icon: 'dashboard',
               component: './user/workplace',
+              authority: ['admin', 'user','expert'],
             },
             {
               path: '/participant/step-form',
               name: '添加作品',
               icon: 'form',
               component: './participant/step-form',
+              authority: ['user'],
             },
             {
               path: '/participant/step-form-2',
               name: '添加作品',
               icon: 'form',
               component: './participant/step-form-2',
+              authority: ['user'],
             },
             {
               path: '/participant/basic-list',
               name: '作品列表',
               icon: 'profile',
               component: './participant/basic-list',
+              authority: ['user'],
             },
             {
-              path: '/participant/advanced',
+              path: '/participant/advanced/:pid',
               name: '作品详情',
               icon: 'table',
               component: './participant/advanced',
+              authority: ['user'],
+              hideInMenu: true,
             },
             {
               path: '/expert/basic-list',
@@ -177,6 +182,7 @@ export default {
               path: '/new-competition',
               icon: 'form',
               component: './new-competition',
+              authority: ['admin'],
             },
             {
               name: '新建竞赛结果',
@@ -188,6 +194,12 @@ export default {
               name: '专家列表-管理员',
               icon: 'profile',
               component: './expert-assign',
+            },
+            {
+              path: '/admin/basic-list',
+              name: '作品列表-团委',
+              icon: 'profile',
+              component: './admin/basic-list',
             },
             {
               path: '/dashboard',

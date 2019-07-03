@@ -2,7 +2,7 @@ import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
 import { AdvancedProfileData } from './data.d';
-import { queryAdvancedProfile,downloadZipFile } from './service';
+import { queryAdvancedProfile,getdownloadFile } from './service';
 
 export type Effect = (
   action: AnyAction,
@@ -27,15 +27,14 @@ const Model: ModelType = {
 
   state: {
     data: {},
-    file: File,
     advancedOperation1: [],
     advancedOperation2: [],
     advancedOperation3: [],
   },
 
   effects: {
-    *fetchAdvanced(_, { call, put }) {
-      const response = yield call(queryAdvancedProfile);
+    *fetchAdvanced({payload}, { call, put }) {
+      const response = yield call(queryAdvancedProfile,payload);
       yield put({
         type: 'show',
         payload: response,
@@ -43,7 +42,7 @@ const Model: ModelType = {
     },
 
     *downloadFile(_, { call, put }) {
-      const response = yield call(downloadZipFile);
+      const response = yield call(getdownloadFile("http://180.76.233.101/2.txt"));
       yield put({
         type: 'down',
         payload: response,

@@ -27,7 +27,6 @@ import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 import moment from "@/pages/list/table-list";
-import {routerRedux} from "dva/router";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus=['已提交','未提交']
@@ -166,15 +165,13 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  detail(pid:number) {
+  test = () =>{
     const { dispatch } = this.props;
-    const id = pid;
-    dispatch(
-      routerRedux.push({
-        pathname: `/participant/advanced/${id}`,
-        state:{id}
-      })
-    );
+    dispatch({
+      type: 'listBasicList/test',
+      payload: {
+      },
+    });
   }
 
   render() {
@@ -215,8 +212,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.id)}>查看详情</a>
-            <Divider type="vertical" />
             <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!this.state.status}>修改</a>
             <Divider type="vertical" />
             <a href="http://liuterry.cn/#/participant/advanced">详情</a>
@@ -239,8 +234,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Button icon="plus" type="primary" onClick={e=>{this.newProject()}} style={{ marginTop: '3%', marginBottom:'3%'}}>
-                新建
+              <Button icon="plus" type="primary" onClick={e=>{this.test()}} style={{ marginTop: '3%', marginBottom:'3%'}}>
+                test
               </Button>
               <Table columns={columns} dataSource={list}/>
             </Card>
