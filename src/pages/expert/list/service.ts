@@ -1,11 +1,11 @@
 import request from 'umi-request';
-// eslint-disable-next-line sort-imports
-import config from '../../config/config';
+// eslint-disable-next-line sort-imports,import/no-absolute-path
+import config from '../../../utils/config';
 // eslint-disable-next-line sort-imports
 import fakeData from './_mock';
 
 export async function queryExpertList(params: string) {
-  console.log(params);
+  console.log(params, config.domain);
   if (config.debug) {
     return fakeData.fakeExpertListData;
   }
