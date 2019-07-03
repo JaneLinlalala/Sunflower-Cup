@@ -128,7 +128,7 @@ export default {
               name: '首页',
               icon: 'dashboard',
               component: './user/workplace',
-              authority: ['admin', 'user','expert'],
+              authority: ['admin', 'user', 'expert'],
             },
             {
               path: '/participant/step-form/:pid',
@@ -170,6 +170,12 @@ export default {
               name: '作品详情-专家',
               icon: 'table',
               component: './expert/advanced',
+            },
+            {
+              path: '/expert/list',
+              name: '专家列表',
+              icon: 'table',
+              component: './expert/list',
             },
             {
               path: '/expert-assign',
