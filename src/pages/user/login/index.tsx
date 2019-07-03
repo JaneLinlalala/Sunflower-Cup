@@ -66,18 +66,18 @@ class Register extends Component<UserLoginProps, UserLoginState> {
     const account = form.getFieldValue('mail');
     if (userLogin.status != 'error' && userLogin.status !=null) {
       message.success('登录成功！');
-      let path = '';
-      const type = form.getFieldsValue().userType;
-      if (type === '0') path = '/participant/step-form';
-      else if (type === '1') path = '/expert-assign';
-      else path = '/new-competition';
-
-      router.push({
-        pathname: path,
-        state: {
-          account,
-        },
-      });
+      // let path = '';
+      // const type = form.getFieldsValue().userType;
+      // if (type === '0') path = '/participant/step-form';
+      // else if (type === '1') path = '/expert-assign';
+      // else path = '/new-competition';
+      //
+      // router.push({
+      //   pathname: path,
+      //   state: {
+      //     account,
+      //   },
+      // });
     }
     else if(userLogin.status === 'error'){
       message.success('密码错误！');

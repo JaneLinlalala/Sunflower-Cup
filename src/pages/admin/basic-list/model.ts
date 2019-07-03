@@ -1,10 +1,14 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList } from './service';
+import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList,testFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
 import {Simulate} from "react-dom/test-utils";
 import submit = Simulate.submit;
+import {Register} from "@/pages/user/login/service";
+import token from "@/utils/token";
+import {reloadAuthorized} from "@/utils/Authorized";
+import {routerRedux} from "dva/router";
 
 export interface StateType {
   list: BasicListItemDataType[];
@@ -25,6 +29,7 @@ export interface ModelType {
     new:Effect;
     appendFetch: Effect;
     submit: Effect;
+    test:Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -61,17 +66,10 @@ const Model: ModelType = {
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *new({ payload,callback }, { call, put }) {
+    *new({ payload }, { call, put }) {
       const response = yield call(createFakeList, payload);
-      if (response) {
-        if (callback && typeof callback === 'function') {
-          callback(response); // 返回结果
-        }
-      } else {
-        console.log("新建失败")
-        };
       yield put({
-        type: 'appendList',
+        type: 'queryList',
         payload: Array.isArray(response) ? response : [],
       });
     },
@@ -95,9 +93,23 @@ const Model: ModelType = {
         payload: response,
       });
     },
+    *test({ payload }, { call, put }) {
+      const response = yield call(testFakeList, payload);
+      yield put({
+        type: 'test',
+        payload: response,
+      });
+    },
   },
 
   reducers: {
+    test(state, { payload }) {
+      console.log(payload);
+      return {
+        ...state,
+        payload,
+      };
+    },
     queryList(state, action) {
       return {
         ...state,

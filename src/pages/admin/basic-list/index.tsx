@@ -27,7 +27,6 @@ import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 import moment from "@/pages/list/table-list";
-import {routerRedux} from "dva/router";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus=['已提交','未提交']
@@ -125,7 +124,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  deleteItem = (pid:number) => {
+  deleteItem = () => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '删除任务',
@@ -135,14 +134,13 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {dispatch({
         type: 'listBasicList/delete',
         payload: {
-          id:pid,
         },
       })
         this.componentDidMount() },
     });
   };
 
-  submitItem = (pid:number) => {
+  submitItem = () => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '提交作品',
@@ -152,41 +150,28 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {dispatch({
         type: 'listBasicList/up',
         payload: {
-          id:pid,
         },
       })},
     });
   };
 
-  newProject = (sid:number)=>{
+  newProject = ()=>{
     const { dispatch } = this.props;
-    console.log(sid);
     dispatch({
       type: 'listBasicList/new',
       payload: {
-        studentId: sid,
+        count: 5,
       },
-      callback:(res:number)=>{
-        console.log(res)
-        dispatch(
-          routerRedux.push({
-            pathname: `/participant/step-form/${res}`,
-            state:{res}
-          })
-        );
-      }
     });
   };
 
-  detail(pid:number) {
+  test = () =>{
     const { dispatch } = this.props;
-    const id = pid;
-    dispatch(
-      routerRedux.push({
-        pathname: `/participant/advanced/${id}`,
-        state:{id}
-      })
-    );
+    dispatch({
+      type: 'listBasicList/test',
+      payload: {
+      },
+    });
   }
 
   render() {
@@ -227,13 +212,13 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!record.submitStatus}>修改</a>
+            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!this.state.status}>修改</a>
             <Divider type="vertical" />
-            <a onClick={() => this.detail(record.id)}>详情</a>
+            <a href="http://liuterry.cn/#/participant/advanced">详情</a>
             <Divider type="vertical" />
-            <a key="submit" onClick={e=>{this.submitItem(record.id)}}>提交</a>
+            <a key="submit" onClick={e=>{this.submitItem()}}>提交</a>
             <Divider type="vertical" />
-            <a key="delete" onClick={e=>{this.deleteItem(record.id)}}>删除</a>
+            <a key="delete" onClick={e=>{this.deleteItem()}}>删除</a>
           </Fragment>
         ),
       },
@@ -249,8 +234,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Button icon="plus" type="primary" onClick={e=>{this.newProject(list[0].studentId)}} style={{ marginTop: '3%', marginBottom:'3%'}}>
-                新建
+              <Button icon="plus" type="primary" onClick={e=>{this.test()}} style={{ marginTop: '3%', marginBottom:'3%'}}>
+                test
               </Button>
               <Table columns={columns} dataSource={list}/>
             </Card>

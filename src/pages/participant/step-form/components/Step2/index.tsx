@@ -44,6 +44,7 @@ const Step2: React.FC<Step2Props> = props => {
     }
   };
   const onValidateForm = (e: React.FormEvent) => {
+    const { dispatch} = props;
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
@@ -53,11 +54,13 @@ const Step2: React.FC<Step2Props> = props => {
             payload: {
               ...data,
               ...values,
+              id: data.id,
             },
           });
         }
       }
     });
+    console.log(data.id);
   };
   // @ts-ignore
   return (

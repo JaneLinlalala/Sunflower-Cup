@@ -21,7 +21,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { AdvancedProfileData,ListItemDataType } from './data.d';
 import styles from './style.less';
-import {file} from "@babel/types";
+
 
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
@@ -89,11 +89,10 @@ const testFriend = [
     profileAdvanced,
     loading: loading.effects['profileAdvanced/fetchAdvanced'],
     data:profileAdvanced.data,
-    file:profileAdvanced.file,
   }))
 
 class Advanced extends Component<
-  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; file:File; dispatch: Dispatch<any> },
+  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; dispatch: Dispatch<any> },
   {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
@@ -114,9 +113,12 @@ class Advanced extends Component<
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch,data } = this.props;
     dispatch({
       type: 'profileAdvanced/fetchAdvanced',
+      payload: {
+        id:this.props.location.state.id,
+      },
     });
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection, { passive: true });
@@ -155,7 +157,7 @@ class Advanced extends Component<
 
   render() {
     const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
-    const { profileAdvanced, loading, data, file} = this.props;
+    const { profileAdvanced, loading, data} = this.props;
     const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
     const {friends} = data;
 
