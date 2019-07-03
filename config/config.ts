@@ -86,8 +86,8 @@ export default {
       component: '../layouts/BlankLayout',
       routes: [
         {
-          path: '/user',
-          component: '../layouts/UserLayout',
+          path: '/user', //网页路径
+          component: '../layouts/UserLayout', //文件路径
           routes: [
             {
               path: '/user',
