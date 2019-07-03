@@ -30,7 +30,7 @@ import moment from "@/pages/list/table-list";
 import {routerRedux} from "dva/router";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['已提交','未提交']
+const subStatus=['已提交','未提交','已通过','未通过']
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -189,6 +189,17 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     );
   }
 
+  update(pid:number) {
+    const { dispatch } = this.props;
+    const id = pid;
+    dispatch(
+      routerRedux.push({
+        pathname: `/participant/step-form/${id}`,
+        state:{id}
+      })
+    );
+  }
+
   render() {
     const {
       listBasicList: { list },
@@ -227,7 +238,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!record.submitStatus}>修改</a>
+            <a onClick={() => this.update(record.id)} disabled={!record.submitStatus}>修改</a>
             <Divider type="vertical" />
             <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
