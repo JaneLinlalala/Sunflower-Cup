@@ -26,6 +26,7 @@ import { connect } from 'dva';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
+import moment from "@/pages/list/table-list";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus=['已提交','未提交']
@@ -39,6 +40,7 @@ interface BasicListState {
   visible: boolean;
   done: boolean;
   current?: Partial<BasicListItemDataType>;
+  status:boolean;
 }
 @connect(
   ({
@@ -55,7 +57,7 @@ interface BasicListState {
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
-  state: BasicListState = { visible: false, done: false, current: undefined };
+  state: BasicListState = { visible: false, done: false, current: undefined, status:true};
 
   formLayout = {
     labelCol: { span: 7 },
@@ -189,19 +191,19 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       {
         title: '项目类别',
         dataIndex: 'competitionType',
-        render: competitionType=>comType[competitionType]
+        render: (val: number) => <span>{comType[val]}</span>,
       },
       {
         title: '状态',
         dataIndex: 'submitStatus',
-        render: submitStatus => subStatus[submitStatus]
+        render: (val: number) => <span>{subStatus[val]}</span>,
       },
       {
         title: '操作',
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a href="http://liuterry.cn/#/participant/step-form-2">修改</a>
+            <a href="http://liuterry.cn/#/participant/step-form-2" disabled={!this.state.status}>修改</a>
             <Divider type="vertical" />
             <a href="http://liuterry.cn/#/participant/advanced">详情</a>
             <Divider type="vertical" />
