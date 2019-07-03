@@ -51,6 +51,10 @@ export interface Member {
 export interface ActivitiesType {
   id: string;
   updatedAt: string;
+  competition: {
+    name: string;
+    link: string;
+  };
   user: {
     name: string;
     avatar: string;

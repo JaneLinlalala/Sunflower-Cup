@@ -86,8 +86,8 @@ export default {
       component: '../layouts/BlankLayout',
       routes: [
         {
-          path: '/user',
-          component: '../layouts/UserLayout',
+          path: '/user', //网页路径
+          component: '../layouts/UserLayout', //文件路径
           routes: [
             {
               path: '/user',
@@ -160,6 +160,13 @@ export default {
               hideInMenu: true,
             },
             {
+              path: '/admin/advanced/:pid',
+              name: '作品详情-团委',
+              icon: 'table',
+              component: './admin/advanced',
+              authority: ['user'],
+            },
+            {
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
@@ -194,6 +201,7 @@ export default {
               name: '新建竞赛结果',
               path: '/new-competition-result',
               component: './new-competition-result',
+              hideInMenu: true,
             },
             {
               path: '/expert-assign',
