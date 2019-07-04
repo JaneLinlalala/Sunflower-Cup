@@ -198,6 +198,7 @@ export default {
               name: '新建竞赛结果',
               path: '/admin/new-competition/new-competition-result',
               component: './admin/new-competition/new-competition-result',
+              hideInMenu: true,
             },
             {
               path: '/admin/basic-list',
