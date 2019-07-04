@@ -1,4 +1,4 @@
-import {Button, Form, Input, Radio, message, Popover} from 'antd';
+import { Button, Form, Input, Popover, Radio, message } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -62,25 +62,13 @@ class Register extends Component<UserLoginProps, UserLoginState> {
   interval: number | undefined = undefined;
 
   componentDidUpdate() {
-    const { userLogin, form } = this.props;
-    const account = form.getFieldValue('mail');
-    if (userLogin.status != 'error' && userLogin.status !=null) {
+    const { userLogin } = this.props;
+    if (userLogin.status === 'ok') {
       message.success('登录成功！');
-      // let path = '';
-      // const type = form.getFieldsValue().userType;
-      // if (type === '0') path = '/participant/step-form';
-      // else if (type === '1') path = '/expert-assign';
-      // else path = '/new-competition';
-      //
-      // router.push({
-      //   pathname: path,
-      //   state: {
-      //     account,
-      //   },
-      // });
-    }
-    else if(userLogin.status === 'error'){
+      userLogin.status = undefined;
+    } else if (userLogin.status === 'error') {
       message.error('登陆失败！');
+      userLogin.status = undefined;
     }
   }
 
