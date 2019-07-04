@@ -104,12 +104,14 @@ class Advanced extends Component<
     testName: string;
     loadingStatus: true;
     buttonDisabled: false;
+    changeStatus:boolean;
   } = {
     operationKey: 'tab1',
     stepDirection: 'horizontal',
     testName:'xxx',
     loadingStatus: true,
     buttonDisabled: false,
+    changeStatus:false,
   };
 
   componentDidMount() {
@@ -157,6 +159,7 @@ class Advanced extends Component<
 
   pass = (pid :string) =>{
     const { dispatch } = this.props;
+    this.state.changeStatus=true;
     dispatch({
       type: 'profileAdvanced/passAdvanced',
       payload: {
@@ -167,6 +170,7 @@ class Advanced extends Component<
 
   reject = (pid :string) =>{
     const { dispatch } = this.props;
+    this.state.changeStatus=true;
     dispatch({
       type: 'profileAdvanced/rejectAdvanced',
       payload: {
@@ -257,10 +261,10 @@ class Advanced extends Component<
           <Button icon="download" type="primary" onClick={e=>{this.download()}}>
             下载
           </Button>
-          <Button icon="check" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.pass(data.id)}}>
+          <Button icon="check" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.pass(data.id)}} disabled={this.state.changeStatus}>
             通过
           </Button>
-          <Button icon="stop" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.reject(data.id)}}>
+          <Button icon="stop" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.reject(data.id)}} disabled={this.state.changeStatus}>
             拒绝
           </Button>
         </div>
