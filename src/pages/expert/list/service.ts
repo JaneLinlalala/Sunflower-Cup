@@ -1,6 +1,6 @@
 import request from 'umi-request';
 // eslint-disable-next-line sort-imports
-import config from '../../config/config';
+import config from '../../../utils/config';
 // eslint-disable-next-line sort-imports
 import fakeData from './_mock';
 
@@ -9,18 +9,18 @@ export async function queryExpertList(params: string) {
   if (config.debug) {
     return fakeData.fakeExpertListData;
   }
-  return request(`${config.domain}/api/ViewWorkList`, {
+  return request(`${config.domain}/viewExpertList`, {
     method: 'POST',
     data: params,
   });
 }
 
-export async function submitExpertList(params: string[]) {
+export async function submitExpertList(params: { receivers: string }) {
   if (config.debug) {
     return fakeData.submitResult;
   }
-  return request(`${config.domain}/api/FinishWork`, {
+  return request(`${config.domain}/inviteExperts`, {
     method: 'POST',
-    data: JSON.stringify(params),
+    data: params,
   });
 }

@@ -67,7 +67,8 @@ const Model: ModelType = {
       };
     },
     handleSubmit(state, action) {
-      if (action.payload.status === 'success') {
+      console.log('status', action.payload);
+      if (action.payload === '发送邀请邮件成功！') {
         Modal.info({
           title: '邮件发送成功！',
         });
@@ -78,7 +79,7 @@ const Model: ModelType = {
       }
       return {
         ...state,
-        status: action.payload.status,
+        status: action.payload,
       };
     },
   },

@@ -185,12 +185,6 @@ export default {
               component: './expert/list',
             },
             {
-              path: '/expert-assign',
-              name: '分配专家',
-              icon: 'table',
-              component: './expert-assign',
-            },
-            {
               name: '新建竞赛-管理员',
               path: '/new-competition',
               icon: 'form',
@@ -202,12 +196,6 @@ export default {
               path: '/new-competition-result',
               component: './new-competition-result',
               hideInMenu: true,
-            },
-            {
-              path: '/expert-assign',
-              name: '专家列表-管理员',
-              icon: 'profile',
-              component: './expert-assign',
             },
             {
               path: '/admin/basic-list',
