@@ -8,7 +8,7 @@ import { Button } from 'antd';
 import Result from './Result';
 import styles from './style.less';
 
-const onClick = e => {
+const onClick = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   router.push({
     pathname: '/admin/new-competition',
