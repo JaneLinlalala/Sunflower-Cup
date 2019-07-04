@@ -41,6 +41,7 @@ class BasicList extends Component<BasicListProps> {
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
+          this.setState({ loading: false });
           let selectedEmail = '';
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
             selectedEmail += this.props.listState.list[i].email;
