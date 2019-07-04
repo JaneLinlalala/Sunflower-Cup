@@ -52,18 +52,7 @@ export interface NewCompetitionParams {
     submitting: loading.effects['newCompetition/submit'],
   }),
 )
-class NewCompetition extends Component<
-  NewCompetitionProps
-  // , NewCompetitionState
-> {
-  // state: NewCompetitionState = {
-  //   count: 0,
-  //   confirmDirty: false,
-  //   visible: false,
-  //   help: '',
-  //   prefix: '86',
-  // };
-
+class NewCompetition extends Component<NewCompetitionProps> {
   interval: number | undefined = undefined;
 
   componentDidUpdate() {
@@ -73,7 +62,7 @@ class NewCompetition extends Component<
       newCompetition.status = undefined;
       message.success('提交成功！');
       router.push({
-        pathname: '/new-competition-result',
+        pathname: '/admin/new-competition/new-competition-result',
         state: {
           account,
         },
