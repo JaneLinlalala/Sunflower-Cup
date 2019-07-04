@@ -1,30 +1,19 @@
-import {
-  FormattedMessage,
-  // formatMessage
-} from 'umi-plugin-react/locale';
-// import { Button } from 'antd';
-// import Link from 'umi/link';
+import { FormattedMessage } from 'umi-plugin-react/locale';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
+import router from 'umi/router';
 
 // eslint-disable-next-line sort-imports
+import { Button } from 'antd';
 import Result from './Result';
 import styles from './style.less';
 
-const actions = (
-  <div className={styles.actions}>
-    {/* <a href=""> */}
-    {/*  <Button size="large" type="primary"> */}
-    {/*    <FormattedMessage id="user-register-result.register-result.view-mailbox" /> */}
-    {/*  </Button> */}
-    {/* </a> */}
-    {/* <Link to="/"> */}
-    {/*  <Button size="large"> */}
-    {/*    <FormattedMessage id="user-register-result.register-result.back-home" /> */}
-    {/*  </Button> */}
-    {/* </Link> */}
-  </div>
-);
+const onClick = e => {
+  e.preventDefault();
+  router.push({
+    pathname: '/admin/new-competition',
+  });
+};
 
 const RegisterResult: React.SFC<RouteChildrenProps> = ({ location }) => (
   <Result
@@ -32,18 +21,19 @@ const RegisterResult: React.SFC<RouteChildrenProps> = ({ location }) => (
     type="success"
     title={
       <div className={styles.title}>
-        {/* <FormattedMessage */}
-        {/*  id="user-register-result.register-result.msg" */}
-        {/*  values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }} */}
-        {/* /> */}
-        <FormattedMessage
-          // @ts-ignore
-          id="提交成功"
-        />
+        <div>
+          <FormattedMessage
+            // @ts-ignore
+            id="提交成功"
+          />
+        </div>
+        <div style={{ marginTop: '24px' }}>
+          <Button onClick={onClick} type="primary">
+            返回
+          </Button>
+        </div>
       </div>
     }
-    // description={formatMessage({ id: 'user-register-result.register-result.activation-email' })}
-    actions={actions}
     style={{ marginTop: 56 }}
   />
 );

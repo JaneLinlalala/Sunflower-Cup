@@ -19,14 +19,6 @@ interface NewCompetitionProps extends FormComponentProps {
   submitting: boolean;
 }
 
-// interface NewCompetitionState {
-//   count: number;
-//   confirmDirty: boolean;
-//   visible: boolean;
-//   help: string;
-//   prefix: string;
-// }
-
 export interface NewCompetitionParams {
   competitionName: string;
   time: string;
@@ -79,18 +71,6 @@ class NewCompetition extends Component<NewCompetitionProps> {
   componentWillUnmount() {
     clearInterval(this.interval);
   }
-
-  // onGetCaptcha = () => {
-  //   let count = 59;
-  //   this.setState({ count });
-  //   this.interval = window.setInterval(() => {
-  //     count -= 1;
-  //     this.setState({ count });
-  //     if (count === 0) {
-  //       clearInterval(this.interval);
-  //     }
-  //   }, 1000);
-  // };
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
