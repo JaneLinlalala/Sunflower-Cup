@@ -128,7 +128,7 @@ export default {
               name: '首页',
               icon: 'dashboard',
               component: './user/workplace',
-              authority: ['admin', 'user','expert'],
+              authority: ['admin', 'user', 'expert'],
             },
             {
               path: '/participant/step-form/:pid',
@@ -179,10 +179,10 @@ export default {
               component: './expert/advanced',
             },
             {
-              path: '/expert-assign',
-              name: '分配专家',
+              path: '/expert/list',
+              name: '专家列表',
               icon: 'table',
-              component: './expert-assign',
+              component: './expert/list',
             },
             {
               name: '新建竞赛-管理员',
@@ -196,12 +196,6 @@ export default {
               path: '/new-competition-result',
               component: './new-competition-result',
               hideInMenu: true,
-            },
-            {
-              path: '/expert-assign',
-              name: '专家列表-管理员',
-              icon: 'profile',
-              component: './expert-assign',
             },
             {
               path: '/admin/basic-list',
