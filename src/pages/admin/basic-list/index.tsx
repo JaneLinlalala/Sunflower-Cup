@@ -3,7 +3,8 @@ import {
   Button,
   Card,
   Col,
-  DatePicker, Divider,
+  DatePicker,
+  Divider,
   Dropdown,
   Form,
   Icon,
@@ -15,22 +16,22 @@ import {
   Radio,
   Row,
   Select,
-  Table
+  Table,
 } from 'antd';
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
-import moment from "@/pages/list/table-list";
-import {routerRedux} from "dva/router";
+import moment from '@/pages/list/table-list';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['已提交','未提交','已通过','未通过']
+const subStatus = ['已提交', '未提交', '已通过', '未通过'];
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -41,7 +42,7 @@ interface BasicListState {
   visible: boolean;
   done: boolean;
   current?: Partial<BasicListItemDataType>;
-  status:boolean;
+  status: boolean;
 }
 @connect(
   ({
@@ -58,7 +59,7 @@ interface BasicListState {
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
-  state: BasicListState = { visible: false, done: false, current: undefined, status:true};
+  state: BasicListState = { visible: false, done: false, current: undefined };
 
   formLayout = {
     labelCol: { span: 7 },
@@ -132,12 +133,13 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       content: '确定删除该任务吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listBasicList/delete',
-        payload: {
-        },
-      })
-        this.componentDidMount() },
+      onOk: () => {
+        dispatch({
+          type: 'listBasicList/delete',
+          payload: {},
+        });
+        this.componentDidMount();
+      },
     });
   };
 
@@ -148,33 +150,34 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       content: '确定提交该作品吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listBasicList/up',
-        payload: {
-        },
-      })},
+      onOk: () => {
+        dispatch({
+          type: 'listBasicList/up',
+          payload: {},
+        });
+      },
     });
   };
 
-  detail(pid:number) {
+  detail(pid: number) {
     const { dispatch } = this.props;
     const id = pid;
     dispatch(
       routerRedux.push({
         pathname: `/admin/advanced/${id}`,
-        state:{id}
-      })
+        state: { id },
+      }),
     );
   }
 
-  select(pid:number) {
+  select(pid: number) {
     const { dispatch } = this.props;
     const id = pid;
     dispatch(
       routerRedux.push({
-        pathname: '/expert/list',
-        state:{id}
-      })
+        pathname: '/admin/assign-expert',
+        state: { id },
+      }),
     );
   }
 
@@ -188,7 +191,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     } = this.props;
 
     const { visible, done, current = {} } = this.state;
-
 
     // @ts-ignore
     // @ts-ignore
@@ -218,9 +220,23 @@ class BasicList extends Component<BasicListProps, BasicListState> {
           <Fragment>
             <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
-            <a key="delete" onClick={e=>{this.deleteItem()}}>撤回</a>
+            <a
+              key="delete"
+              onClick={e => {
+                this.deleteItem();
+              }}
+            >
+              撤回
+            </a>
             <Divider type="vertical" />
-            <a key="delete" onClick={e=>{this.select(record.id)}}>选择专家</a>
+            <a
+              key="delete"
+              onClick={e => {
+                this.select(record.id);
+              }}
+            >
+              选择专家
+            </a>
           </Fragment>
         ),
       },
@@ -236,7 +252,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Table columns={columns} dataSource={list}/>
+              <Table columns={columns} dataSource={list} />
             </Card>
           </div>
         </PageHeaderWrapper>

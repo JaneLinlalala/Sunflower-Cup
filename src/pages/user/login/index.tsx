@@ -1,4 +1,4 @@
-import {Button, Form, Input, Radio, message} from 'antd';
+import { Button, Form, Input, Popover, Radio, message } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -68,6 +68,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
     }
     else if(userLogin.status === 'error'){
       message.error('登陆失败！');
+      userLogin.status = undefined;
     }
     else if(userLogin.status === 'out'){
       message.error('已退出登录！');
