@@ -164,25 +164,28 @@ export default {
               name: '作品详情-团委',
               icon: 'table',
               component: './admin/advanced',
-              authority: ['user'],
+              authority: ['admin'],
             },
             {
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
               component: './expert/basic-list',
+              authority: ['expert'],
             },
             {
               path: '/expert/advanced',
               name: '作品详情-专家',
               icon: 'table',
               component: './expert/advanced',
+              authority: ['expert'],
             },
             {
               path: '/expert/list',
               name: '专家列表',
               icon: 'table',
               component: './expert/list',
+              authority: ['admin'],
             },
             {
               name: '新建竞赛-管理员',
@@ -195,6 +198,7 @@ export default {
               name: '新建竞赛结果',
               path: '/new-competition-result',
               component: './new-competition-result',
+              authority: ['admin'],
               hideInMenu: true,
             },
             {
@@ -202,6 +206,7 @@ export default {
               name: '作品列表-团委',
               icon: 'profile',
               component: './admin/basic-list',
+              authority: ['admin'],
             },
             {
               path: '/dashboard',

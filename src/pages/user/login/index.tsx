@@ -80,7 +80,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
       // });
     }
     else if(userLogin.status === 'error'){
-      message.success('密码错误！');
+      message.error('登陆失败！');
     }
   }
 

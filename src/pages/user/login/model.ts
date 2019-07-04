@@ -59,34 +59,29 @@ const Model: ModelType = {
       var userName;
       var userId;
       console.log('payload', payload);
-      console.log(payload.userType);
-      if(payload.userType=='student'){
-        setAuthority("user");
-        userName=payload.user.studentName;
-        userId=payload.user.id;
+      if(payload.msg==='success'){
+        if(payload.userType=='student'){
+          setAuthority("user");
+          userName=payload.user.studentName;
+          userId=payload.user.id;
+        }
+        else if(payload.userType=='expert'){
+          setAuthority("expert");
+          userName=payload.user.expertName;
+          userId=payload.user.id;
+        }
+        else if(payload.userType=='admin'){
+          setAuthority("admin");
+          userName=payload.user.userName;
+          userId=payload.user.id;
+        }
+        currentUserId.save(userId);
+        currentUserId.save(userId);
+        let current = getAuthority();
         console.log(userId);
         console.log(userName);
+        console.log(current)
       }
-      else if(payload.userType=='expert'){
-        setAuthority("expert");
-        userName=payload.user.expertName;
-        userId=payload.user.id;
-        console.log(userId);
-        console.log(userName);
-      }
-      else if(payload.userType=='admin'){
-        setAuthority("admin");
-        userName=payload.user.userName;
-        userId=payload.user.id;
-        console.log(userId);
-        console.log(userName);
-      }
-      currentUserId.save(userId);
-      console.log(currentUserId.get());
-      currentUserName.save(userName);
-      console.log(currentUserName.get());
-      let current = getAuthority();
-      console.log(current)
       return {
         ...state,
         status: payload.msg === 'fail' ? 'error' : payload,
