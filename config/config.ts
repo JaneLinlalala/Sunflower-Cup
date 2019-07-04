@@ -223,6 +223,13 @@ export default {
               authority: ['admin'],
             },
             {
+              path: '/admin/scoreInfo/:pid',
+              name: '评审结果',
+              icon: 'table',
+              component: './admin/scoreInfo',
+              authority: ['admin'],
+            },
+            {
               path: '/dashboard',
               name: 'dashboard',
               icon: 'dashboard',

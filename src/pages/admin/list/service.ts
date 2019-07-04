@@ -4,14 +4,10 @@ import config from '../../../utils/config';
 // eslint-disable-next-line sort-imports
 import fakeData from './_mock';
 
-export async function queryExpertList(params: string) {
-  console.log(params, config.domain);
-  if (config.debug) {
-    return fakeData.fakeExpertListData;
-  }
-  return request(`${config.domain}/viewExpertList`, {
+export async function queryExpertList() {
+  return request(`${config.domain}/findJudgedList`, {
     method: 'POST',
-    data: params,
+    data:{},
   });
 }
 

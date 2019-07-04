@@ -3,15 +3,16 @@ import { EffectsCommandMap } from 'dva';
 import { Modal } from 'antd';
 import { queryExpertList, submitExpertList } from './service';
 
-export interface ExpertListItemDataType {
-  id: string;
-  name: string;
-  major: string;
-  email: string;
+export interface ProjectListItemDataType {
+  id: string; //projectId
+  projectName: string;
+  competitionType: string;
+  studentName: string;
+  averageScore:string;
 }
 
 export interface StateType {
-  list: ExpertListItemDataType[];
+  list: ProjectListItemDataType[];
   status?: string;
 }
 

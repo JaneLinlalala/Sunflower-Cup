@@ -7,6 +7,7 @@ import { connect } from 'dva';
 // eslint-disable-next-line sort-imports
 import { StateType } from './model';
 import styles from './style.less';
+import {routerRedux} from "dva/router";
 const { Option } = Select;
 
 interface BasicListProps extends FormComponentProps {
@@ -27,7 +28,6 @@ class BasicList extends Component<BasicListProps> {
     const { dispatch } = this.props;
     dispatch({
       type: 'listState/fetch',
-      payload: { projectId: '1' },
       // payload: { projectId: this.props.location.state.id},
     });
   }
@@ -81,36 +81,47 @@ class BasicList extends Component<BasicListProps> {
     this.setState({ selectedRowKeys });
   };
 
+  detail(pid: string, pname:string, sname:string, type:number, score:string) {
+    const { dispatch } = this.props;
+    const id = pid;
+    dispatch(
+      routerRedux.push({
+        pathname: `/admin/scoreInfo/${id}`,
+        state: { id,pname, sname, type, score},
+      }),
+    );
+  }
+
   render() {
     const { loading } = this.state;
     const { list } = this.props.listState;
     const columns = [
       {
         title: '项目名称',
-        dataIndex: 'name',
+        dataIndex: 'projectName',
       },
       {
         title: '参赛作者',
-        dataIndex: 'major',
+        dataIndex: 'studentName',
       },
       {
         title: '项目类别',
-        dataIndex: 'email',
+        dataIndex: 'competitionType',
       },
       {
         title: '平均分',
-        dataIndex: 'submitStatus',
+        dataIndex: 'averageScore',
       },
       {
-        title: '评审结果',
-        dataIndex:'email',
+        title: '获奖情况',
+        dataIndex: 'rewardLevel',
       },
       {
         title: '操作',
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.id)}>详情</a>
+            <a onClick={() => this.detail(record.id, record.projectName, record.studentName, record.competitionType, record.averageScore)}>详情</a>
           </Fragment>
         ),
       },
