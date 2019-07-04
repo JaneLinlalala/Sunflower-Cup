@@ -200,6 +200,7 @@ export default {
               icon: 'form',
               component: './admin/new-competition',
               authority: ['admin'],
+              hideInMenu: true,
             },
             {
               name: '新建竞赛结果',
