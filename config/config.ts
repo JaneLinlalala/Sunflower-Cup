@@ -198,12 +198,6 @@ export default {
               hideInMenu: true,
             },
             {
-              path: '/expert-assign',
-              name: '专家列表-管理员',
-              icon: 'profile',
-              component: './expert-assign',
-            },
-            {
               path: '/admin/basic-list',
               name: '作品列表-团委',
               icon: 'profile',

@@ -25,7 +25,8 @@ class BasicList extends Component<BasicListProps> {
     const { dispatch } = this.props;
     dispatch({
       type: 'listState/fetch',
-      payload: 'qwer',
+      payload: { projectId: '1' },
+      // payload: { projectId: this.state.projectId },
     });
   }
 
@@ -40,14 +41,16 @@ class BasicList extends Component<BasicListProps> {
         okText: '确定',
         cancelText: '取消',
         onOk: () => {
-          this.setState({ loading: false });
-          const selectedEmail: string[] = [];
+          let selectedEmail = '';
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selectedEmail.push(this.props.listState.list[i].email);
+            selectedEmail += this.props.listState.list[i].email;
+            if (i !== this.state.selectedRowKeys.length - 1) {
+              selectedEmail += ',';
+            }
           }
           dispatch({
             type: 'listState/submit',
-            payload: selectedEmail,
+            payload: { receivers: selectedEmail },
           });
         },
         onCancel: () => {
