@@ -1,21 +1,22 @@
 import request from 'umi-request';
 import { BasicListItemDataType } from './data.d';
+import config from '@/utils/config';
 
 interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
 export async function queryFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/ViewWorkList', {
+  return request(`${config.domain}/api/ViewWorkList`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
     },
-    data:{"studentId":5}
+    data:{"studentId":2}
   });
 }
 export async function createFakeList(params) {
-  return request('http://liuterry.cn:8080/api/CreateWork', {
+  return request(`${config.domain}/api/CreateWork`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
@@ -25,7 +26,7 @@ export async function createFakeList(params) {
 }
 
 export async function deleteFakeList(params) {
-  return request('http://liuterry.cn:8080/api/DeleteWork', {
+  return request(`${config.domain}/api/DeleteWork`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
@@ -35,7 +36,7 @@ export async function deleteFakeList(params) {
 }
 
 export async function submitFakeList(params) {
-  return request('http://liuterry.cn:8080/api/FinishWork', {
+  return request(`${config.domain}/api/FinishWork`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",

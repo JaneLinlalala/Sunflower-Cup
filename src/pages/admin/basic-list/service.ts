@@ -1,22 +1,23 @@
 import request from 'umi-request';
 import { BasicListItemDataType } from './data.d';
 import token from '@/utils/token';
+import config from '@/utils/config';
 
 interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
 export async function queryFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/ViewWorkList', {
+  return request(`${config.domain}/showAlreadyList`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
     },
-    data:{"studentId":5}
+    data:{"studentId":2}
   });
 }
 export async function createFakeList() {
-  return request('http://liuterry.cn:8080/api/CreateWork', {
+  return request(`${config.domain}/api/CreateWork`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
