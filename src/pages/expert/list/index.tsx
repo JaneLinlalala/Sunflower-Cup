@@ -12,6 +12,7 @@ interface BasicListProps extends FormComponentProps {
   listState: StateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
+  location: {state:{id:string}}
 }
 
 @connect(({ listState }: { listState: StateType }) => ({ listState }))
@@ -25,8 +26,8 @@ class BasicList extends Component<BasicListProps> {
     const { dispatch } = this.props;
     dispatch({
       type: 'listState/fetch',
-      payload: { projectId: '1' },
-      // payload: { projectId: this.state.projectId },
+      // payload: { projectId: '1' },
+      payload: { projectId: this.props.location.state.id},
     });
   }
 

@@ -167,6 +167,17 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     );
   }
 
+  select(pid:number) {
+    const { dispatch } = this.props;
+    const id = pid;
+    dispatch(
+      routerRedux.push({
+        pathname: '/expert/list',
+        state:{id}
+      })
+    );
+  }
+
   render() {
     const {
       listBasicList: { list },
@@ -208,6 +219,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
             <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
             <a key="delete" onClick={e=>{this.deleteItem()}}>撤回</a>
+            <Divider type="vertical" />
+            <a key="delete" onClick={e=>{this.select(record.id)}}>选择专家</a>
           </Fragment>
         ),
       },
