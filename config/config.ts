@@ -167,6 +167,13 @@ export default {
               authority: ['admin'],
             },
             {
+              path: '/admin/manage-competition',
+              name: '管理竞赛-团委',
+              icon: 'table',
+              component: './admin/manage-competition',
+              authority: ['admin'],
+            },
+            {
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
