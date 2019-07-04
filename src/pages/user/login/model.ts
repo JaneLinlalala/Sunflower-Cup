@@ -7,10 +7,11 @@ import { Register } from './service';
 import {reloadAuthorized} from "@/utils/Authorized";
 import {routerRedux} from "dva/router";
 import {getAuthority, setAuthority} from "@/utils/authority";
+import {stringify} from "qs";
 
 export interface StateType {
-  status?: 'ok' | 'error';
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  status?: 'ok' | 'error' | 'out';
+  currentAuthority?: 'user' | 'guest' | 'admin' | 'expert';
 }
 
 export type Effect = (
@@ -23,6 +24,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     submit: Effect;
+    logout: Effect;
   };
   reducers: {
     loginHandle: Reducer<StateType>;
@@ -52,6 +54,24 @@ const Model: ModelType = {
         yield put(routerRedux.push('/workplace'));
       }
     },
+    *logout(_, { put }) {
+      yield put({
+        type: 'logoutHandle',
+        payload: {
+          status: false,
+          currentAuthority: 'guest',
+        },
+      });
+      reloadAuthorized();
+      yield put(
+        routerRedux.push({
+          pathname: '/user/login',
+          search: stringify({
+            redirect: window.location.href,
+          }),
+        })
+      );
+    },
   },
 
   reducers: {
@@ -76,7 +96,7 @@ const Model: ModelType = {
           userId=payload.user.id;
         }
         currentUserId.save(userId);
-        currentUserId.save(userId);
+        currentUserName.save(userName);
         let current = getAuthority();
         console.log(userId);
         console.log(userName);
@@ -84,7 +104,19 @@ const Model: ModelType = {
       }
       return {
         ...state,
-        status: payload.msg === 'fail' ? 'error' : payload,
+        status: payload.msg === 'fail' ? 'error' : 'ok',
+      };
+    },
+    logoutHandle(state, { payload }) {
+      setAuthority(payload.currentUser);
+      currentUserName.remove();
+      currentUserId.remove();
+      token.remove();
+      console.log(token.get());
+      console.log(currentUserName.get());
+      return {
+        ...state,
+        status:'out',
       };
     },
   },

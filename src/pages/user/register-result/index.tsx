@@ -10,20 +10,9 @@ import styles from './style.less';
 
 const actions = (
   <div className={styles.actions}>
-    <a href="">
-      <Button size="large" type="primary">
-        <FormattedMessage
-          // @ts-ignore
-          id="user-register-result.register-result.view-mailbox"
-        />
-      </Button>
-    </a>
     <Link to="/">
       <Button size="large">
-        <FormattedMessage
-          // @ts-ignore
-          id="user-register-result.register-result.back-home"
-        />
+        返回登录页面
       </Button>
     </Link>
   </div>
@@ -35,16 +24,9 @@ const RegisterResult: React.SFC<RouteChildrenProps> = ({ location }) => (
     type="success"
     title={
       <div className={styles.title}>
-        <FormattedMessage
-          // @ts-ignore
-          id="user-register-result.register-result.msg"
-          values={{ email: location.state ? location.state.account : 'AntDesign@example.com' }}
-        />
+        注册成功
       </div>
     }
-    description={formatMessage({
-      id: 'user-register-result.register-result.activation-email',
-    })}
     actions={actions}
     style={{ marginTop: 56 }}
   />

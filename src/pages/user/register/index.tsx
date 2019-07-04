@@ -98,7 +98,7 @@ class Register extends Component<userRegisterProps, userRegisterState> {
   componentDidUpdate() {
     const { userRegister, form } = this.props;
     const account = form.getFieldValue('mail');
-    if (userRegister.status != 'fail' && userRegister.status !=null) {
+    if (userRegister.status != 'error' && userRegister.status !=null) {
       message.success('注册成功！');
       router.push({
         pathname: '/user/register-result',
@@ -107,7 +107,10 @@ class Register extends Component<userRegisterProps, userRegisterState> {
         },
       });
     }
-  }
+    else if(userRegister.status === 'error'){
+      message.error('注册失败！');
+    };
+  };
 
   componentWillUnmount() {
     clearInterval(this.interval);

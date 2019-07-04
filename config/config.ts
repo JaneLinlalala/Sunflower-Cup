@@ -165,6 +165,7 @@ export default {
               icon: 'table',
               component: './admin/advanced',
               authority: ['admin'],
+              hideInMenu: true,
             },
             {
               path: '/expert/basic-list',
@@ -188,7 +189,7 @@ export default {
               hideInMenu: true,
             },
             {
-              name: '新建竞赛-团委',
+              name: '新建竞赛',
               path: '/admin/new-competition',
               icon: 'form',
               component: './admin/new-competition',
@@ -198,12 +199,20 @@ export default {
               name: '新建竞赛结果',
               path: '/admin/new-competition/new-competition-result',
               component: './admin/new-competition/new-competition-result',
+              hideInMenu: true,
             },
             {
               path: '/admin/basic-list',
-              name: '作品列表-团委',
-              icon: 'profile',
+              name: '初审作品',
+              icon: 'file-done',
               component: './admin/basic-list',
+              authority: ['admin'],
+            },
+            {
+              path: '/admin/list',
+              name: '发布结果',
+              icon: 'trophy',
+              component: './admin/list',
               authority: ['admin'],
             },
             {
@@ -390,8 +399,8 @@ export default {
             },
             {
               path: '/',
-              redirect: '/dashboard/analysis',
-              authority: ['admin', 'user'],
+              redirect: '/user/login',
+              authority: ['admin', 'user','expert'],
             },
             {
               component: '404',
