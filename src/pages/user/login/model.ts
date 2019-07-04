@@ -1,7 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import token from '@/utils/token';
+import currentUserId from '@/utils/currentUserId';
+import currentUserName from '@/utils/currentUserName';
 import { EffectsCommandMap } from 'dva';
-// @ts-ignore
 import { Register } from './service';
 import {reloadAuthorized} from "@/utils/Authorized";
 import {routerRedux} from "dva/router";
@@ -40,10 +41,11 @@ const Model: ModelType = {
       const response = yield call(Register, payload);
       yield put({
         type: 'loginHandle',
-        payload: {res: response, sta: payload}
+        payload: response,
       });
-      if(response != 'fail' && response){
-        token.save(response);
+      console.log(response.msg);
+      if(response.msg === 'success'){
+        token.save(response.ticket);
         let to = token.get();
         console.log(to);
         reloadAuthorized();
@@ -54,22 +56,40 @@ const Model: ModelType = {
 
   reducers: {
     loginHandle(state, { payload }) {
+      var userName;
+      var userId;
       console.log('payload', payload);
-      console.log(payload.sta.userType);
-      if(payload.sta.userType=='0'){
+      console.log(payload.userType);
+      if(payload.userType=='student'){
         setAuthority("user");
+        userName=payload.user.studentName;
+        userId=payload.user.id;
+        console.log(userId);
+        console.log(userName);
       }
-      else if(payload.sta.userType=='1'){
+      else if(payload.userType=='expert'){
         setAuthority("expert");
+        userName=payload.user.expertName;
+        userId=payload.user.id;
+        console.log(userId);
+        console.log(userName);
       }
-      else if(payload.sta.userType=='2'){
+      else if(payload.userType=='admin'){
         setAuthority("admin");
+        userName=payload.user.userName;
+        userId=payload.user.id;
+        console.log(userId);
+        console.log(userName);
       }
+      currentUserId.save(userId);
+      console.log(currentUserId.get());
+      currentUserName.save(userName);
+      console.log(currentUserName.get());
       let current = getAuthority();
       console.log(current)
       return {
         ...state,
-        status: payload === 'fail' ? 'error' : payload,
+        status: payload.msg === 'fail' ? 'error' : payload,
       };
     },
   },

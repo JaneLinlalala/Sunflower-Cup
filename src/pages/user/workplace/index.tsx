@@ -8,6 +8,7 @@ import moment from 'moment';
 import { ModalState } from './model';
 import styles from './style.less';
 import { ActivitiesType, CurrentUser, NoticeType, RadarDataType } from './data.d';
+import currentUserName from '@/utils/currentUserName';
 
 interface DashboardWorkplaceProps {
   currentUser: CurrentUser;
@@ -32,12 +33,12 @@ const PageHeaderContent: React.FC<{ currentUser: CurrentUser }> = ({ currentUser
       </div>
       <div className={styles.content}>
         <div className={styles.contentTitle}>
-          早安，
-          {currentUser.name}
+          你好，
+          {currentUserName.get()}
           ，祝你开心每一天！
         </div>
         <div>
-          {currentUser.title} |{currentUser.group}
+          欢迎登入向日葵杯竞赛申报系统！
         </div>
       </div>
     </div>

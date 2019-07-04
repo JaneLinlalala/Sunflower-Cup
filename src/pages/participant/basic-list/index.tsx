@@ -1,20 +1,9 @@
 import {
-  Avatar,
   Button,
   Card,
-  Col,
-  DatePicker, Divider,
-  Dropdown,
+  Divider,
   Form,
-  Icon,
-  Input,
-  List,
-  Menu,
   Modal,
-  Progress,
-  Radio,
-  Row,
-  Select,
   Table
 } from 'antd';
 import React, {Component, Fragment} from 'react';
@@ -26,8 +15,8 @@ import { connect } from 'dva';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
-import moment from "@/pages/list/table-list";
 import {routerRedux} from "dva/router";
+import currentUserId from "@/utils/currentUserId";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus=['已提交','未提交','已通过','未通过']
@@ -158,7 +147,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  newProject = (sid:number)=>{
+  newProject = (sid:string)=>{
     const { dispatch } = this.props;
     console.log(sid);
     dispatch({
@@ -260,7 +249,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Button icon="plus" type="primary" onClick={e=>{this.newProject(list[0].studentId)}} style={{ marginTop: '3%', marginBottom:'3%'}}>
+              <Button icon="plus" type="primary" onClick={e=>{this.newProject(currentUserId.get())}} style={{ marginTop: '3%', marginBottom:'3%'}}>
                 新建
               </Button>
               <Table columns={columns} dataSource={list}/>
