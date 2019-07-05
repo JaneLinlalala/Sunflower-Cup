@@ -31,7 +31,7 @@ import styles from './style.less';
 import moment from '@/pages/list/table-list';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus = ['已提交', '未提交', '已通过', '未通过'];
+const subStatus = ['未提交', '已提交', '已通过', '未通过'];
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -225,6 +225,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               onClick={e => {
                 this.deleteItem();
               }}
+              disabled={record.submitStatus-1}
             >
               撤回
             </a>

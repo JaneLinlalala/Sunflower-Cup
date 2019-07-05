@@ -9,6 +9,9 @@ import { StateType } from './model';
 import styles from './style.less';
 import {routerRedux} from "dva/router";
 const { Option } = Select;
+const comType = ['科技发明制作', '调查报告和学术论文'];
+const subStatus=['未提交','已提交','已通过','未通过']
+const rewardStatus=['未获奖','一等奖','二等奖','三等奖']
 
 interface BasicListProps extends FormComponentProps {
   listState: StateType;
@@ -94,14 +97,17 @@ class BasicList extends Component<BasicListProps> {
       {
         title: '项目类别',
         dataIndex: 'competitionType',
+        render: (val: number) => <span>{comType[val]}</span>,
       },
       {
         title: '平均分',
         dataIndex: 'averageScore',
+        render: (val: string) => `${val} 分`,
       },
       {
         title: '获奖情况',
         dataIndex: 'rewardLevel',
+        render: (val: number) => <span>{rewardStatus[val]}</span>,
       },
       {
         title: '操作',

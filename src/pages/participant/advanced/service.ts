@@ -1,12 +1,10 @@
 import request from 'umi-request';
+import config from "@/utils/config";
 
 export async function queryAdvancedProfile(params) {
   console.log(params)
-  return request('http://180.76.233.101:8080/api/ViewWorkInfo', {
+  return request(`${config.domain}/api/ViewWorkInfo`, {
     method: 'POST',
-    headers: {
-      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
-    },
     data:params,
   });
 }

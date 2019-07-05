@@ -130,6 +130,9 @@ class Advanced extends Component<
     const { dispatch } = this.props;
     dispatch({
       type: 'profileAdvanced/fetchAdvanced',
+      payload: {
+        id:this.props.location.state.id,
+      },
     });
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection, { passive: true });
@@ -271,7 +274,7 @@ class Advanced extends Component<
               <Button key="back" onClick={this.handleCancel}>
                 返回
               </Button>,
-              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+              <Button key="submit" type="primary" onClick={this.handleOk}>
                 提交
               </Button>,
             ]}
