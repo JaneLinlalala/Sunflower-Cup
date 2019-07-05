@@ -17,6 +17,7 @@ interface BasicListProps extends FormComponentProps {
 
 @connect(({ listState }: { listState: StateType }) => ({ listState }))
 class BasicList extends Component<BasicListProps> {
+
   state = {
     selectedRowKeys: [],
     loading: false,

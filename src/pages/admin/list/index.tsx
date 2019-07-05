@@ -17,7 +17,7 @@ interface BasicListProps extends FormComponentProps {
   location: {state:{id:string}}
 }
 
-@connect(({ listState }: { listState: StateType }) => ({ listState }))
+@connect(({ listState }: { listState: StateType }) => ({ listState, setReward:listState.setReward, }))
 class BasicList extends Component<BasicListProps> {
   state = {
     selectedRowKeys: [],
@@ -34,46 +34,32 @@ class BasicList extends Component<BasicListProps> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    this.setState({ loading: true });
-    const { dispatch } = this.props;
-    if (this.state.selectedRowKeys.length >= 3) {
-      Modal.confirm({
-        title: '发布决赛结果',
-        content: '确定发布决赛结果吗吗？',
-        okText: '确定',
-        cancelText: '取消',
-        onOk: () => {
-          this.setState({ loading: false });
-          let selectedEmail = '';
-          for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selectedEmail += this.props.listState.list[i].email;
-            if (i !== this.state.selectedRowKeys.length - 1) {
-              selectedEmail += ',';
-            }
-          }
-          dispatch({
-            type: 'listState/submit',
-            payload: { receivers: selectedEmail },
-          });
-        },
-        onCancel: () => {
-          this.setState({ loading: false });
-        },
-      });
-    } else {
-      Modal.info({
-        title: '选择的人数过少',
-        content: (
-          <div>
-            <p> 选择的专家少于3人，请重新选择 </p>
-          </div>
-        ),
-        onOk: () => {
-          this.setState({ loading: false });
-        },
-      });
+    const { dispatch, listState } = this.props;
+    this.setState({ loading: false });
+    let selectedProject = '';
+    let count=this.state.selectedRowKeys.length;
+    for (let i = 0; i < count; i += 1) {
+      if(this.props.listState.list[i].rewardLevel===0){
+        selectedProject += this.props.listState.list[i].id;
+        if (i !== count - 1) {
+          selectedProject += ',';
+        }
+      }
+      else {
+        count++;
+      }
     }
+    dispatch({
+      type: 'listState/submit',
+      payload: { rewardLevel:listState.setReward, rewardProject:selectedProject },
+    });
   };
+
+  handleChange=(value:number) => {
+    const {listState } = this.props;
+    console.log(`selected ${value}`);
+    listState.setReward = value;
+  }
 
   onSelectChange = (selectedRowKeys: []) => {
     // eslint-disable-next-line no-console
@@ -95,6 +81,7 @@ class BasicList extends Component<BasicListProps> {
   render() {
     const { loading } = this.state;
     const { list } = this.props.listState;
+    const {form} = this.props;
     const columns = [
       {
         title: '项目名称',
@@ -126,18 +113,17 @@ class BasicList extends Component<BasicListProps> {
         ),
       },
     ];
+
+    // @ts-ignore
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
       onChange: this.onSelectChange,
-      getCheckboxProps: (record: { name: string }) => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name,
+      getCheckboxProps: (record: { rewardLevel: number}) => ({
+        disabled: record.rewardLevel !=  '0', // Column configuration not to be checked
+        rewardLevel: record.rewardLevel,
       }),
     };
 
-    function handleChange(value) {
-      console.log(`selected ${value}`);
-    }
     // @ts-ignore
     return (
       <PageHeaderWrapper>
@@ -150,11 +136,11 @@ class BasicList extends Component<BasicListProps> {
           >
             <div>
               奖项：
-              <Select  placeholder="请选择" style={{ width: 120, marginBottom:'3%', marginLeft:'1%'}} onChange={handleChange}>
-                <Option value="1">一等奖</Option>
-                <Option value="2">二等奖</Option>
-                <Option value="3">三等奖</Option>
-              </Select>
+              <Select  placeholder="请选择" style={{ width: 120, marginBottom:'3%', marginLeft:'1%'}} onChange={this.handleChange}>
+                  <Option value="1">一等奖</Option>
+                  <Option value="2">二等奖</Option>
+                  <Option value="3">三等奖</Option>
+              </Select>,
             </div>
             <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
             <Button icon="check" type="primary" onClick={this.handleSubmit} loading={loading}>

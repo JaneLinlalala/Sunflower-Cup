@@ -9,10 +9,12 @@ export interface ProjectListItemDataType {
   competitionType: string;
   studentName: string;
   averageScore:string;
+  rewardLevel:number;
 }
 
 export interface StateType {
   list: ProjectListItemDataType[];
+  setReward:number;
   status?: string;
 }
 
@@ -39,6 +41,7 @@ const Model: ModelType = {
 
   state: {
     list: [],
+    setReward:0,
     status: '',
   },
 
@@ -68,13 +71,13 @@ const Model: ModelType = {
     },
     handleSubmit(state, action) {
       console.log('status', action.payload);
-      if (action.payload === '发送邀请邮件成功！') {
-        Modal.info({
-          title: '邮件发送成功！',
+      if (action.payload === 0) {
+        Modal.success({
+          title: '设置奖项成功！',
         });
       } else {
         Modal.error({
-          title: '邮件发送失败！',
+          title: '设置奖项失败！',
         });
       }
       return {
