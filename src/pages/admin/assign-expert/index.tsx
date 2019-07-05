@@ -43,16 +43,22 @@ class BasicList extends Component<BasicListProps> {
         cancelText: '取消',
         onOk: () => {
           this.setState({ loading: false });
-          let selectedEmail = '';
+          const selected = {
+            projectId: this.props.location.state.id,
+            expertId: '',
+            emails: '',
+          };
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selectedEmail += this.props.listState.list[i].email;
+            selected.emails += this.props.listState.list[i].email;
+            selected.expertId += this.props.listState.list[i].id;
             if (i !== this.state.selectedRowKeys.length - 1) {
-              selectedEmail += ',';
+              selected.emails += ',';
+              selected.expertId += ',';
             }
           }
           dispatch({
             type: 'listState/submit',
-            payload: { receivers: selectedEmail },
+            payload: { receivers: selected },
           });
         },
         onCancel: () => {
