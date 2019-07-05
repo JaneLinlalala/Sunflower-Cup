@@ -7,7 +7,13 @@ import { Register } from './service';
 import {reloadAuthorized} from "@/utils/Authorized";
 import {routerRedux} from "dva/router";
 import {getAuthority, setAuthority} from "@/utils/authority";
-import {stringify} from "qs";
+import {parse, stringify} from "qs";
+
+export function getPageQuery(): {
+  [key: string]: string;
+} {
+  return parse(window.location.href.split('?')[1]);
+}
 
 export interface StateType {
   status?: 'ok' | 'error' | 'out';
@@ -28,6 +34,7 @@ export interface ModelType {
   };
   reducers: {
     loginHandle: Reducer<StateType>;
+    logoutHandle: Reducer<StateType>;
   };
 }
 
@@ -63,14 +70,18 @@ const Model: ModelType = {
         },
       });
       reloadAuthorized();
-      yield put(
-        routerRedux.push({
-          pathname: '/user/login',
-          search: stringify({
-            redirect: window.location.href,
+      const { redirect } = getPageQuery();
+      // redirect
+      if (window.location.pathname !== '/user/login' && !redirect) {
+        yield put(
+          routerRedux.replace({
+            pathname: '/user/login',
+            search: stringify({
+              redirect: window.location.href,
+            }),
           }),
-        })
-      );
+        );
+      }
     },
   },
 
@@ -116,6 +127,7 @@ const Model: ModelType = {
       return {
         ...state,
         status:'out',
+        type: payload.type,
       };
     },
   },

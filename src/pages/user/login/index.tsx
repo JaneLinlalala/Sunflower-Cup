@@ -12,7 +12,7 @@ const FormItem = Form.Item;
 
 interface UserLoginProps extends FormComponentProps {
   dispatch: Dispatch<any>;
-  userLogin: StateType;
+  login: StateType;
   submitting: boolean;
 }
 interface UserLoginState {
@@ -31,18 +31,18 @@ export interface UserLoginParams {
 
 @connect(
   ({
-    userLogin,
+    login,
     loading,
   }: {
-    userLogin: StateType;
+    login: StateType;
     loading: {
       effects: {
         [key: string]: string;
       };
     };
   }) => ({
-    userLogin,
-    submitting: loading.effects['userLogin/submit'],
+    login,
+    submitting: loading.effects['login/submit'],
   }),
 )
 class Register extends Component<UserLoginProps, UserLoginState> {
@@ -61,16 +61,16 @@ class Register extends Component<UserLoginProps, UserLoginState> {
   interval: number | undefined = undefined;
 
   componentDidUpdate() {
-    const { userLogin, form } = this.props;
+    const { login, form } = this.props;
     const account = form.getFieldValue('mail');
-    if (userLogin.status === 'ok') {
+    if (login.status === 'ok') {
       message.success('登录成功！');
     }
-    else if(userLogin.status === 'error'){
+    else if(login.status === 'error'){
       message.error('登陆失败！');
-      userLogin.status = undefined;
+      login.status = undefined;
     }
-    else if(userLogin.status === 'out'){
+    else if(login.status === 'out'){
       message.error('已退出登录！');
     }
   }
@@ -100,7 +100,7 @@ class Register extends Component<UserLoginProps, UserLoginState> {
       if (!err) {
         const { prefix } = this.state;
         dispatch({
-          type: 'userLogin/submit',
+          type: 'login/submit',
           payload: {
             ...values,
             prefix,

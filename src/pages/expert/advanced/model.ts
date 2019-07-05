@@ -27,7 +27,6 @@ const Model: ModelType = {
 
   state: {
     data: {},
-    file: File,
     advancedOperation1: [],
     advancedOperation2: [],
     advancedOperation3: [],
