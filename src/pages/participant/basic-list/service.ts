@@ -6,13 +6,10 @@ interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
-export async function queryFakeList(params: ParamsType) {
+export async function queryFakeList(params) {
   return request(`${config.domain}/api/ViewWorkList`, {
     method: 'POST',
-    headers: {
-      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
-    },
-    data:{"studentId":2}
+    data:params,
   });
 }
 export async function createFakeList(params) {

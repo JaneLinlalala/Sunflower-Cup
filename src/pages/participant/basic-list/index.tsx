@@ -61,7 +61,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     dispatch({
       type: 'listBasicList/fetch',
       payload: {
-        count: 5,
+        studentId: currentUserId.get(),
       },
     });
   }
@@ -111,6 +111,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         type: 'listBasicList/submit',
         payload: { id, ...fieldsValue },
       });
+      location.reload(true);
     });
   };
 
@@ -126,9 +127,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         payload: {
           id:pid,
         },
-      })
-        this.componentDidMount() },
-    });
+      }); location.reload(true); },
+    })
   };
 
   submitItem = (pid:number) => {
@@ -143,7 +143,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         payload: {
           id:pid,
         },
-      })},
+      }); location.reload(true);},
     });
   };
 

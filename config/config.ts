@@ -109,7 +109,7 @@ export default {
               component: './user/register',
             },
             {
-              name: 'register-expert',
+              name: '专家注册',
               path: '/user/register-expert',
               component: './user/register-expert',
             },

@@ -58,6 +58,14 @@ class BasicList extends Component<BasicListProps> {
     });
   };
 
+  confirmSubmit=()=> {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'listState/fetch',
+      // payload: { projectId: this.props.location.state.id},
+    });
+  }
+
   handleChange=(value:number) => {
     const {listState } = this.props;
     console.log(`selected ${value}`);
@@ -83,7 +91,7 @@ class BasicList extends Component<BasicListProps> {
 
   render() {
     const { loading } = this.state;
-    const { list } = this.props.listState;
+    const { list,comStatus } = this.props.listState;
     const {form} = this.props;
     const columns = [
       {
@@ -151,6 +159,9 @@ class BasicList extends Component<BasicListProps> {
             <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
             <Button icon="check" type="primary" onClick={this.handleSubmit} loading={loading}>
               确定
+            </Button>
+            <Button icon="notification" type="primary" onClick={this.confirmSubmit} loading={loading} style={{marginLeft:'3%'}} disabled={!comStatus}>
+              发布
             </Button>
           </Card>
         </div>

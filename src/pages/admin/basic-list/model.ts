@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList,testFakeList } from './service';
+import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList,backFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
 import {Simulate} from "react-dom/test-utils";
@@ -29,7 +29,7 @@ export interface ModelType {
     new:Effect;
     appendFetch: Effect;
     submit: Effect;
-    test:Effect;
+    back:Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -57,6 +57,13 @@ const Model: ModelType = {
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],
+      });
+    },
+    *back({ payload }, { call, put }) {
+      const response = yield call(backFakeList, payload);
+      yield put({
+        type: 'queryList',
+        payload: response,
       });
     },
     *up({ payload }, { call, put }) {
@@ -90,13 +97,6 @@ const Model: ModelType = {
       const response = yield call(callback, payload); // post
       yield put({
         type: 'queryList',
-        payload: response,
-      });
-    },
-    *test({ payload }, { call, put }) {
-      const response = yield call(testFakeList, payload);
-      yield put({
-        type: 'test',
         payload: response,
       });
     },

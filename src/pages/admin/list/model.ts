@@ -16,6 +16,7 @@ export interface StateType {
   list: ProjectListItemDataType[];
   setReward:number;
   status?: string;
+  comStatus:boolean;
 }
 
 export type Effect = (
@@ -43,6 +44,7 @@ const Model: ModelType = {
     list: [],
     setReward:0,
     status: '',
+    comStatus:true,
   },
 
   effects: {
@@ -50,7 +52,7 @@ const Model: ModelType = {
       const response = yield call(queryExpertList, payload);
       yield put({
         type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
+        payload: response,
       });
     },
     *submit({ payload }, { call, put }) {
@@ -66,7 +68,8 @@ const Model: ModelType = {
     queryList(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: action.payload.List,
+        comStatus: action.payload.competitionStatus,
       };
     },
     handleSubmit(state, action) {

@@ -1,8 +1,9 @@
 import request from 'umi-request';
 import { UserRegisterParams } from './index';
+import config from '@/utils/config';
 
 export async function Register(params: UserRegisterParams) {
-  return request('http://liuterry.cn:8080/studentReg/', {
+  return request(`${config.domain}/studentReg/`, {
     method: 'POST',
     data: params,
   });

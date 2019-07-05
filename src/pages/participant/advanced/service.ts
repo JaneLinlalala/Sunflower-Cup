@@ -3,7 +3,7 @@ import config from "@/utils/config";
 
 export async function queryAdvancedProfile(params) {
   console.log(params)
-  return request(`${config.domain}/api/ViewWorkInfo`, {
+  return request(`${config.domain}/api/ViewWorkInfoForJane`, {
     method: 'POST',
     data:params,
   });

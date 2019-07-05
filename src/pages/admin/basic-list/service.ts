@@ -7,15 +7,20 @@ interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
-export async function queryFakeList(params: ParamsType) {
+export async function queryFakeList(params) {
   return request(`${config.domain}/showAlreadyList`, {
     method: 'POST',
-    headers: {
-      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
-    },
-    data:{"studentId":2}
+    data:params,
   });
 }
+
+export async function backFakeList(params) {
+  return request(`${config.domain}/giveBackProject`, {
+    method: 'POST',
+    data:params,
+  });
+}
+
 export async function createFakeList() {
   return request(`${config.domain}/api/CreateWork`, {
     method: 'POST',
@@ -41,18 +46,6 @@ export async function submitFakeList(params: ParamsType) {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
-    },
-    data:{"id":5}
-  });
-}
-
-export async function testFakeList() {
-  const curToken = token.get();
-  // @ts-ignore
-  return request('http://180.76.233.101:8080/testCookie', {
-    method: 'POST',
-    headers: {
-      cookies: curToken,
     },
     data:{"id":5}
   });
