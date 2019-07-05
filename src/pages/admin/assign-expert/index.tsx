@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import currentUserId from '@/utils/currentUserId';
 // eslint-disable-next-line sort-imports
 import { StateType } from './model';
 import styles from './style.less';
@@ -43,16 +44,20 @@ class BasicList extends Component<BasicListProps> {
         cancelText: '取消',
         onOk: () => {
           this.setState({ loading: false });
-          let selectedEmail = '';
+          const selected = {
+            projectId: this.props.location.state.id,
+            userId: currentUserId.get(),
+            emails: '',
+          };
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selectedEmail += this.props.listState.list[i].email;
+            selected.emails += this.props.listState.list[i].email;
             if (i !== this.state.selectedRowKeys.length - 1) {
-              selectedEmail += ',';
+              selected.emails += ',';
             }
           }
           dispatch({
             type: 'listState/submit',
-            payload: { receivers: selectedEmail },
+            payload: { receivers: selected },
           });
         },
         onCancel: () => {
