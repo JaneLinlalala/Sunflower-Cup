@@ -125,8 +125,8 @@ export default {
           routes: [
             {
               path: '/workplace',
-              name: '首页',
-              icon: 'dashboard',
+              name: '新闻通知',
+              icon: 'reconciliation',
               component: './user/workplace',
               authority: ['admin', 'user', 'expert'],
             },
@@ -160,21 +160,6 @@ export default {
               hideInMenu: true,
             },
             {
-              path: '/admin/advanced/:pid',
-              name: '作品详情-团委',
-              icon: 'table',
-              component: './admin/advanced',
-              authority: ['admin'],
-              hideInMenu: true,
-            },
-            {
-              path: '/admin/manage-competition',
-              name: '管理竞赛-团委',
-              icon: 'table',
-              component: './admin/manage-competition',
-              authority: ['admin'],
-            },
-            {
               path: '/expert/basic-list',
               name: '作品列表-专家',
               icon: 'profile',
@@ -189,10 +174,26 @@ export default {
               authority: ['expert'],
             },
             {
+              path: '/admin/advanced/:pid',
+              name: '作品详情',
+              icon: 'table',
+              component: './admin/advanced',
+              authority: ['admin'],
+              hideInMenu: true,
+            },
+            {
+              path: '/admin/manage-competition',
+              name: '管理竞赛',
+              icon: 'table',
+              component: './admin/manage-competition',
+              authority: ['admin'],
+            },
+            {
               path: '/admin/assign-expert',
-              name: '分配专家-团委',
+              name: '分配专家',
               icon: 'table',
               component: './admin/assign-expert',
+              authority: ['admin'],
               hideInMenu: true,
             },
             {
@@ -207,6 +208,7 @@ export default {
               name: '新建竞赛结果',
               path: '/admin/new-competition/new-competition-result',
               component: './admin/new-competition/new-competition-result',
+              authority: ['admin'],
               hideInMenu: true,
             },
             {
@@ -229,6 +231,7 @@ export default {
               icon: 'table',
               component: './admin/scoreInfo',
               authority: ['admin'],
+              hideInMenu: true,
             },
             {
               path: '/dashboard',
