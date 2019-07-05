@@ -213,7 +213,7 @@ export default {
               hideInMenu: true,
             },
             {
-              name: '查看竞赛详情',
+              name: '竞赛详情',
               path: '/admin/view-competition',
               component: './admin/view-competition',
               hideInMenu: true,
