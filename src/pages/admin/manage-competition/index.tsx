@@ -6,7 +6,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 import router from 'umi/router';
 // eslint-disable-next-line sort-imports
-import { StateType, CompetitionListItemDataType } from './model';
+import { CompetitionListItemDataType, StateType } from './model';
 // @ts-ignore
 import styles from './style.less';
 
@@ -17,16 +17,30 @@ interface BasicListProps extends FormComponentProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
   location: { state: { id: string } };
+  loading: boolean;
 }
 
-@connect(({ listState }: { listState: StateType }) => ({ listState }))
+@connect(
+  ({
+    listState,
+    loading,
+  }: {
+    listState: StateType;
+    loading: {
+      effects: {
+        [key: string]: string;
+      };
+    };
+  }) => ({
+    listState,
+    loading: loading.effects['listState/fetch'],
+  }),
+)
 class BasicList extends Component<BasicListProps> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'listState/fetch',
-      payload: { projectId: '1' },
-      // payload: { projectId: this.props.location.state.id },
     });
   }
 
@@ -42,13 +56,12 @@ class BasicList extends Component<BasicListProps> {
   };
 
   handleView = (record: CompetitionListItemDataType) => {
-    // router.push({
-    //   pathname: '/admin/new-competition',
-    //   state: {
-    //     type: 'view',
-    //     ...record,
-    //   },
-    // });
+    router.push({
+      pathname: '/admin/view-competition',
+      state: {
+        data: record,
+      },
+    });
   };
 
   handleUpdate = (record: CompetitionListItemDataType) => {
@@ -118,10 +131,14 @@ class BasicList extends Component<BasicListProps> {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
-            <Button type="primary" onClick={this.handleNewCompetition} style={{ margin: '24px' }}>
+            <Button
+              type="primary"
+              onClick={this.handleNewCompetition}
+              style={{ margin: '24px', marginLeft: '0px' }}
+            >
               新建竞赛
             </Button>
-            <Table columns={columns} dataSource={list} />
+            <Table columns={columns} dataSource={list} loading={this.props.loading} />
           </Card>
         </div>
       </PageHeaderWrapper>

@@ -213,6 +213,12 @@ export default {
               hideInMenu: true,
             },
             {
+              name: '查看竞赛详情',
+              path: '/admin/view-competition',
+              component: './admin/view-competition',
+              hideInMenu: true,
+            },
+            {
               path: '/admin/basic-list',
               name: '初审作品',
               icon: 'file-done',
@@ -419,7 +425,7 @@ export default {
             {
               path: '/',
               redirect: '/user/login',
-              authority: ['admin', 'user','expert'],
+              authority: ['admin', 'user', 'expert'],
             },
             {
               component: '404',
