@@ -7,12 +7,9 @@ import router from 'umi/router';
 // eslint-disable-next-line sort-imports
 import moment from 'moment';
 // eslint-disable-next-line sort-imports
-// import { Simulate } from 'react-dom/test-utils';
 import { RangePickerValue } from 'antd/es/date-picker/interface';
 import { StateType } from './model';
-
 import styles from './style.less';
-import { CompetitionListItemDataType } from '@/pages/admin/manage-competition/model';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -51,6 +48,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any;
     type: string;
+    tittle: string;
   };
 
   constructor(props: Readonly<NewCompetitionProps>) {
@@ -63,6 +61,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
         time: [],
       },
       type: this.props.location.state.type,
+      tittle: '新建竞赛',
     };
     const dateFormat = 'YYYY-MM-DD';
     if (this.state.type === 'new') {
@@ -72,6 +71,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
       this.state.data.time = [];
     } else if (this.state.type === 'update') {
       this.buttonName = '修改';
+      this.state.tittle = '编辑竞赛';
       this.state.data.time = [
         moment(this.state.data.startTimeFormat, dateFormat),
         moment(this.state.data.endTimeFormat, dateFormat),
@@ -140,7 +140,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
     return (
-      <Card title="新建竞赛">
+      <Card title={this.state.tittle}>
         <Card bordered={false} className={styles.main}>
           <Form onSubmit={this.handleClick}>
             <FormItem>
