@@ -11,7 +11,7 @@ import styles from './style.less';
 const onClick = (e: { preventDefault: () => void }) => {
   e.preventDefault();
   router.push({
-    pathname: '/admin/new-competition',
+    pathname: '/admin/manage-competition',
   });
 };
 

@@ -1,31 +1,30 @@
-import { Card, Button, Form, Input, message, DatePicker } from 'antd';
-import { FormattedMessage } from 'umi-plugin-react/locale';
+import { Button, Card, DatePicker, Form, Input, message } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { connect } from 'dva';
 import router from 'umi/router';
+// eslint-disable-next-line sort-imports
+import moment from 'moment';
+// eslint-disable-next-line sort-imports
+// import { Simulate } from 'react-dom/test-utils';
+import { RangePickerValue } from 'antd/es/date-picker/interface';
 import { StateType } from './model';
 
 import styles from './style.less';
+import { CompetitionListItemDataType } from '@/pages/admin/manage-competition/model';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface NewCompetitionProps extends FormComponentProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
   newCompetition: StateType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  location: any;
   submitting: boolean;
-}
-
-export interface NewCompetitionParams {
-  competitionName: string;
-  time: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  // prefix: string;
 }
 
 @connect(
@@ -41,53 +40,97 @@ export interface NewCompetitionParams {
     };
   }) => ({
     newCompetition,
-    submitting: loading.effects['newCompetition/submit'],
+    submitting:
+      loading.effects['newCompetition/submit'] || loading.effects['newCompetition/update'],
   }),
 )
 class NewCompetition extends Component<NewCompetitionProps> {
-  interval: number | undefined = undefined;
+  buttonName: string;
+
+  state: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
+    type: string;
+  };
+
+  constructor(props: Readonly<NewCompetitionProps>) {
+    super(props);
+    this.buttonName = '提交';
+    console.log('this.props.location', this.props.location);
+    this.state = {
+      data: {
+        ...this.props.location.state.data,
+        time: [],
+      },
+      type: this.props.location.state.type,
+    };
+    const dateFormat = 'YYYY-MM-DD';
+    if (this.state.type === 'new') {
+      this.buttonName = '提交';
+      this.state.data.competitionName = '';
+      this.state.data.description = '';
+      this.state.data.time = [];
+    } else if (this.state.type === 'update') {
+      this.buttonName = '修改';
+      this.state.data.time = [
+        moment(this.state.data.startTimeFormat, dateFormat),
+        moment(this.state.data.endTimeFormat, dateFormat),
+      ];
+    }
+    console.log('this.state.data', this.state.data);
+  }
+
+  componentDidMount(): void {
+    const { form } = this.props;
+    form.setFieldsValue({
+      competitionName: this.state.data.competitionName,
+      description: this.state.data.description,
+      time: this.state.data.time,
+    });
+  }
 
   componentDidUpdate() {
-    const { newCompetition, form } = this.props;
-    const account = form.getFieldValue('mail');
+    const { newCompetition } = this.props;
     if (newCompetition.status === 'ok') {
       newCompetition.status = undefined;
       message.success('提交成功！');
       router.push({
         pathname: '/admin/new-competition/new-competition-result',
-        state: {
-          account,
-        },
       });
     } else if (newCompetition.status === 'error') {
       newCompetition.status = undefined;
-      message.error('竞赛名称冲突！');
-      this.props.form.setFieldsValue({
-        competitionName: '',
-      });
+      if (this.state.type === 'new') {
+        message.error('竞赛名称冲突！');
+        this.state.data.competitionName = '';
+      } else {
+        message.error('提交失败！');
+      }
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  timeOnChange = (dates: RangePickerValue, dateStrings: [string, string]) => {
+    console.log('value:', dates);
+    console.log('dateString:', dateStrings);
+    this.state.data.time = dateStrings;
+  };
 
-  handleSubmit = (e: React.FormEvent) => {
+  competitionNameOnChange = () => {};
+
+  handleClick = (e: React.FormEvent) => {
     e.preventDefault();
     const { form, dispatch } = this.props;
-    const startTime = form.getFieldsValue().time[0];
-    const endTime = form.getFieldsValue().time[1];
+
     form.validateFields({ force: true }, (err, values) => {
       if (!err) {
-        // const { prefix } = this.state;
+        const payed = {
+          ...values,
+          id: this.state.data.id,
+          startTime: this.state.data.time[0],
+          endTime: this.state.data.time[1],
+        };
         dispatch({
-          type: 'newCompetition/submit',
-          payload: {
-            startTime,
-            endTime,
-            ...values,
-            // prefix,
-          },
+          type: this.state.type === 'new' ? 'newCompetition/submit' : 'newCompetition/update',
+          payload: payed,
         });
       }
     });
@@ -99,7 +142,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
     return (
       <Card title="新建竞赛">
         <Card bordered={false} className={styles.main}>
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleClick}>
             <FormItem>
               {getFieldDecorator('competitionName', {
                 rules: [
@@ -108,7 +151,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
                     message: '请输入竞赛名称！',
                   },
                 ],
-              })(<Input placeholder="竞赛名称" />)}
+              })(<Input placeholder="竞赛名称" onChange={this.competitionNameOnChange} />)}
             </FormItem>
             <FormItem>
               {getFieldDecorator('time', {
@@ -124,8 +167,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
                   showTime={{ format: 'HH:mm' }}
                   format="YYYY-MM-DD"
                   placeholder={['竞赛开始时间', '竞赛结束时间']}
-                  // onChange={onChange}
-                  // onOk={onOk}
+                  onChange={this.timeOnChange}
                 />,
               )}
             </FormItem>
@@ -147,10 +189,7 @@ class NewCompetition extends Component<NewCompetitionProps> {
                 type="primary"
                 htmlType="submit"
               >
-                <FormattedMessage
-                  // @ts-ignore
-                  id="提交"
-                />
+                {this.buttonName}
               </Button>
             </FormItem>
           </Form>

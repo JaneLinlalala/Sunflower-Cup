@@ -1,8 +1,16 @@
 import request from 'umi-request';
-import { NewCompetitionParams } from './index';
+import config from '@/utils/config';
 
-export async function NewCompetitionSubmit(params: NewCompetitionParams) {
-  return request('http://liuterry.cn:8080/addCompetition', {
+export async function newCompetitionSubmit(params: any) {
+  return request(`${config.domain}/addCompetition`, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function updateCompetitionSubmit(params: any) {
+  console.log('params', params);
+  return request(`${config.domain}/updateCompetitionInfo`, {
     method: 'POST',
     data: params,
   });

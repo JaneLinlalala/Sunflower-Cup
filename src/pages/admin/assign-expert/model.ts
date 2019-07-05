@@ -52,7 +52,7 @@ const Model: ModelType = {
     *submit({ payload }, { call, put }) {
       const response = yield call(submitExpertList, payload); // post
       yield put({
-        type: 'handleSubmit',
+        type: 'handleNewCompetition',
         payload: response,
       });
     },

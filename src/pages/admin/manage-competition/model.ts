@@ -1,18 +1,19 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { Modal } from 'antd';
-import { queryExpertList, submitExpertList } from './service';
+import { queryCompetitionList } from './service';
 
-export interface ExpertListItemDataType {
+export interface CompetitionListItemDataType {
   id: string;
-  name: string;
-  major: string;
-  email: string;
+  competitionName: string;
+  startTime: string;
+  endTime: string;
+  description: string;
+  startTimeFormat: string;
+  endTimeFormat: string;
 }
 
 export interface StateType {
-  list: ExpertListItemDataType[];
-  status?: string;
+  list: CompetitionListItemDataType[];
 }
 
 export type Effect = (
@@ -25,60 +26,54 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    submit: Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
-    handleSubmit: Reducer<{ status: string }>;
   };
 }
+
+const timeFormat = (time: string) => {
+  let timeStr = '';
+  const date = new Date(time);
+  timeStr += `${date.getFullYear()}-`;
+  if ((date.getMonth() + 1).toString().length < 2) {
+    timeStr += '0';
+  }
+  timeStr += `${date.getMonth() + 1}-`;
+  if (date.getDate().toString().length < 2) {
+    timeStr += '0';
+  }
+  timeStr += `${date.getDate()}`;
+  return timeStr;
+};
 
 const Model: ModelType = {
   namespace: 'listState',
 
   state: {
     list: [],
-    status: '',
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryExpertList, payload);
+      const response = yield call(queryCompetitionList, payload);
       yield put({
         type: 'queryList',
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *submit({ payload }, { call, put }) {
-      const response = yield call(submitExpertList, payload); // post
-      yield put({
-        type: 'handleSubmit',
-        payload: response,
-      });
-    },
   },
 
   reducers: {
-    queryList(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      };
-    },
-    handleSubmit(state, action) {
-      console.log('status', action.payload);
-      if (action.payload === '发送邀请邮件成功！') {
-        Modal.info({
-          title: '邮件发送成功！',
-        });
-      } else {
-        Modal.error({
-          title: '邮件发送失败！',
-        });
+    queryList(state, { payload }) {
+      const formatPayload = payload;
+      for (let i = 0; i < formatPayload.length; i += 1) {
+        formatPayload[i].startTimeFormat = timeFormat(payload[i].startTime);
+        formatPayload[i].endTimeFormat = timeFormat(payload[i].endTime);
       }
       return {
         ...state,
-        status: action.payload,
+        list: formatPayload,
       };
     },
   },
