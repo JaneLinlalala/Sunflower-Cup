@@ -12,10 +12,7 @@ export async function queryExpertList() {
 }
 
 export async function submitExpertList(params: { receivers: string }) {
-  if (config.debug) {
-    return fakeData.submitResult;
-  }
-  return request(`${config.domain}/inviteExperts`, {
+  return request(`${config.domain}/giveRewards`, {
     method: 'POST',
     data: params,
   });
