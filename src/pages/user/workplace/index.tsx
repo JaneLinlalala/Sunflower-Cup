@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, List, Skeleton, Row, Statistic } from 'antd';
+import { Avatar, Card, Col, List, Skeleton, Row, Statistic, Carousel } from 'antd';
 import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
@@ -9,6 +9,7 @@ import { ModalState } from './model';
 import styles from './style.less';
 import { ActivitiesType, CurrentUser, NoticeType, RadarDataType } from './data.d';
 import currentUserName from '@/utils/currentUserName';
+import pic from './home1.jpg';
 
 interface DashboardWorkplaceProps {
   currentUser: CurrentUser;

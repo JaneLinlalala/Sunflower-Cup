@@ -1,9 +1,10 @@
 import request from 'umi-request';
+import config from '@/utils/config';
 
-export async function queryAdvancedProfile() {
+export async function queryAdvancedProfile(params) {
   return request(`${config.domain}/api/ViewWorkInfo`, {
     method: 'POST',
-    data:{"id":7}
+    data:params.payload,
   });
 }
 

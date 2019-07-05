@@ -34,8 +34,8 @@ const Model: ModelType = {
   },
 
   effects: {
-    *fetchAdvanced(_, { call, put }) {
-      const response = yield call(queryAdvancedProfile);
+    *fetchAdvanced(payload, { call, put }) {
+      const response = yield call(queryAdvancedProfile,payload);
       yield put({
         type: 'show',
         payload: response,

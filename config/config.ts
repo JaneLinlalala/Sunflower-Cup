@@ -167,11 +167,12 @@ export default {
               authority: ['expert'],
             },
             {
-              path: '/expert/advanced',
-              name: '作品详情-专家',
+              path: '/expert/advanced/:pid',
+              name: '作品详情',
               icon: 'table',
               component: './expert/advanced',
               authority: ['expert'],
+              hideInMenu: true,
             },
             {
               path: '/admin/advanced/:pid',

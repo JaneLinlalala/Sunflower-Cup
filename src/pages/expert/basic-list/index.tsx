@@ -26,6 +26,7 @@ import { connect } from 'dva';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
+import {routerRedux} from "dva/router";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus=['未提交','已提交']
@@ -152,6 +153,17 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
+  detail(pid:number) {
+    const { dispatch } = this.props;
+    const id = pid;
+    dispatch(
+      routerRedux.push({
+        pathname: `/expert/advanced/${id}`,
+        state:{id}
+      })
+    );
+  }
+
   render() {
     const {
       listBasicList: { list },
@@ -190,7 +202,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a href="/participant/step-form">评审</a>
+            <a onClick={() => this.detail(record.id)}>评审</a>
             <Divider type="vertical" />
             <a key="submit" onClick={e=>{this.submitItem()}}>提交</a>
           </Fragment>
