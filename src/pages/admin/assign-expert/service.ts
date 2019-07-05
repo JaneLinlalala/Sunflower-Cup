@@ -6,7 +6,7 @@ import fakeData from './_mock';
 
 export async function queryExpertList(params: string) {
   console.log(params, config.domain);
-  if (config.debug) {
+  if (config.assignExpertDebug) {
     return fakeData.fakeExpertListData;
   }
   return request(`${config.domain}/viewExpertList`, {
@@ -16,7 +16,7 @@ export async function queryExpertList(params: string) {
 }
 
 export async function submitExpertList(params: { receivers: string }) {
-  if (config.debug) {
+  if (config.assignExpertDebug) {
     return fakeData.submitResult;
   }
   return request(`${config.domain}/inviteExperts`, {
