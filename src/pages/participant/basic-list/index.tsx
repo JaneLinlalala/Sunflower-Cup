@@ -19,7 +19,7 @@ import {routerRedux} from "dva/router";
 import currentUserId from "@/utils/currentUserId";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['已提交','未提交','已通过','未通过']
+const subStatus=['未提交','已提交','已通过','未通过']
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -227,7 +227,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.update(record.id)} disabled={!record.submitStatus}>修改</a>
+            <a onClick={() => this.update(record.id)} disabled={record.submitStatus}>修改</a>
             <Divider type="vertical" />
             <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
