@@ -124,23 +124,21 @@ class BasicList extends Component<BasicListProps> {
     // @ts-ignore
     return (
       <PageHeaderWrapper>
-        <div className={styles.standardList}>
-          <Card
-            className={styles.listCard}
-            bordered={false}
-            style={{ marginTop: 24 }}
-            bodyStyle={{ padding: '0 32px 40px 32px' }}
+        <Card
+          className={styles.listCard}
+          bordered={false}
+          style={{ marginTop: 24 }}
+          bodyStyle={{ padding: '0 32px 40px 32px' }}
+        >
+          <Button
+            type="primary"
+            onClick={this.handleNewCompetition}
+            style={{ margin: '24px', marginLeft: '0px' }}
           >
-            <Button
-              type="primary"
-              onClick={this.handleNewCompetition}
-              style={{ margin: '24px', marginLeft: '0px' }}
-            >
-              新建竞赛
-            </Button>
-            <Table columns={columns} dataSource={list} loading={this.props.loading} />
-          </Card>
-        </div>
+            新建竞赛
+          </Button>
+          <Table columns={columns} dataSource={list} loading={this.props.loading} />
+        </Card>
       </PageHeaderWrapper>
     );
   }
