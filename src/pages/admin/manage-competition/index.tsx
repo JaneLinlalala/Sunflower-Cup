@@ -1,12 +1,16 @@
-import { Button, Card, Form, Modal, Table, Divider } from 'antd';
+import { Button, Card, Form, Table } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import router from 'umi/router';
 // eslint-disable-next-line sort-imports
-import { StateType } from './model';
+import { StateType, CompetitionListItemDataType } from './model';
+// @ts-ignore
 import styles from './style.less';
+
+const ButtonGroup = Button.Group;
 
 interface BasicListProps extends FormComponentProps {
   listState: StateType;
@@ -17,11 +21,6 @@ interface BasicListProps extends FormComponentProps {
 
 @connect(({ listState }: { listState: StateType }) => ({ listState }))
 class BasicList extends Component<BasicListProps> {
-  state = {
-    selectedRowKeys: [],
-    loading: false,
-  };
-
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -31,91 +30,84 @@ class BasicList extends Component<BasicListProps> {
     });
   }
 
-  handleSubmit = (e: React.FormEvent) => {
+  handleNewCompetition = (e: React.FormEvent) => {
     e.preventDefault();
-    this.setState({ loading: true });
-    const { dispatch } = this.props;
-    if (this.state.selectedRowKeys.length >= 3) {
-      Modal.confirm({
-        title: '发送邮件',
-        content: '确定向选择的专家发送邮件吗？',
-        okText: '确定',
-        cancelText: '取消',
-        onOk: () => {
-          this.setState({ loading: false });
-          let selectedEmail = '';
-          for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selectedEmail += this.props.listState.list[i].email;
-            if (i !== this.state.selectedRowKeys.length - 1) {
-              selectedEmail += ',';
-            }
-          }
-          dispatch({
-            type: 'listState/submit',
-            payload: { receivers: selectedEmail },
-          });
-        },
-        onCancel: () => {
-          this.setState({ loading: false });
-        },
-      });
-    } else {
-      Modal.info({
-        title: '选择的人数过少',
-        content: (
-          <div>
-            <p> 选择的专家少于3人，请重新选择 </p>
-          </div>
-        ),
-        onOk: () => {
-          this.setState({ loading: false });
-        },
-      });
-    }
+    router.push({
+      pathname: '/admin/new-competition',
+      state: {
+        type: 'new',
+        data: {},
+      },
+    });
   };
 
-  onSelectChange = (selectedRowKeys: []) => {
-    // eslint-disable-next-line no-console
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
+  handleView = (record: CompetitionListItemDataType) => {
+    // router.push({
+    //   pathname: '/admin/new-competition',
+    //   state: {
+    //     type: 'view',
+    //     ...record,
+    //   },
+    // });
   };
+
+  handleUpdate = (record: CompetitionListItemDataType) => {
+    router.push({
+      pathname: '/admin/new-competition',
+      state: {
+        type: 'update',
+        data: record,
+      },
+    });
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  isDisableButton = (record: CompetitionListItemDataType) =>
+    this.props.listState.list.indexOf(record) !== 0;
 
   render() {
-    const { loading } = this.state;
     const { list } = this.props.listState;
+    console.log(list);
     const columns = [
       {
-        title: '专家姓名',
-        dataIndex: 'name',
+        title: '竞赛名称',
+        dataIndex: 'competitionName',
       },
       {
-        title: '专业',
-        dataIndex: 'major',
+        title: '开始时间',
+        dataIndex: 'startTimeFormat',
       },
       {
-        title: '邮件',
-        dataIndex: 'email',
+        title: '结束时间',
+        dataIndex: 'endTimeFormat',
       },
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
+        render: (text: string, record: CompetitionListItemDataType) => (
           <span>
-            <a href="">Invite {record.name}</a>
-            <Divider type="vertical" />
-            <a href="">Delete</a>
+            <ButtonGroup>
+              <Button
+                onClick={() => {
+                  this.handleView(record);
+                }}
+              >
+                查看
+              </Button>
+              <Button
+                onClick={() => {
+                  this.handleUpdate(record);
+                }}
+                disabled={this.isDisableButton(record)}
+              >
+                编辑
+              </Button>
+            </ButtonGroup>
           </span>
         ),
       },
     ];
-    const rowSelection = {
-      selectedRowKeys: this.state.selectedRowKeys,
-      onChange: this.onSelectChange,
-      getCheckboxProps: (record: { name: string }) => ({
-        disabled: record.name === 'Disabled User', // Column configuration not to be checked
-        name: record.name,
-      }),
-    };
+
     // @ts-ignore
     return (
       <PageHeaderWrapper>
@@ -126,10 +118,10 @@ class BasicList extends Component<BasicListProps> {
             style={{ marginTop: 24 }}
             bodyStyle={{ padding: '0 32px 40px 32px' }}
           >
-            <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
-            <Button type="primary" onClick={this.handleSubmit} loading={loading}>
-              发送邮件
+            <Button type="primary" onClick={this.handleNewCompetition} style={{ margin: '24px' }}>
+              新建竞赛
             </Button>
+            <Table columns={columns} dataSource={list} />
           </Card>
         </div>
       </PageHeaderWrapper>
