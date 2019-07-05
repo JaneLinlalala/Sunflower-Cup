@@ -1,33 +1,23 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Descriptions,
-  Divider,
-  Dropdown,
-  Icon,
-  Menu,
-  Popover, Progress,
-  Row,
-  Steps,
-  Table,
-  Tooltip,
-} from 'antd';
+import { Button, Card, Col, Descriptions, Row, Table, Modal, Input, InputNumber } from 'antd';
 import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { AdvancedProfileData,ListItemDataType } from './data.d';
+import { AdvancedProfileData, ListItemDataType } from './data.d';
 import styles from './style.less';
-import {file} from "@babel/types";
-
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const proType = ['机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）', '信息技术（包括计算机、电信、通讯、电子等）','数理（包括数学、物理、地球与空间科学等）','生命科学(包括生物､农学､药学､医学､健康､卫生､食品等)','能源化工（包括能源、材料、石油、化学、化工、生态、环保等）','哲学社会科学（包括哲学、经济、社会、法律、教育、管理）'];
-const subStatus=['未提交','已提交']
+const proType = [
+  '机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）',
+  '信息技术（包括计算机、电信、通讯、电子等）',
+  '数理（包括数学、物理、地球与空间科学等）',
+  '生命科学(包括生物､农学､药学､医学､健康､卫生､食品等)',
+  '能源化工（包括能源、材料、石油、化学、化工、生态、环保等）',
+  '哲学社会科学（包括哲学、经济、社会、法律、教育、管理）',
+];
+const subStatus = ['未提交', '已提交'];
 
 const columns = [
   {
@@ -61,39 +51,45 @@ const testFriend = [
   {
     key: '1',
     name: 'xxx',
-    studentId:'16211108',
+    studentId: '16211108',
     email: 'janelin9712@163.com',
-    education:'本科',
-    phone:'11111111111'
+    education: '本科',
+    phone: '11111111111',
   },
   {
     key: '2',
     name: 'yyy',
-    studentId:'16211107',
+    studentId: '16211107',
     email: '123456789@qq.com',
-    education:'本科',
-    phone:'22222222222'
+    education: '本科',
+    phone: '22222222222',
   },
   {
     key: '3',
     name: 'zzz',
-    studentId:'16211105',
+    studentId: '16211105',
     email: '123456789@qq.com',
-    education:'本科',
-    phone:'33333333333'
+    education: '本科',
+    phone: '33333333333',
   },
 ];
 
 // @ts-ignore
-@connect(({profileAdvanced, loading}) => ({
-    profileAdvanced,
-    loading: loading.effects['profileAdvanced/fetchAdvanced'],
-    data:profileAdvanced.data,
-    file:profileAdvanced.file,
-  }))
-
+@connect(({ profileAdvanced, loading }) => ({
+  profileAdvanced,
+  loading: loading.effects['profileAdvanced/fetchAdvanced'],
+  data: profileAdvanced.data,
+  file: profileAdvanced.file,
+}))
 class Advanced extends Component<
-  { loading: boolean; profileAdvanced: AdvancedProfileData; data: ListItemDataType; file:File; dispatch: Dispatch<any> },
+  {
+    loading: boolean;
+    visible: boolean;
+    profileAdvanced: AdvancedProfileData;
+    data: ListItemDataType;
+    file: File;
+    dispatch: Dispatch<any>;
+  },
   {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
@@ -102,15 +98,32 @@ class Advanced extends Component<
   public state: {
     operationKey: string;
     stepDirection: 'horizontal' | 'vertical';
-    testName: string;
     loadingStatus: true;
     buttonDisabled: false;
+    visible: false;
   } = {
     operationKey: 'tab1',
     stepDirection: 'horizontal',
-    testName:'xxx',
     loadingStatus: true,
+    visible: false,
     buttonDisabled: false,
+  };
+
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = () => {
+    this.setState({ loadingStatus: true });
+    setTimeout(() => {
+      this.setState({ loadingStatus: false, visible: false });
+    }, 3000);
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
   };
 
   componentDidMount() {
@@ -144,20 +157,19 @@ class Advanced extends Component<
     }
   };
 
-  download = () =>{
+  download = () => {
     const { dispatch } = this.props;
     dispatch({
       type: 'profileAdvanced/downloadFile',
-      payload: {
-      },
+      payload: {},
     });
-  }
+  };
 
   render() {
-    const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
-    const { profileAdvanced, loading, data, file} = this.props;
+    const { stepDirection, operationKey, loadingStatus, buttonDisabled, visible } = this.state;
+    const { profileAdvanced, loading, data, file } = this.props;
     const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
-    const {friends} = data;
+    const { friends } = data;
 
     const extra = (
       <Row
@@ -181,12 +193,14 @@ class Advanced extends Component<
       </Descriptions>
     );
 
+    const { TextArea } = Input;
+
+    function onChange(value) {
+      console.log('changed', value);
+    }
+
     return (
-      <PageHeaderWrapper
-        title="作品名称"
-        content={description}
-        extraContent={extra}
-      >
+      <PageHeaderWrapper title="作品名称" content={description} extraContent={extra}>
         <div
           style={{
             margin: 24,
@@ -209,11 +223,7 @@ class Advanced extends Component<
                 <Descriptions.Item label="通讯地址">{data.address}</Descriptions.Item>
               </Descriptions>
             </Card>
-            <Card
-              title="合作作者信息"
-              bordered={false}
-              style={{ marginBottom: 24 }}
-            >
+            <Card title="合作作者信息" bordered={false} style={{ marginBottom: 24 }}>
               <Table
                 style={{ marginBottom: 16 }}
                 pagination={false}
@@ -232,12 +242,49 @@ class Advanced extends Component<
               </Descriptions>
             </Card>
           </GridContent>
-          <Button icon="download" type="primary" onClick={e=>{this.download()}}>
+          <Button
+            icon="download"
+            type="primary"
+            onClick={e => {
+              this.download();
+            }}
+          >
             下载
           </Button>
-          <Button icon="edit" type="primary" onClick={e=>{this.download()}} style={{marginLeft:'3%'}}>
+
+          <Button
+            icon="edit"
+            type="primary"
+            onClick={e => {
+              this.showModal();
+            }}
+            style={{ marginLeft: '3%' }}
+          >
             评审
           </Button>
+          <Modal
+            visible={visible}
+            title="请输入评审结果"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button key="back" onClick={this.handleCancel}>
+                返回
+              </Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                提交
+              </Button>,
+            ]}
+          >
+            <InputNumber
+              min={0}
+              max={100}
+              placeholder="请输入分数(1-100)"
+              onChange={onChange}
+              style={{ marginBottom: '3%', width: 150 }}
+            />
+            <TextArea placeholder="请输入评语" rows={4} />
+          </Modal>
         </div>
       </PageHeaderWrapper>
     );
