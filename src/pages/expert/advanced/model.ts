@@ -1,8 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
-
 import { EffectsCommandMap } from 'dva';
-import { AdvancedProfileData } from './data.d';
-import { queryAdvancedProfile,downloadZipFile } from './service';
+// eslint-disable-next-line sort-imports
+import { AdvancedProfileData, AppraiseData } from './data.d';
+import { downloadZipFile, getAppraise, queryAdvancedProfile, updateAppraise } from './service';
 
 export type Effect = (
   action: AnyAction,
@@ -15,9 +15,16 @@ export interface ModelType {
   effects: {
     fetchAdvanced: Effect;
     downloadFile: Effect;
+    saveAppraise: Effect;
+    fetchAppraise: Effect;
   };
   reducers: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     show: Reducer<AdvancedProfileData>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    down: Reducer<AdvancedProfileData>;
+    handleFetchAppraise: Reducer<AdvancedProfileData>;
+    handleSaveAppraise: Reducer<AdvancedProfileData>;
   };
 }
 
@@ -31,11 +38,12 @@ const Model: ModelType = {
     advancedOperation1: [],
     advancedOperation2: [],
     advancedOperation3: [],
+    appraise: { score: '', suggestion: '' },
   },
 
   effects: {
-    *fetchAdvanced(payload, { call, put }) {
-      const response = yield call(queryAdvancedProfile,payload);
+    *fetchAdvanced({ payload }, { call, put }) {
+      const response = yield call(queryAdvancedProfile, payload);
       yield put({
         type: 'show',
         payload: response,
@@ -49,6 +57,23 @@ const Model: ModelType = {
         payload: response,
       });
     },
+
+    *saveAppraise({ payload }, { call, put }) {
+      const response = yield call(updateAppraise, payload);
+      yield put({
+        type: 'handleSaveAppraise',
+        payload: response,
+      });
+    },
+
+    *fetchAppraise({ payload }, { call, put }) {
+      const response = yield call(getAppraise, payload);
+
+      yield put({
+        type: 'handleFetchAppraise',
+        payload: response,
+      });
+    },
   },
 
   reducers: {
@@ -59,15 +84,16 @@ const Model: ModelType = {
         data: payload,
       };
     },
+
     down(state, { payload }) {
       console.log(payload);
-      console.log("test1");
+      console.log('test1');
       payload.blob().then(blob => {
-        console.log("test")
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
+        console.log('test');
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
         a.href = url;
-        a.download = "filename.xlsx";
+        a.download = 'filename.xlsx';
         a.click();
       });
       return {
@@ -76,6 +102,29 @@ const Model: ModelType = {
       };
     },
 
+    handleFetchAppraise(state, { payload }) {
+      console.log('handleFetchAppraise', payload);
+      let pay = {
+        fetchAppraiseStatus: 'error',
+      };
+      if (payload !== 'null') {
+        pay = {
+          ...state,
+          appraise: payload,
+          fetchAppraiseStatus: 'success',
+        };
+      }
+      console.log('pay', pay);
+      return pay;
+    },
+
+    handleSaveAppraise(state, { payload }) {
+      console.log('handleSaveAppraise', payload);
+      return {
+        ...state,
+        saveAppraiseStatus: payload,
+      };
+    },
   },
 };
 

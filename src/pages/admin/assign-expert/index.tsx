@@ -4,7 +4,6 @@ import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
-import currentUserId from '@/utils/currentUserId';
 // eslint-disable-next-line sort-imports
 import { StateType } from './model';
 import styles from './style.less';

@@ -1,10 +1,24 @@
-import { Button, Card, Col, Descriptions, Row, Table, Modal, Input, InputNumber } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Table,
+  message,
+} from 'antd';
 import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { Component } from 'react';
-
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
-import { AdvancedProfileData, ListItemDataType } from './data.d';
+// eslint-disable-next-line sort-imports
+import { FormComponentProps } from 'antd/es/form';
+import { AdvancedProfileData, AppraiseData, ListItemDataType } from './data.d';
+import currentUserId from '@/utils/currentUserId';
 import styles from './style.less';
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
@@ -18,7 +32,6 @@ const proType = [
   '哲学社会科学（包括哲学、经济、社会、法律、教育、管理）',
 ];
 const subStatus = ['未提交', '已提交'];
-
 const columns = [
   {
     title: '姓名',
@@ -46,7 +59,6 @@ const columns = [
     key: 'email',
   },
 ];
-
 const testFriend = [
   {
     key: '1',
@@ -73,78 +85,134 @@ const testFriend = [
     phone: '33333333333',
   },
 ];
+const FormItem = Form.Item;
+
+interface AdvancedProps extends FormComponentProps {
+  loading: boolean;
+  profileAdvanced: AdvancedProfileData;
+  data: ListItemDataType;
+  file: File;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dispatch: Dispatch<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  location: any;
+  fetchAppraiseLoading: boolean;
+  saveAppraiseLoading: boolean;
+}
 
 // @ts-ignore
-@connect(({ profileAdvanced, loading }) => ({
-  profileAdvanced,
-  loading: loading.effects['profileAdvanced/fetchAdvanced'],
-  data: profileAdvanced.data,
-  file: profileAdvanced.file,
-}))
-class Advanced extends Component<
-  {
-    loading: boolean;
-    visible: boolean;
+@connect(
+  ({
+    profileAdvanced,
+    loading,
+  }: {
     profileAdvanced: AdvancedProfileData;
-    data: ListItemDataType;
-    file: File;
-    dispatch: Dispatch<any>;
-  },
-  {
-    operationKey: string;
+    loading: {
+      effects: {
+        [key: string]: string;
+      };
+    };
+  }) => ({
+    profileAdvanced,
+    loading: loading.effects['profileAdvanced/fetchAdvanced'],
+    data: profileAdvanced.data,
+    file: profileAdvanced.file,
+
+    fetchAppraiseLoading: loading.effects['profileAdvanced/fetchAppraise'],
+    saveAppraiseLoading: loading.effects['profileAdvanced/saveAppraise'],
+  }),
+)
+class Advanced extends Component<AdvancedProps> {
+  state: {
     stepDirection: 'horizontal' | 'vertical';
-  }
-> {
-  public state: {
-    operationKey: string;
-    stepDirection: 'horizontal' | 'vertical';
-    loadingStatus: true;
-    buttonDisabled: false;
     visible: false;
-  } = {
-    operationKey: 'tab1',
-    stepDirection: 'horizontal',
-    loadingStatus: true,
-    visible: false,
-    buttonDisabled: false,
+
+    appraise: AppraiseData;
   };
 
+  constructor(props: Readonly<AdvancedProps>) {
+    super(props);
+    this.state = {
+      stepDirection: 'horizontal',
+      visible: false,
+      appraise: this.props.profileAdvanced.appraise,
+    };
+  }
+
+  // eslint-disable-next-line react/sort-comp
   showModal = () => {
-    this.setState({
-      visible: true,
-    });
+    this.setState({ visible: true });
   };
 
-  handleOk = () => {
-    this.setState({ loadingStatus: true });
-    setTimeout(() => {
-      this.setState({ loadingStatus: false, visible: false });
-    }, 3000);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handleOk = (e: any) => {
+    e.preventDefault();
+    const { dispatch, form } = this.props;
+
+    form.validateFields({ force: true }, (err, values) => {
+      if (!err) {
+        dispatch({
+          type: 'profileAdvanced/saveAppraise',
+          payload: values,
+        });
+      }
+    });
   };
 
   handleCancel = () => {
     this.setState({ visible: false });
   };
 
+  componentWillMount(): void {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'profileAdvanced/fetchAppraise',
+      payload: {
+        expertId: currentUserId.get(),
+        projectId: this.props.location.state.id,
+      },
+    });
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'profileAdvanced/fetchAdvanced',
       payload: {
-        id:this.props.location.state.id,
+        id: this.props.location.state.id,
       },
     });
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection, { passive: true });
   }
 
+  componentDidUpdate(): void {
+    const { form } = this.props;
+    const { fetchAppraiseLoading } = this.props;
+    const { saveAppraiseStatus, fetchAppraiseStatus } = this.props.profileAdvanced;
+    console.log('fetchAppraiseStatus', fetchAppraiseStatus);
+    if (!fetchAppraiseLoading && fetchAppraiseStatus === 'success') {
+      this.props.profileAdvanced.fetchAppraiseStatus = undefined;
+      console.log('this.props.profileAdvanced', this.props.profileAdvanced);
+      this.state.appraise = this.props.profileAdvanced.appraise;
+      form.setFieldsValue(this.state.appraise);
+    }
+    if (saveAppraiseStatus === 'success') {
+      this.props.profileAdvanced.saveAppraiseStatus = undefined;
+      message.success('提交成功');
+      if (this.state.visible) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ visible: false });
+      }
+    } else if (saveAppraiseStatus !== undefined) {
+      this.props.profileAdvanced.saveAppraiseStatus = undefined;
+      message.error('提交失败');
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.setStepDirection);
   }
-
-  onOperationTabChange = (key: string) => {
-    this.setState({ operationKey: key });
-  };
 
   setStepDirection = () => {
     const { stepDirection } = this.state;
@@ -169,38 +237,36 @@ class Advanced extends Component<
   };
 
   render() {
-    const { stepDirection, operationKey, loadingStatus, buttonDisabled, visible } = this.state;
-    const { profileAdvanced, loading, data, file } = this.props;
-    const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
-    const { friends } = data;
+    const { visible } = this.state;
+    const { loading, data, form } = this.props;
+    const { getFieldDecorator } = form;
 
-    const extra = (
-      <Row
-        style={{
-          minWidth: 400,
-        }}
-      >
-        <Col xs={24} sm={12}>
-          <div className={styles.textSecondary}>状态</div>
-          <div className={styles.heading}>{subStatus[data.submitStatus]}</div>
-        </Col>
-      </Row>
-    );
+    // const extra = (
+    //   <Row
+    //     style={{
+    //       minWidth: 400,
+    //     }}
+    //   >
+    //     <Col xs={24} sm={12}>
+    //       <div className={styles.textSecondary}>状态</div>
+    //       <div className={styles.heading}>{subStatus[data.submitStatus]}</div>
+    //     </Col>
+    //   </Row>
+    // );
+    const extra = <p>aaa</p>;
 
-    const description = (
-      <Descriptions className={styles.headerList} size="small" column={2}>
-        <Descriptions.Item label="申报者">{data.studentName}</Descriptions.Item>
-        <Descriptions.Item label="作品编码">{data.id}</Descriptions.Item>
-        <Descriptions.Item label="院系名称">{data.college}</Descriptions.Item>
-        <Descriptions.Item label="作品类别">{comType[data.competitionType]}</Descriptions.Item>
-      </Descriptions>
-    );
+    // const description = (
+    //   <Descriptions className={styles.headerList} size="small" column={2}>
+    //     <Descriptions.Item label="申报者">{data.studentName}</Descriptions.Item>
+    //     <Descriptions.Item label="作品编码">{data.id}</Descriptions.Item>
+    //     <Descriptions.Item label="院系名称">{data.college}</Descriptions.Item>
+    //     <Descriptions.Item label="作品类别">{comType[data.competitionType]}</Descriptions.Item>
+    //   </Descriptions>
+    // );
+
+    const description = <p>bbb</p>;
 
     const { TextArea } = Input;
-
-    function onChange(value) {
-      console.log('changed', value);
-    }
 
     return (
       <PageHeaderWrapper title="作品名称" content={description} extraContent={extra}>
@@ -213,18 +279,18 @@ class Advanced extends Component<
         >
           <GridContent>
             <Card title="申报者信息" style={{ marginBottom: 24 }} bordered={false}>
-              <Descriptions style={{ marginBottom: 24 }}>
-                <Descriptions.Item label="姓名">{data.studentName}</Descriptions.Item>
-                <Descriptions.Item label="学号">{data.studentNumber}</Descriptions.Item>
-                <Descriptions.Item label="出生年月">{data.birthDay}</Descriptions.Item>
-                <Descriptions.Item label="现学历">{data.education}</Descriptions.Item>
-                <Descriptions.Item label="专业">{data.major}</Descriptions.Item>
-                <Descriptions.Item label="入学时间">{data.entryYear}</Descriptions.Item>
-                <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
-                <Descriptions.Item label="联系电话">{data.phone}</Descriptions.Item>
-                <Descriptions.Item label="邮箱">{data.email}</Descriptions.Item>
-                <Descriptions.Item label="通讯地址">{data.address}</Descriptions.Item>
-              </Descriptions>
+              {/*  <Descriptions style={{ marginBottom: 24 }}> */}
+              {/*    <Descriptions.Item label="姓名">{data.studentName}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="学号">{data.studentNumber}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="出生年月">{data.birthDay}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="现学历">{data.education}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="专业">{data.major}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="入学时间">{data.entryYear}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="联系电话">{data.phone}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="邮箱">{data.email}</Descriptions.Item> */}
+              {/*    <Descriptions.Item label="通讯地址">{data.address}</Descriptions.Item> */}
+              {/*  </Descriptions> */}
             </Card>
             <Card title="合作作者信息" bordered={false} style={{ marginBottom: 24 }}>
               <Table
@@ -236,13 +302,13 @@ class Advanced extends Component<
               />
             </Card>
             <Card title="作品信息" style={{ marginBottom: 24 }} bordered={false}>
-              <Descriptions style={{ marginBottom: 24 }} column={1}>
-                <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
-                <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item>
-                <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item>
-                <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item>
-                <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item>
-              </Descriptions>
+              {/* <Descriptions style={{ marginBottom: 24 }} column={1}> */}
+              {/*  <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item> */}
+              {/*  <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item> */}
+              {/*  <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item> */}
+              {/*  <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item> */}
+              {/*  <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item> */}
+              {/* </Descriptions> */}
             </Card>
           </GridContent>
           <Button
@@ -258,6 +324,7 @@ class Advanced extends Component<
           <Button
             icon="edit"
             type="primary"
+            loading={this.props.fetchAppraiseLoading}
             onClick={e => {
               this.showModal();
             }}
@@ -274,19 +341,45 @@ class Advanced extends Component<
               <Button key="back" onClick={this.handleCancel}>
                 返回
               </Button>,
-              <Button key="submit" type="primary" onClick={this.handleOk}>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={this.handleOk}
+                loading={this.props.saveAppraiseLoading}
+              >
                 提交
               </Button>,
             ]}
           >
-            <InputNumber
-              min={0}
-              max={100}
-              placeholder="请输入分数(1-100)"
-              onChange={onChange}
-              style={{ marginBottom: '3%', width: 150 }}
-            />
-            <TextArea placeholder="请输入评语" rows={4} />
+            <Form>
+              <FormItem>
+                {getFieldDecorator('score', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请填写分数！',
+                    },
+                  ],
+                })(
+                  <InputNumber
+                    min={0}
+                    max={100}
+                    placeholder="请输入分数(1-10)"
+                    style={{ marginBottom: '3%', width: 150 }}
+                  />,
+                )}
+              </FormItem>
+              <FormItem>
+                {getFieldDecorator('suggestion', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请填写评审内容！',
+                    },
+                  ],
+                })(<TextArea placeholder="请输入评语" rows={4} />)}
+              </FormItem>
+            </Form>
           </Modal>
         </div>
       </PageHeaderWrapper>
@@ -294,4 +387,4 @@ class Advanced extends Component<
   }
 }
 
-export default Advanced;
+export default Form.create<AdvancedProps>()(Advanced);
