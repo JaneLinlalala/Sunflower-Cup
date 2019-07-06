@@ -1,26 +1,44 @@
-import {Button, Card, Divider, Form, Modal, Table, Select} from 'antd';
-import React, {Component, Fragment} from 'react';
+import { Button, Card, Divider, Form, Modal, Select, Table } from 'antd';
+import React, { Component, Fragment } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
 // eslint-disable-next-line sort-imports
+import { routerRedux } from 'dva/router';
+import { Simulate } from 'react-dom/test-utils';
 import { StateType } from './model';
 import styles from './style.less';
-import {routerRedux} from "dva/router";
+
+import load = Simulate.load;
 const { Option } = Select;
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['未提交','已提交','已通过','未通过']
-const rewardStatus=['未获奖','一等奖','二等奖','三等奖']
+const subStatus = ['未提交', '已提交', '已通过', '未通过'];
+const rewardStatus = ['未获奖', '一等奖', '二等奖', '三等奖'];
 
 interface BasicListProps extends FormComponentProps {
   listState: StateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
-  location: {state:{id:string}}
+  location: { state: { id: string } };
+  tableLoading: boolean;
 }
 
-@connect(({ listState }: { listState: StateType }) => ({ listState, setReward:listState.setReward, }))
+@connect(
+  ({
+    listState,
+    loading,
+  }: {
+    listState: StateType;
+    loading: {
+      effects: { [key: string]: boolean };
+    };
+  }) => ({
+    listState,
+    setReward: listState.setReward,
+    tableLoading: loading.effects['listState/fetch'],
+  }),
+)
 class BasicList extends Component<BasicListProps> {
   state = {
     selectedRowKeys: [],
@@ -40,15 +58,15 @@ class BasicList extends Component<BasicListProps> {
     const { dispatch, listState } = this.props;
     this.setState({ loading: false });
     let selectedProject = '';
-    let count=this.state.selectedRowKeys.length;
+    let count = this.state.selectedRowKeys.length;
     for (let i = 0; i < count; i += 1) {
-      if(this.props.listState.list[i].rewardLevel===0){
+      if (this.props.listState.list[i].rewardLevel === 0) {
         selectedProject += this.props.listState.list[i].id;
         if (i !== count - 1) {
           selectedProject += ',';
         }
-      }
-      else {
+      } else {
+        // eslint-disable-next-line no-plusplus
         count++;
       }
     }
@@ -57,32 +75,41 @@ class BasicList extends Component<BasicListProps> {
       content: '确定设置该奖项吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listState/submit',
-        payload: { rewardLevel:listState.setReward, rewardProject:selectedProject },
-      }); location.reload(true);},
+      onOk: () => {
+        dispatch({
+          type: 'listState/submit',
+          payload: { rewardLevel: listState.setReward, rewardProject: selectedProject },
+        });
+        // eslint-disable-next-line no-restricted-globals
+        location.reload(true);
+      },
     });
   };
 
-  confirmSubmit=()=> {
+  confirmSubmit = () => {
     const { dispatch } = this.props;
+    // eslint-disable-next-line no-restricted-globals
     location.reload(true);
     Modal.confirm({
       title: '发布结果',
       content: '确定发布该决赛结果吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listState/finish',
-      }); location.reload(true);},
+      onOk: () => {
+        dispatch({
+          type: 'listState/finish',
+        });
+        // eslint-disable-next-line no-restricted-globals
+        location.reload(true);
+      },
     });
-  }
+  };
 
-  handleChange=(value:number) => {
-    const {listState } = this.props;
+  handleChange = (value: number) => {
+    const { listState } = this.props;
     console.log(`selected ${value}`);
     listState.setReward = value;
-  }
+  };
 
   onSelectChange = (selectedRowKeys: []) => {
     // eslint-disable-next-line no-console
@@ -90,21 +117,21 @@ class BasicList extends Component<BasicListProps> {
     this.setState({ selectedRowKeys });
   };
 
-  detail(pid: string, pname:string, sname:string, type:number, score:string) {
+  detail(pid: string, pname: string, sname: string, type: number, score: string) {
     const { dispatch } = this.props;
     const id = pid;
     dispatch(
       routerRedux.push({
         pathname: `/admin/scoreInfo/${id}`,
-        state: { id,pname, sname, type, score},
+        state: { id, pname, sname, type, score },
       }),
     );
   }
 
   render() {
     const { loading } = this.state;
-    const { list,comStatus } = this.props.listState;
-    const {form} = this.props;
+    const { list, comStatus } = this.props.listState;
+    const { tableLoading } = this.props;
     const columns = [
       {
         title: '项目名称',
@@ -134,7 +161,19 @@ class BasicList extends Component<BasicListProps> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.id, record.projectName, record.studentName, record.competitionType, record.averageScore)}>详情</a>
+            <a
+              onClick={() =>
+                this.detail(
+                  record.id,
+                  record.projectName,
+                  record.studentName,
+                  record.competitionType,
+                  record.averageScore,
+                )
+              }
+            >
+              详情
+            </a>
           </Fragment>
         ),
       },
@@ -144,8 +183,8 @@ class BasicList extends Component<BasicListProps> {
     const rowSelection = {
       selectedRowKeys: this.state.selectedRowKeys,
       onChange: this.onSelectChange,
-      getCheckboxProps: (record: { rewardLevel: number}) => ({
-        disabled: record.rewardLevel !=  '0', // Column configuration not to be checked
+      getCheckboxProps: (record: { rewardLevel: number }) => ({
+        disabled: record.rewardLevel !== '0', // Column configuration not to be checked
         rewardLevel: record.rewardLevel,
       }),
     };
@@ -162,17 +201,34 @@ class BasicList extends Component<BasicListProps> {
           >
             <div>
               奖项：
-              <Select  placeholder="请选择" style={{ width: 120, marginBottom:'3%', marginLeft:'1%'}} onChange={this.handleChange}>
-                  <Option value="1">一等奖</Option>
-                  <Option value="2">二等奖</Option>
-                  <Option value="3">三等奖</Option>
-              </Select>,
+              <Select
+                placeholder="请选择"
+                style={{ width: 120, marginBottom: '3%', marginLeft: '1%' }}
+                onChange={this.handleChange}
+              >
+                <Option value="1">一等奖</Option>
+                <Option value="2">二等奖</Option>
+                <Option value="3">三等奖</Option>
+              </Select>
+              ,
             </div>
-            <Table rowSelection={rowSelection} columns={columns} dataSource={list} />
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              dataSource={list}
+              loading={tableLoading}
+            />
             <Button icon="check" type="primary" onClick={this.handleSubmit} loading={loading}>
               确定
             </Button>
-            <Button icon="notification" type="primary" onClick={this.confirmSubmit} loading={loading} style={{marginLeft:'3%'}} disabled={comStatus}>
+            <Button
+              icon="notification"
+              type="primary"
+              onClick={this.confirmSubmit}
+              loading={loading}
+              style={{ marginLeft: '3%' }}
+              disabled={comStatus}
+            >
               发布
             </Button>
           </Card>
