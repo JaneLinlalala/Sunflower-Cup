@@ -10,6 +10,7 @@ export interface CompetitionListItemDataType {
   description: string;
   startTimeFormat: string;
   endTimeFormat: string;
+  competitionStatus: string;
 }
 
 export interface StateType {
@@ -40,7 +41,7 @@ const timeFormat = (time: string) => {
     timeStr += '0';
   }
   timeStr += `${date.getMonth() + 1}-`;
-  if ((date.getDate()).toString().length < 2) {
+  if (date.getDate().toString().length < 2) {
     timeStr += '0';
   }
   timeStr += `${date.getDate()}`;

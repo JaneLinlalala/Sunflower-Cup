@@ -99,6 +99,20 @@ class BasicList extends Component<BasicListProps> {
     });
   };
 
+  setRowClass1 = (record: CompetitionListItemDataType, index: number) => {
+    if (record.competitionStatus === 'doing') {
+      return styles.greenBk;
+    }
+    return '';
+  };
+
+  setRowClass2 = (record: CompetitionListItemDataType, index: number) => {
+    if (index === 0 && record.competitionStatus === 'over') {
+      return styles.yellowBk;
+    }
+    return '';
+  };
+
   render() {
     const { list } = this.props.listState;
     const { loading } = this.props;
@@ -161,7 +175,12 @@ class BasicList extends Component<BasicListProps> {
                 style={{ marginTop: 24 }}
                 bodyStyle={{ padding: '0 32px 40px 32px' }}
               >
-                <Table columns={columns} dataSource={list} loading={loading} />
+                <Table
+                  columns={columns}
+                  dataSource={list}
+                  loading={loading}
+                  rowClassName={(record, index) => this.setRowClass1(record, index)}
+                />
               </Card>
             </div>
           </Col>
@@ -174,7 +193,12 @@ class BasicList extends Component<BasicListProps> {
                 style={{ marginTop: 24 }}
                 bodyStyle={{ padding: '0 32px 40px 32px' }}
               >
-                <Table columns={columns2} dataSource={list} loading={loading} />
+                <Table
+                  columns={columns2}
+                  dataSource={list}
+                  loading={loading}
+                  rowClassName={(record, index) => this.setRowClass2(record, index)}
+                />
               </Card>
             </div>
           </Col>
