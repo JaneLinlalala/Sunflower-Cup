@@ -1,6 +1,5 @@
 import request from 'umi-request';
 import { BasicListItemDataType } from './data.d';
-import token from '@/utils/token';
 import config from '@/utils/config';
 
 interface ParamsType extends Partial<BasicListItemDataType> {
@@ -20,3 +19,18 @@ export async function backFakeList(params) {
     data:params,
   });
 }
+
+export async function passAllFakeList(params) {
+  return request(`${config.domain}/passFirstTest`, {
+    method: 'POST',
+    data:params,
+  });
+}
+
+export async function rejectAllFakeList(params) {
+  return request(`${config.domain}/rejectFirstTest`, {
+    method: 'POST',
+    data:params,
+  });
+}
+

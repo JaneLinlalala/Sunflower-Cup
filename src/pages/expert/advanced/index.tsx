@@ -244,18 +244,27 @@ class Advanced extends Component<AdvancedProps> {
     }
   };
 
-  download = () => {
+  download = (url:string) =>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'profileAdvanced/downloadFile',
-      payload: {},
-    });
+    var Url_arr = url.split(";");
+    for(let i=0; i<Url_arr.length-1;i++){
+      console.log(i,Url_arr[i]);
+      const url= Url_arr[i]
+      dispatch({
+        type: 'profileAdvanced/downloadFile',
+        payload: {
+          url,
+        },
+      });
+    }
   };
 
   render() {
     const { visible } = this.state;
     const { loading, data, form } = this.props;
     const { getFieldDecorator } = form;
+    const pdf = "http://180.76.233.101:8080/api/DownloadPDF?id="+data.id;
+    const zip = "http://180.76.233.101/uploadfile/"+data.studentId+".zip";
 
     const extra = (
       <Row
@@ -325,26 +334,36 @@ class Advanced extends Component<AdvancedProps> {
               </Descriptions>
             </Card>
           </GridContent>
-          <Button
-            icon="download"
-            type="primary"
-            onClick={e => {
-              this.download();
-            }}
-          >
-            下载
-          </Button>
-          <Button
-            icon="edit"
-            type="primary"
-            loading={this.props.fetchAppraiseLoading}
-            onClick={e => {
-              this.showModal();
-            }}
-            style={{ marginLeft: '3%' }}
-          >
-            评审
-          </Button>
+          <div>
+            <Button icon="download" type="primary" href={pdf}>
+              下载表格
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.docUrl)}} style={{marginLeft:'3%'}}>
+              下载文档
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.picUrl)}} style={{marginLeft:'3%'}}>
+              下载图片
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.videoUrl)}} style={{marginLeft:'3%'}}>
+              下载视频
+            </Button>
+          </div>
+          <div style={{marginTop:'2%'}}>
+            <Button icon="download" type="primary" href={zip}>
+              打包下载
+            </Button>
+            <Button
+              icon="edit"
+              type="default"
+              loading={this.props.fetchAppraiseLoading}
+              onClick={e => {
+                this.showModal();
+              }}
+              style={{ marginLeft: '3%',width:'9.4%',backgroundColor:'#ffcc99',color:'black' }}
+            >
+              评审
+            </Button>
+          </div>
           <Modal
             visible={visible}
             title="请输入评审结果"

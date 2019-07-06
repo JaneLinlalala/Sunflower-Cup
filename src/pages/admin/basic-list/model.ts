@@ -1,6 +1,6 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { queryFakeList,backFakeList } from './service';
+import { queryFakeList,backFakeList,passAllFakeList,rejectAllFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
 
@@ -21,6 +21,8 @@ export interface ModelType {
     fetch: Effect;
     appendFetch: Effect;
     back:Effect;
+    passAll:Effect;
+    rejectAll:Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -45,6 +47,20 @@ const Model: ModelType = {
     },
     *back({ payload }, { call, put }) {
       const response = yield call(backFakeList, payload);
+      yield put({
+        type: 'queryList',
+        payload: response,
+      });
+    },
+    *passAll({ payload }, { call, put }) {
+      const response = yield call(passAllFakeList, payload);
+      yield put({
+        type: 'queryList',
+        payload: response,
+      });
+    },
+    *rejectAll({ payload }, { call, put }) {
+      const response = yield call(rejectAllFakeList, payload);
       yield put({
         type: 'queryList',
         payload: response,

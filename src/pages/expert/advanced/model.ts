@@ -3,6 +3,7 @@ import { EffectsCommandMap } from 'dva';
 // eslint-disable-next-line sort-imports
 import { AdvancedProfileData, AppraiseData } from './data.d';
 import { downloadZipFile, getAppraise, queryAdvancedProfile, updateAppraise } from './service';
+import {getdownloadFile} from "@/pages/participant/advanced/service";
 
 export type Effect = (
   action: AnyAction,
@@ -49,10 +50,11 @@ const Model: ModelType = {
       });
     },
 
-    *downloadFile(_, { call, put }) {
-      const response = yield call(downloadZipFile);
+    *downloadFile({payload}, { call, put }) {
+      console.log(payload.url)
+      const response = yield call(getdownloadFile,payload.url);
       yield put({
-        type: 'down',
+        type: 'show',
         payload: response,
       });
     },

@@ -61,7 +61,12 @@ interface BasicListState {
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
-  state: BasicListState = { visible: false, done: false, current: undefined };
+  state ={
+    visible: false,
+    done: false,
+    current: undefined,
+    selectedRowKeys: [],
+  };
 
   formLayout = {
     labelCol: { span: 7 },
@@ -107,6 +112,75 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     this.setState({
       visible: false,
     });
+  };
+
+  handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { dispatch, adminListBasicList} = this.props;
+    this.setState({ loading: false });
+    let selectedProject = '';
+    let count = this.state.selectedRowKeys.length;
+    for (let i = 0; i < count; i += 1) {
+      selectedProject += this.props.adminListBasicList.list[this.state.selectedRowKeys[i]].id;
+      if (i !== count - 1) {
+        selectedProject += ',';
+      }
+      // if(this.props.adminListBasicList.list[i].submitStatus===1){
+      //   selectedProject += this.props.adminListBasicList.list[i].id;
+      //   if (i !== count - 1) {
+      //     selectedProject += ',';
+      //   }
+      // } else {
+      //   // eslint-disable-next-line no-plusplus
+      //   count++;
+      // }
+    }
+    Modal.confirm({
+      title: '批量通过',
+      content: '确定批量通过这些作品吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+        type: 'adminListBasicList/passAll',
+        payload: { projectId:selectedProject },
+      });
+        location.reload(true);
+        },
+    });
+  };
+
+  handleReject = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { dispatch, adminListBasicList} = this.props;
+    this.setState({ loading: false });
+    let selectedProject = '';
+    let count = this.state.selectedRowKeys.length;
+    for (let i = 0; i < count; i += 1) {
+      selectedProject += this.props.adminListBasicList.list[this.state.selectedRowKeys[i]].id;
+      if (i !== count - 1) {
+        selectedProject += ',';
+      }
+    }
+    Modal.confirm({
+      title: '批量不通过',
+      content: '确定批量不通过这些作品吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        dispatch({
+          type: 'adminListBasicList/rejectAll',
+          payload: { projectId:selectedProject },
+        });
+        location.reload(true);
+      },
+    });
+  };
+
+  onSelectChange = (selectedRowKeys: []) => {
+    // eslint-disable-next-line no-console
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    this.setState({ selectedRowKeys });
   };
 
   backItem = (projectId: number) => {
@@ -212,6 +286,16 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       },
     ];
 
+    // @ts-ignore
+    const rowSelection = {
+      selectedRowKeys: this.state.selectedRowKeys,
+      onChange: this.onSelectChange,
+      getCheckboxProps: (record: { rewardLevel: number }) => ({
+        disabled: record.submitStatus !== 1, // Column configuration not to be checked
+        rewardLevel: record.rewardLevel,
+      }),
+    };
+
     return (
       <>
         <PageHeaderWrapper>
@@ -220,9 +304,11 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               className={styles.listCard}
               bordered={false}
               style={{ marginTop: 24 }}
-              bodyStyle={{ padding: '0 32px 40px 32px' }}
+              bodyStyle={{ padding: '40px 32px 40px 32px' }}
             >
-              <Table columns={columns} dataSource={list} loading={loading} />
+              <Table rowSelection={rowSelection} columns={columns} dataSource={list} loading={loading} />
+              <Button icon="check" type="default" onClick={this.handleSubmit} style={{width:'8.5%'}}>通过</Button>
+              <Button icon="stop" type="danger" style={{marginLeft:'3%'}} onClick={this.handleReject}>不通过</Button>
             </Card>
           </div>
         </PageHeaderWrapper>

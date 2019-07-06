@@ -147,13 +147,19 @@ class Advanced extends Component<
     }
   };
 
-  download = () =>{
+  download = (url:string) =>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'profileAdvanced/downloadFile',
-      payload: {
-      },
-    });
+    var Url_arr = url.split(";");
+    for(let i=0; i<Url_arr.length-1;i++){
+      console.log(i,Url_arr[i]);
+      const url= Url_arr[i]
+      dispatch({
+        type: 'profileAdvanced/downloadFile',
+        payload: {
+          url,
+        },
+      });
+    }
   };
 
   pass = (pid :string) =>{
@@ -191,6 +197,8 @@ class Advanced extends Component<
   render() {
     const { profileAdvanced, loading, data} = this.props;
     const {friends} = data;
+    const pdf = "http://180.76.233.101:8080/api/DownloadPDF?id="+data.id;
+    const zip = "http://180.76.233.101/uploadfile/"+data.studentId+".zip";
 
     const extra = (
       <Row
@@ -266,15 +274,41 @@ class Advanced extends Component<
               </Descriptions>
             </Card>
           </GridContent>
-          <Button icon="download" type="primary" onClick={e=>{this.download()}}>
-            下载
-          </Button>
-          <Button icon="check" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.pass(data.id)}} disabled={!(data.submitStatus===1)}>
-            通过
-          </Button>
-          <Button icon="stop" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.reject(data.id)}} disabled={!(data.submitStatus===1)}>
-            拒绝
-          </Button>
+          <div>
+            <Button icon="download" type="primary" href={pdf}>
+              下载表格
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.docUrl)}} style={{marginLeft:'3%'}}>
+              下载pdf
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.picUrl)}} style={{marginLeft:'3%'}}>
+              下载图片
+            </Button>
+            <Button icon="download" type="primary" onClick={e=>{this.download(data.videoUrl)}} style={{marginLeft:'3%'}}>
+              下载视频
+            </Button>
+            <Button icon="download" type="primary" href={zip} style={{marginLeft:'3%'}}>
+              打包下载
+            </Button>
+          </div>
+          <div style={{marginTop:'2%'}}>
+            <Button
+              icon="check"
+              type="default"
+              onClick={e=>{this.pass(data.id)}}
+              disabled={!(data.submitStatus===1)}
+              style={{width:'9.4%'}}>
+              通过
+            </Button>
+            <Button
+              icon="stop"
+              type="danger"
+              style={{marginLeft:'3%',width:'9%'}}
+              onClick={e=>{this.reject(data.id)}}
+              disabled={!(data.submitStatus===1)}>
+              拒绝
+            </Button>
+          </div>
         </div>
       </PageHeaderWrapper>
     );
