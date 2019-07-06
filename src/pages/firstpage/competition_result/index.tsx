@@ -98,10 +98,10 @@ class BasicList extends Component<BasicListProps> {
             <Card title='一等奖'>
               <Table columns={columns} dataSource={list11} bordered={false}/>
             </Card>
-            <Card title='二等奖'>
+            <Card title='二等奖'  style={{ marginTop: 24 }}>
               <Table columns={columns} dataSource={list12} bordered={false}/>
             </Card>
-            <Card title='三等奖'>
+            <Card title='三等奖'  style={{ marginTop: 24 }}>
               <Table columns={columns} dataSource={list13} bordered={false}/>
             </Card>
           </Card>

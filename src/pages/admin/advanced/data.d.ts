@@ -68,7 +68,7 @@ export interface ListItemDataType {
   address: string;
   phone: string;
   email: string;
-  friends: FriendList[];
+  friends: [];
   projectType: string;
   details: string;
   invention: string;

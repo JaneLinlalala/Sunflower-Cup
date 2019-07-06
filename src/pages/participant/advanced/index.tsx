@@ -214,7 +214,7 @@ class Advanced extends Component<
                 style={{ marginBottom: 16 }}
                 pagination={false}
                 loading={loading}
-                dataSource={testFriend}
+                dataSource={data.friends}
                 columns={columns}
               />
             </Card>

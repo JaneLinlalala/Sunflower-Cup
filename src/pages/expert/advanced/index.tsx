@@ -310,7 +310,7 @@ class Advanced extends Component<AdvancedProps> {
                 style={{ marginBottom: 16 }}
                 pagination={false}
                 loading={loading}
-                dataSource={testFriend}
+                dataSource={data.friends}
                 columns={columns}
               />
             </Card>

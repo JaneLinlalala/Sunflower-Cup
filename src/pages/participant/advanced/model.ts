@@ -52,6 +52,8 @@ const Model: ModelType = {
 
   reducers: {
     show(state, { payload }) {
+      payload.friends = JSON.parse(payload.friends);
+      console.log(payload.friends);
       return {
         ...state,
         data: payload,
