@@ -13,6 +13,7 @@ import currentUserName from '@/utils/currentUserName';
 // eslint-disable-next-line sort-imports
 import { CompetitionListItemDataType, StateType } from './model';
 import styles from './style.less';
+import image from '@/utils/home.jpg';
 
 const ButtonGroup = Button.Group;
 

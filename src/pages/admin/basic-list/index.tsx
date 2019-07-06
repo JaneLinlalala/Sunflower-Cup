@@ -125,29 +125,30 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       if (i !== count - 1) {
         selectedProject += ',';
       }
-      // if(this.props.adminListBasicList.list[i].submitStatus===1){
-      //   selectedProject += this.props.adminListBasicList.list[i].id;
-      //   if (i !== count - 1) {
-      //     selectedProject += ',';
-      //   }
-      // } else {
-      //   // eslint-disable-next-line no-plusplus
-      //   count++;
-      // }
     }
-    Modal.confirm({
-      title: '批量通过',
-      content: '确定批量通过这些作品吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-        type: 'adminListBasicList/passAll',
-        payload: { projectId:selectedProject },
-      });
-        location.reload(true);
+    if (this.state.selectedRowKeys.length !== 0) {
+      Modal.confirm({
+        title: '批量通过',
+        content: '确定批量通过这些作品吗？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          dispatch({
+            type: 'adminListBasicList/passAll',
+            payload: { projectId:selectedProject },
+          });
+          location.reload(true);
         },
-    });
+      });
+    }
+    else {
+      Modal.error({
+        title: '未选择项目！',
+        content: '请选择项目后再点击确定。',
+        okText: '确认',
+        cancelText: '取消',
+      });
+    }
   };
 
   handleReject = (e: React.FormEvent) => {
@@ -162,19 +163,29 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         selectedProject += ',';
       }
     }
-    Modal.confirm({
-      title: '批量不通过',
-      content: '确定批量不通过这些作品吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'adminListBasicList/rejectAll',
-          payload: { projectId:selectedProject },
-        });
-        location.reload(true);
-      },
-    });
+    if (this.state.selectedRowKeys.length !== 0) {
+      Modal.confirm({
+        title: '批量不通过',
+        content: '确定批量不通过这些作品吗？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          dispatch({
+            type: 'adminListBasicList/rejectAll',
+            payload: { projectId:selectedProject },
+          });
+          location.reload(true);
+        },
+      });
+    }
+    else{
+      Modal.error({
+        title: '未选择项目！',
+        content: '请选择项目后再点击确定。',
+        okText: '确认',
+        cancelText: '取消',
+      });
+    }
   };
 
   onSelectChange = (selectedRowKeys: []) => {
