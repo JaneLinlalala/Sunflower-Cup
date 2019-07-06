@@ -127,8 +127,16 @@ export default {
               path: '/workplace',
               name: '新闻通知',
               icon: 'reconciliation',
-              component: './user/workplace',
+              component: './firstpage/news',
               authority: ['admin', 'user', 'expert'],
+            },
+            {
+              path: '/firstpage/competition_result',
+              name: '竞赛结果',
+              icon: 'reconciliation',
+              component: './firstpage/competition_result',
+              authority: ['admin', 'user', 'expert'],
+              hideInMenu: true,
             },
             {
               path: '/participant/step-form/:pid',

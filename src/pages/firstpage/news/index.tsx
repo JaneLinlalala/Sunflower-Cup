@@ -1,4 +1,4 @@
-import { Button, Card, Form, Table } from 'antd';
+import {Avatar, Button, Card, Form, Skeleton, Table} from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -11,8 +11,8 @@ import { StateType, CompetitionListItemDataType } from './model';
 import styles from './style.less';
 import Row from "antd/es/grid/row";
 import Col from "antd/es/grid/col";
-import { Link } from "react-router-dom";
-import {routerRedux} from "dva/router";
+import {CurrentUser} from "@/pages/user/workplace/data";
+import currentUserName from "@/utils/currentUserName";
 
 const ButtonGroup = Button.Group;
 
@@ -22,6 +22,26 @@ interface BasicListProps extends FormComponentProps {
   dispatch: Dispatch<any>;
   location: { state: { id: string } };
 }
+
+const PageHeaderContent: React.FC<{  }> = ({ }) => {
+  return (
+    <div className={styles.pageHeaderContent}>
+      <div className={styles.avatar}>
+        <Avatar size="large" src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png" />
+      </div>
+      <div className={styles.content}>
+        <div className={styles.contentTitle}>
+          你好，
+          {currentUserName.get()}
+          ，祝你开心每一天！
+        </div>
+        <div>
+          欢迎登入向日葵杯竞赛申报系统！
+        </div>
+      </div>
+    </div>
+  );
+};
 
 @connect(({ listState }: { listState: StateType }) => ({ listState }))
 class BasicList extends Component<BasicListProps> {
@@ -68,7 +88,7 @@ class BasicList extends Component<BasicListProps> {
 
   render() {
     const { list } = this.props.listState;
-    console.log(list);
+    const { currentUser} = this.props;
     const columns = [
       {
         title: '竞赛名称',
@@ -123,6 +143,7 @@ class BasicList extends Component<BasicListProps> {
 
     // @ts-ignore
     return (
+      <PageHeaderWrapper content={<PageHeaderContent />}>
         <Row gutter = {24}>
           <Col xl={14} lg={24} md={24} sm={24} xs={24}>
             <div className={styles.standardList}>
@@ -151,6 +172,7 @@ class BasicList extends Component<BasicListProps> {
             </div>
           </Col>
         </Row>
+      </PageHeaderWrapper>
     );
   }
 }
