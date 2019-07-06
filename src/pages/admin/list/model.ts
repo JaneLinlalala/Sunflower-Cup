@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
 import { Modal } from 'antd';
-import { queryExpertList, submitExpertList } from './service';
+import { queryExpertList, submitExpertList,finishExpertList } from './service';
 
 export interface ProjectListItemDataType {
   id: string; //projectId
@@ -30,6 +30,7 @@ export interface ModelType {
   effects: {
     fetch: Effect;
     submit: Effect;
+    finish: Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -50,6 +51,13 @@ const Model: ModelType = {
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(queryExpertList, payload);
+      yield put({
+        type: 'queryList',
+        payload: response,
+      });
+    },
+    *finish({ payload }, { call, put }) {
+      const response = yield call(finishExpertList, payload);
       yield put({
         type: 'queryList',
         payload: response,

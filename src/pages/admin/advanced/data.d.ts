@@ -41,7 +41,8 @@ export interface AdvancedOperation3 {
   videoUrl: string;
   averageScore: string;
   submitStatus: string;
-  studentId: 5
+  studentId: string;
+  additionalMessage:string;
 }
 
 export interface AdvancedProfileData {
@@ -78,6 +79,7 @@ export interface ListItemDataType {
   averageScore: string;
   submitStatus: string;
   studentId: string;
+  additionalMessage:string;
 }
 
 export interface FriendList {

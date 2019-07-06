@@ -114,6 +114,12 @@ export default {
               component: './user/register-expert',
             },
             {
+              path: '/user/invitation-result',
+              name: '邀请结果',
+              component: './user/invitation-result',
+              hideInMenu: true,
+            },
+            {
               component: '404',
             },
           ],
@@ -124,19 +130,19 @@ export default {
           Routes: ['src/pages/Authorized'],
           routes: [
             {
-              path: '/firstpage',
-              name: '首页',
+              path: '/workplace',
+              name: '新闻通知',
               icon: 'reconciliation',
               component: './firstpage/news',
               authority: ['admin', 'user', 'expert'],
             },
             {
-              path:'firstpage/competition_result',
+              path: '/firstpage/competition_result',
               name: '竞赛结果',
+              icon: 'reconciliation',
               component: './firstpage/competition_result',
               authority: ['admin', 'user', 'expert'],
               hideInMenu: true,
-
             },
             {
               path: '/participant/step-form/:pid',
@@ -168,15 +174,8 @@ export default {
               hideInMenu: true,
             },
             {
-              path: '/participant/advanced-form/:pid',
-              name: '添加作品2',
-              icon: 'form',
-              component: './participant/advanced-form',
-              authority: ['user'],
-            },
-            {
               path: '/expert/basic-list',
-              name: '作品列表-专家',
+              name: '作品列表',
               icon: 'profile',
               component: './expert/basic-list',
               authority: ['expert'],

@@ -1,4 +1,4 @@
-import { Button, Card, Form, Table, Empty } from 'antd';
+import { Button, Card, Form, Table, Empty,Divider } from 'antd';
 import React, { Component } from 'react';
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
@@ -70,62 +70,43 @@ class BasicList extends Component<BasicListProps> {
 
       );
     }else  return (
-      <div className={styles.standardList}>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="科技发明制作一等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list01} />
-        </Card>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="科技发明制作二等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list02} />
-        </Card>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="科技发明制作三等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list03} />
-        </Card>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="调查报告和学术论文一等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list11} />
-        </Card>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="调查报告和学术论文二等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list12} />
-        </Card>
-        <Card
-          className={styles.listCard}
-          bordered={false}
-          title="调查报告和学术论文三等奖"
-          style={{ marginTop: 24 }}
-          bodyStyle={{ padding: '0 32px 40px 32px' }}
-        >
-          <Table columns={columns} dataSource={list13} />
-        </Card>
-      </div>
+      <PageHeaderWrapper>
+        <div className={styles.main}>
+          <Card
+            bordered={false}
+            title="科技发明制作"
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '40px 32px 40px 32px' }}
+          >
+            <Card title='一等奖' >
+              <Table columns={columns} dataSource={list01}/>
+            </Card>
+            <Card title='二等奖' style={{ marginTop: 24 }}>
+              <Table columns={columns} dataSource={list02} bordered={false}/>
+            </Card>
+            <Card title='三等奖' style={{ marginTop: 24 }}>
+              <Table columns={columns} dataSource={list03} bordered={false}/>
+            </Card>
+          </Card>
+          <Card
+            className={styles.listCard}
+            bordered={false}
+            title="调查报告和学术论文"
+            style={{ marginTop: 24 }}
+            bodyStyle={{ padding: '40px 32px 40px 32px' }}
+          >
+            <Card title='一等奖'>
+              <Table columns={columns} dataSource={list11} bordered={false}/>
+            </Card>
+            <Card title='二等奖'>
+              <Table columns={columns} dataSource={list12} bordered={false}/>
+            </Card>
+            <Card title='三等奖'>
+              <Table columns={columns} dataSource={list13} bordered={false}/>
+            </Card>
+          </Card>
+        </div>
+      </PageHeaderWrapper>
     );
   }
 }

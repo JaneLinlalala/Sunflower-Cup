@@ -1,28 +1,29 @@
 import request from 'umi-request';
 import { BasicListItemDataType } from './data.d';
+import config from '@/utils/config';
 
 interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
-export async function queryFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/ViewWorkList', {
+export async function queryFakeList(params) {
+  return request(`${config.domain}/getJudgeListForExpert`, {
     method: 'POST',
-    data:{"studentId":5}
+    data:params,
   });
 }
 
 export async function deleteFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/DeleteWork', {
+  return request(`${config.domain}/api/DeleteWork`, {
     method: 'POST',
-    data:{"id":11}
+    data: { id: 11 },
   });
 }
 
-export async function submitFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/FinishWork', {
+export async function submitFakeList(params) {
+  return request(`${config.domain}/finishJudge`, {
     method: 'POST',
-    data:{"id":11}
+    data: params,
   });
 }
 

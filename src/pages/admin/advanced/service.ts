@@ -3,7 +3,7 @@ import config from '@/utils/config';
 import token from '@/utils/'
 
 export async function queryAdvancedProfile(params) {
-  return request(`${config.domain}/api/ViewWorkInfo`, {
+  return request(`${config.domain}/api/ViewWorkInfoForJane`, {
     method: 'POST',
     headers: {
       cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",

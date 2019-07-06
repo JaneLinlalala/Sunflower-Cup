@@ -52,17 +52,29 @@ class BasicList extends Component<BasicListProps> {
         count++;
       }
     }
-    dispatch({
-      type: 'listState/submit',
-      payload: { rewardLevel:listState.setReward, rewardProject:selectedProject },
+    Modal.confirm({
+      title: '设置奖项',
+      content: '确定设置该奖项吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {dispatch({
+        type: 'listState/submit',
+        payload: { rewardLevel:listState.setReward, rewardProject:selectedProject },
+      }); location.reload(true);},
     });
   };
 
   confirmSubmit=()=> {
     const { dispatch } = this.props;
-    dispatch({
-      type: 'listState/fetch',
-      // payload: { projectId: this.props.location.state.id},
+    location.reload(true);
+    Modal.confirm({
+      title: '发布结果',
+      content: '确定发布该决赛结果吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {dispatch({
+        type: 'listState/finish',
+      }); location.reload(true);},
     });
   }
 
@@ -160,7 +172,7 @@ class BasicList extends Component<BasicListProps> {
             <Button icon="check" type="primary" onClick={this.handleSubmit} loading={loading}>
               确定
             </Button>
-            <Button icon="notification" type="primary" onClick={this.confirmSubmit} loading={loading} style={{marginLeft:'3%'}} disabled={!comStatus}>
+            <Button icon="notification" type="primary" onClick={this.confirmSubmit} loading={loading} style={{marginLeft:'3%'}} disabled={comStatus}>
               发布
             </Button>
           </Card>
