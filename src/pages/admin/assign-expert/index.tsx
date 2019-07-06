@@ -49,8 +49,8 @@ class BasicList extends Component<BasicListProps> {
             emails: '',
           };
           for (let i = 0; i < this.state.selectedRowKeys.length; i += 1) {
-            selected.emails += this.props.listState.list[i].email;
-            selected.expertId += this.props.listState.list[i].id;
+            selected.emails += this.props.listState.list[this.state.selectedRowKeys[i]].email;
+            selected.expertId += this.props.listState.list[this.state.selectedRowKeys[i]].id;
             if (i !== this.state.selectedRowKeys.length - 1) {
               selected.emails += ',';
               selected.expertId += ',';
