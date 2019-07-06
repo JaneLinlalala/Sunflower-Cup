@@ -54,7 +54,6 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
           </div>
           {children}
         </div>
-        <DefaultFooter />
       </div>
     </DocumentTitle>
   );
