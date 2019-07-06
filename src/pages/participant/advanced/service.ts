@@ -9,16 +9,6 @@ export async function queryAdvancedProfile(params) {
   });
 }
 
-export async function downloadZipFile() {
-  return request('http://liuterry.cn:8080/api/DownloadPDF', {
-    method: 'POST',
-    headers: {
-      cookies: "4ed3b26bf9a440fdbeb6dd9c266fc901",
-    },
-    data:{"id":5}
-  });
-}
-
 function download(data, strFileName, strMimeType) {
   var self = window, // this script is only for browsers anyway...
     defaultMime = 'application/octet-stream', // this default mime also triggers iframe downloads

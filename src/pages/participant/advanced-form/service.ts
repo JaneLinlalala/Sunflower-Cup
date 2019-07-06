@@ -1,10 +1,11 @@
 import request from 'umi-request';
 import token from "@/utils/token";
 import {StateType} from "@/pages/participant/advanced-form/model";
+import config from "@/utils/config";
 
 const curToken=token.get();
 export async function Query(params) {
-  return request('http://180.76.233.101:8080/api/ViewWorkInfo', {
+  return request(`${config.domain}/api/ViewWorkInfo`, {
     method: 'POST',
     headers:{
       cookies:curToken,
@@ -14,7 +15,7 @@ export async function Query(params) {
 }
 
 export async function Submit(params: StateType) {
-  return request('http://180.76.233.101:8080/api/UpdateWork', {
+  return request(`${config.domain}/api/UpdateWork`, {
       method: 'POST',
       headers: {
         cookies:curToken,
