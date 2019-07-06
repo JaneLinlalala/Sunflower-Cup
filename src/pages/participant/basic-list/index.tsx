@@ -183,7 +183,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     const id = pid;
     dispatch(
       routerRedux.push({
-        pathname: `/participant/step-form/${id}`,
+        pathname: `/participant/advanced-form/${id}`,
         state:{id}
       })
     );
