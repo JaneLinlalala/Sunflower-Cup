@@ -231,9 +231,9 @@ class BasicList extends Component<BasicListProps, BasicListState> {
             <Divider type="vertical" />
             <a onClick={() => this.detail(record.id)}>详情</a>
             <Divider type="vertical" />
-            <a key="submit" onClick={e=>{this.submitItem(record.id)}}>提交</a>
+            <a key="submit" onClick={e=>{this.submitItem(record.id)}} disabled={record.submitStatus}>提交</a>
             <Divider type="vertical" />
-            <a key="delete" onClick={e=>{this.deleteItem(record.id)}}>删除</a>
+            <a key="delete" onClick={e=>{this.deleteItem(record.id)}} disabled={record.submitStatus}>删除</a>
           </Fragment>
         ),
       },

@@ -27,7 +27,7 @@ import styles from './style.less';
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const proType = ['机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）', '信息技术（包括计算机、电信、通讯、电子等）','数理（包括数学、物理、地球与空间科学等）','生命科学(包括生物､农学､药学､医学､健康､卫生､食品等)','能源化工（包括能源、材料、石油、化学、化工、生态、环保等）','哲学社会科学（包括哲学、经济、社会、法律、教育、管理）'];
-const subStatus=['已提交','未提交','已通过','未通过']
+const subStatus=['未提交','已提交','已通过','未通过']
 
 const columns = [
   {
@@ -104,14 +104,12 @@ class Advanced extends Component<
     testName: string;
     loadingStatus: true;
     buttonDisabled: false;
-    changeStatus:boolean;
   } = {
     operationKey: 'tab1',
     stepDirection: 'horizontal',
     testName:'xxx',
     loadingStatus: true,
     buttonDisabled: false,
-    changeStatus:false,
   };
 
   componentDidMount() {
@@ -159,7 +157,6 @@ class Advanced extends Component<
 
   pass = (pid :string) =>{
     const { dispatch } = this.props;
-    this.state.changeStatus=true;
     dispatch({
       type: 'profileAdvanced/passAdvanced',
       payload: {
@@ -170,7 +167,6 @@ class Advanced extends Component<
 
   reject = (pid :string) =>{
     const { dispatch } = this.props;
-    this.state.changeStatus=true;
     dispatch({
       type: 'profileAdvanced/rejectAdvanced',
       payload: {
@@ -261,10 +257,10 @@ class Advanced extends Component<
           <Button icon="download" type="primary" onClick={e=>{this.download()}}>
             下载
           </Button>
-          <Button icon="check" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.pass(data.id)}} disabled={this.state.changeStatus}>
+          <Button icon="check" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.pass(data.id)}} disabled={!(data.submitStatus===1)}>
             通过
           </Button>
-          <Button icon="stop" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.reject(data.id)}} disabled={this.state.changeStatus}>
+          <Button icon="stop" type="primary" style={{marginLeft:'3%'}} onClick={e=>{this.reject(data.id)}} disabled={!(data.submitStatus===1)}>
             拒绝
           </Button>
         </div>

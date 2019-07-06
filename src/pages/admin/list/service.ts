@@ -17,3 +17,10 @@ export async function submitExpertList(params: { receivers: string }) {
     data: params,
   });
 }
+
+export async function finishExpertList() {
+  return request(`${config.domain}/finishCompetition`, {
+    method: 'POST',
+    data: {},
+  });
+}
