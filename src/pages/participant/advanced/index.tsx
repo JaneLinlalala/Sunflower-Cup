@@ -234,7 +234,7 @@ class Advanced extends Component<
               <Descriptions style={{ marginBottom: 24 }} column={1}>
                 <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
                 <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item>
-                <Descriptions.Item label={displayType[data.competitionType]}>{proType[data.projectType]}</Descriptions.Item>
+                <Descriptions.Item label={displayType[data.competitionType]}>{data.additionalMessage}</Descriptions.Item>
                 <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item>
                 <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item>
                 <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item>

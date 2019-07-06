@@ -29,6 +29,8 @@ import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
 import moment from '@/pages/list/table-list';
+import currentUserId from '@/utils/currentUserId';
+import currentUserName from '@/utils/currentUserName';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus = ['未提交', '已提交', '已通过', '未通过'];
@@ -73,7 +75,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     dispatch({
       type: 'listBasicList/fetch',
       payload: {
-        count: 5,
+        studentId: currentUserId.get(),
       },
     });
   }
@@ -126,19 +128,19 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  deleteItem = () => {
+  backItem = (projectId:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
-      title: '删除任务',
-      content: '确定删除该任务吗？',
+      title: '撤回作品',
+      content: '确定撤回该作品吗？',
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
         dispatch({
-          type: 'listBasicList/delete',
-          payload: {},
+          type: 'listBasicList/back',
+          payload: {projectId},
         });
-        this.componentDidMount();
+        location.reload(true);
       },
     });
   };
@@ -223,7 +225,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
             <a
               key="delete"
               onClick={e => {
-                this.deleteItem();
+                this.backItem(record.id);
               }}
               disabled={record.submitStatus-1}
             >

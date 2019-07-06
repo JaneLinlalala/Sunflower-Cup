@@ -90,6 +90,23 @@ class Register extends Component<userRegisterProps, userRegisterState> {
 
   interval: number | undefined = undefined;
 
+  componentDidMount(): void {
+    const {dispatch} = this.props;
+    const query = this.props.location.search ;// '?expertId=4&projectId=12'
+    const arr = query.split('&'); // ['?expertId=4', 'projectId=12']
+    const eid = arr[0].substr(10); // '4'
+    const pid = arr[1].substr(10); // '7'
+    console.log(eid);
+    console.log(pid);
+    dispatch({
+      type: 'userRegister/pass',
+      payload: {
+        projectId:pid,
+        expertId:eid,
+      },
+    });
+  }
+
   componentDidUpdate() {
     const { userRegister, form } = this.props;
     const account = form.getFieldValue('email');

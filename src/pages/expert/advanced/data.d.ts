@@ -23,7 +23,7 @@ export interface AdvancedOperation3 {
   competitionType: string;
   studentName: string;
   studentNumber: string;
-  birthDay: string
+  birthDay: string;
   education: string;
   major: string;
   entryYear: string;
@@ -41,15 +41,23 @@ export interface AdvancedOperation3 {
   videoUrl: string;
   averageScore: string;
   submitStatus: string;
-  studentId: 5
+  studentId: 5;
 }
 
 export interface AdvancedProfileData {
-  data:{};
+  data: {};
   file: File;
+  appraise: AppraiseData;
+  fetchAppraiseStatus: undefined | string;
+  saveAppraiseStatus: undefined | string;
   advancedOperation1: AdvancedOperation1[];
   advancedOperation2: AdvancedOperation2[];
   advancedOperation3: AdvancedOperation3[];
+}
+
+export interface AppraiseData {
+  score: number;
+  suggestion: string;
 }
 
 export interface ListItemDataType {
@@ -59,7 +67,7 @@ export interface ListItemDataType {
   competitionType: string;
   studentName: string;
   studentNumber: string;
-  birthDay: string
+  birthDay: string;
   education: string;
   major: string;
   entryYear: string;
@@ -81,10 +89,9 @@ export interface ListItemDataType {
 }
 
 export interface FriendList {
-  studentId:string;
-  name:string;
-  education:string;
-  phone:string;
-  email:string;
+  studentId: string;
+  name: string;
+  education: string;
+  phone: string;
+  email: string;
 }
-

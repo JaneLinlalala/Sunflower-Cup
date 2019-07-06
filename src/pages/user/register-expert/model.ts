@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from 'redux';
 
 import { EffectsCommandMap } from 'dva';
-import { fakeRegister } from './service';
+import { fakeRegister,passRegister } from './service';
 
 export interface StateType {
   status?: 'ok' | 'error';
@@ -18,9 +18,11 @@ export interface ModelType {
   state: StateType;
   effects: {
     submit: Effect;
+    pass: Effect;
   };
   reducers: {
     registerHandle: Reducer<StateType>;
+    registerPass:Reducer<StateType>;
   };
 }
 
@@ -39,6 +41,13 @@ const Model: ModelType = {
         payload: response,
       });
     },
+    *pass({ payload }, { call, put }) {
+      const response = yield call(passRegister, payload);
+      yield put({
+        type: 'registerPass',
+        payload: response,
+      });
+    },
   },
 
   reducers: {
@@ -46,6 +55,11 @@ const Model: ModelType = {
       return {
         ...state,
         status: payload === 'success' ? 'ok' : 'error',
+      };
+    },
+    registerPass(state, { payload }) {
+      return {
+        ...state,
       };
     },
   },

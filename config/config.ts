@@ -109,7 +109,7 @@ export default {
               component: './user/register',
             },
             {
-              name: 'register-expert',
+              name: '专家注册',
               path: '/user/register-expert',
               component: './user/register-expert',
             },
@@ -213,7 +213,7 @@ export default {
               hideInMenu: true,
             },
             {
-              name: '查看竞赛详情',
+              name: '竞赛详情',
               path: '/admin/view-competition',
               component: './admin/view-competition',
               hideInMenu: true,
