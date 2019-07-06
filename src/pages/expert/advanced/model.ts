@@ -77,7 +77,6 @@ const Model: ModelType = {
 
   reducers: {
     show(state, { payload }) {
-      console.log(payload);
       return {
         ...state,
         data: payload,

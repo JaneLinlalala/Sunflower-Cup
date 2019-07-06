@@ -227,7 +227,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               onClick={e => {
                 this.backItem(record.id);
               }}
-              disabled={record.submitStatus-1}
+              disabled={!(record.submitStatus===1)}
             >
               撤回
             </a>
@@ -237,6 +237,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               onClick={e => {
                 this.select(record.id);
               }}
+              disabled={!(record.submitStatus===2)}
             >
               选择专家
             </a>

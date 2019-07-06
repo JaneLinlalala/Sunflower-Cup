@@ -1,14 +1,15 @@
 import request from 'umi-request';
 import { BasicListItemDataType } from './data.d';
+import config from "@/utils/config";
 
 interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
-export async function queryFakeList(params: ParamsType) {
-  return request('http://liuterry.cn:8080/api/ViewWorkList', {
+export async function queryFakeList(params) {
+  return request(`${config.domain}/getJudgeListForExpert`, {
     method: 'POST',
-    data:{"studentId":5}
+    data:params,
   });
 }
 

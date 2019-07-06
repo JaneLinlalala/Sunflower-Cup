@@ -3,9 +3,9 @@ import request from 'umi-request';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function queryAdvancedProfile(params: any) {
-  return request(`${config.domain}/api/ViewWorkInfo`, {
+  return request(`${config.domain}/api/ViewWorkInfoForJane`, {
     method: 'POST',
-    data: params,
+    data:params,
   });
 }
 
