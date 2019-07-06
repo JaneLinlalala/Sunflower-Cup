@@ -21,6 +21,8 @@ import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { AdvancedProfileData,ListItemDataType } from './data.d';
 import styles from './style.less';
+import {url} from "inspector";
+import {routerRedux} from "dva/router";
 
 
 
@@ -143,18 +145,24 @@ class Advanced extends Component<
     }
   };
 
-  download = () =>{
+  download = (url:string) =>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'profileAdvanced/downloadFile',
-      payload: {
-      },
-    });
-  }
+    var Url_arr = url.split(";");
+    for(let i=0; i<Url_arr.length-1;i++){
+      console.log(i,Url_arr[i]);
+      const url= Url_arr[i]
+      dispatch({
+        type: 'profileAdvanced/downloadFile',
+        payload: {
+          url,
+        },
+      });
+    }
+  };
 
   render() {
     const { loading, data} = this.props;
-
+    const pdf = "http://180.76.233.101:8080/api/DownloadPDF?id="+data.id;
     const extra = (
       <Row
         style={{
@@ -229,8 +237,17 @@ class Advanced extends Component<
               </Descriptions>
             </Card>
           </GridContent>
-          <Button icon="download" type="primary" onClick={e=>{this.download()}}>
-            下载
+          <Button icon="download" type="primary" href={pdf}>
+            下载表格
+          </Button>
+          <Button icon="download" type="primary" onClick={e=>{this.download(data.docUrl)}} style={{marginLeft:'3%'}}>
+            下载pdf
+          </Button>
+          <Button icon="download" type="primary" onClick={e=>{this.download(data.picUrl)}} style={{marginLeft:'3%'}}>
+            下载图片
+          </Button>
+          <Button icon="download" type="primary" onClick={e=>{this.download(data.videoUrl)}} style={{marginLeft:'3%'}}>
+            下载视频
           </Button>
         </div>
       </PageHeaderWrapper>

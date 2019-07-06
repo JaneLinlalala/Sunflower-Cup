@@ -29,6 +29,8 @@ export interface StateType {
   keywords: string;
   studentId:number;
   additionalMessage:string;
+  typeone:string;
+  typetwo:string;
 }
 
 
@@ -83,6 +85,8 @@ const Model: ModelType = {
       };
     },
     show(state, {payload}) {
+      payload.typeone=payload.competitionType;
+      payload.typetwo=payload.projectType;
       return {
         ...state,
         data:payload,

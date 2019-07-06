@@ -29,7 +29,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'listBasicList',
+  namespace: 'adminListBasicList',
 
   state: {
     list: [],

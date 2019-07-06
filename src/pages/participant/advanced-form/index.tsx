@@ -194,6 +194,8 @@ class AdvancedForm extends Component<{AdvancedFormProps: any, data:StateType, di
             ...values,
             id: data.id,
             studentId: data.studentId,
+            competitionType:data.typeone,
+            projectType:data.typetwo,
           }
         });
       }
@@ -231,7 +233,7 @@ class AdvancedForm extends Component<{AdvancedFormProps: any, data:StateType, di
             <Col span={12}>
               <Form.Item label="竞赛类别">
                 {getFieldDecorator('competitionType', {
-                  initialValue: comType[data.competitionType],
+                  initialValue: comType[data.typeone],
                   rules: [{ required: true, message: '请选择竞赛类别' }],
                 })(
                   <Select style={{ width: 300 }} onChange={(this.handleType).bind(this)}>
@@ -289,7 +291,7 @@ class AdvancedForm extends Component<{AdvancedFormProps: any, data:StateType, di
                 {getFieldDecorator('birthDay',{
                   initialValue:data.birthDay,
                   rules: [{ required: true, message: '请选择出生年月' }]} )
-                (<Input placeholder="YYYY-MM"/>)}
+                (<Input  placeholder="YYYY-MM"/>)}
               </Form.Item>
             </Col>
             <Col span={8}>
@@ -346,13 +348,13 @@ class AdvancedForm extends Component<{AdvancedFormProps: any, data:StateType, di
         </Card>
         <Card title="合作者情况" bordered={false}>
           {getFieldDecorator('friends',{
-            initialValue: JSON.parse(data.friends),
+            initialValue: data.friends === null?"":JSON.parse(data.friends),
           })(<TableForm/>)}
         </Card>
         <Card>
         <Form.Item {...formItemLayout} label="作品分类">
           {getFieldDecorator('projectType', {
-            initialValue: proType[data.projectType],
+            initialValue: proType[data.typetwo],
             rules: [{ required: true, message: '请选择作品分类' }],
           })(
             <Select style={{ width: 500 }} >

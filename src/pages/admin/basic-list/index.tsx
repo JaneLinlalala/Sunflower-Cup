@@ -36,7 +36,7 @@ const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus = ['未提交', '已提交', '已通过', '未通过'];
 
 interface BasicListProps extends FormComponentProps {
-  listBasicList: StateType;
+  adminListBasicList: StateType;
   dispatch: Dispatch<any>;
   loading: boolean;
 }
@@ -48,16 +48,16 @@ interface BasicListState {
 }
 @connect(
   ({
-    listBasicList,
+     adminListBasicList,
     loading,
   }: {
-    listBasicList: StateType;
+    adminListBasicList: StateType;
     loading: {
       models: { [key: string]: boolean };
     };
   }) => ({
-    listBasicList,
-    loading: loading.models.listBasicList,
+    adminListBasicList,
+    loading: loading.models.adminListBasicList,
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
@@ -73,7 +73,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listBasicList/fetch',
+      type: 'adminListBasicList/fetch',
       payload: {
         studentId: currentUserId.get(),
       },
@@ -118,7 +118,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       cancelText: '取消',
       onOk: () => {
         dispatch({
-          type: 'listBasicList/back',
+          type: 'adminListBasicList/back',
           payload: {projectId},
         });
         location.reload(true);
@@ -150,7 +150,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
 
   render() {
     const {
-      listBasicList: { list },
+      adminListBasicList: { list },
       loading,
     } = this.props;
     const {

@@ -41,10 +41,11 @@ const Model: ModelType = {
       });
     },
 
-    *downloadFile(_, { call, put }) {
-      const response = yield call(getdownloadFile("http://180.76.233.101/2.txt"));
+    *downloadFile({payload}, { call, put }) {
+      console.log(payload.url)
+      const response = yield call(getdownloadFile,payload.url);
       yield put({
-        type: 'down',
+        type: 'show',
         payload: response,
       });
     },

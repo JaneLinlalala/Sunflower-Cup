@@ -39,7 +39,7 @@ export interface ModelType {
 }
 
 const Model: ModelType = {
-  namespace: 'listState',
+  namespace: 'resultListState',
 
   state: {
     list: [],

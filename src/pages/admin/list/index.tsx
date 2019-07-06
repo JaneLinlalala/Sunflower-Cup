@@ -14,13 +14,13 @@ const subStatus=['未提交','已提交','已通过','未通过']
 const rewardStatus=['未获奖','一等奖','二等奖','三等奖']
 
 interface BasicListProps extends FormComponentProps {
-  listState: StateType;
+  resultListState: StateType;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
   location: {state:{id:string}}
 }
 
-@connect(({ listState }: { listState: StateType }) => ({ listState, setReward:listState.setReward, }))
+@connect(({ resultListState }: { resultListState: StateType }) => ({ resultListState, setReward:resultListState.setReward, }))
 class BasicList extends Component<BasicListProps> {
   state = {
     selectedRowKeys: [],
@@ -30,20 +30,20 @@ class BasicList extends Component<BasicListProps> {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'listState/fetch',
+      type: 'resultListState/fetch',
       // payload: { projectId: this.props.location.state.id},
     });
   }
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { dispatch, listState } = this.props;
+    const { dispatch, resultListState} = this.props;
     this.setState({ loading: false });
     let selectedProject = '';
     let count=this.state.selectedRowKeys.length;
     for (let i = 0; i < count; i += 1) {
-      if(this.props.listState.list[i].rewardLevel===0){
-        selectedProject += this.props.listState.list[i].id;
+      if(this.props.resultListState.list[i].rewardLevel===0){
+        selectedProject += this.props.resultListState.list[i].id;
         if (i !== count - 1) {
           selectedProject += ',';
         }
@@ -58,8 +58,8 @@ class BasicList extends Component<BasicListProps> {
       okText: '确认',
       cancelText: '取消',
       onOk: () => {dispatch({
-        type: 'listState/submit',
-        payload: { rewardLevel:listState.setReward, rewardProject:selectedProject },
+        type: 'resultListState/submit',
+        payload: { rewardLevel:resultListState.setReward, rewardProject:selectedProject },
       }); location.reload(true);},
     });
   };
@@ -73,15 +73,15 @@ class BasicList extends Component<BasicListProps> {
       okText: '确认',
       cancelText: '取消',
       onOk: () => {dispatch({
-        type: 'listState/finish',
+        type: 'resultListState/finish',
       }); location.reload(true);},
     });
   }
 
   handleChange=(value:number) => {
-    const {listState } = this.props;
+    const {resultListState } = this.props;
     console.log(`selected ${value}`);
-    listState.setReward = value;
+    resultListState.setReward = value;
   }
 
   onSelectChange = (selectedRowKeys: []) => {
@@ -103,7 +103,7 @@ class BasicList extends Component<BasicListProps> {
 
   render() {
     const { loading } = this.state;
-    const { list,comStatus } = this.props.listState;
+    const { list,comStatus } = this.props.resultListState;
     const {form} = this.props;
     const columns = [
       {
