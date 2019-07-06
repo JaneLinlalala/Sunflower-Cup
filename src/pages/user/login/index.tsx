@@ -62,16 +62,15 @@ class Register extends Component<UserLoginProps, UserLoginState> {
 
   componentDidUpdate() {
     const { login, form } = this.props;
-    const account = form.getFieldValue('mail');
     if (login.status === 'ok') {
       message.success('登录成功！');
-    }
-    else if(login.status === 'error'){
+      login.status = undefined;
+    } else if (login.status === 'error') {
       message.error('登陆失败！');
       login.status = undefined;
-    }
-    else if(login.status === 'out'){
+    } else if (login.status === 'out') {
       message.error('已退出登录！');
+      login.status = undefined;
     }
   }
 
