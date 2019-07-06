@@ -102,18 +102,12 @@ const Model: ModelType = {
     },
 
     handleFetchAppraise(state, { payload }) {
-      console.log('handleFetchAppraise', payload);
-      let pay = {
-        fetchAppraiseStatus: 'error',
+      console.log(payload);
+      const pay = {
+        ...state,
+        appraise: payload,
+        fetchAppraiseStatus: 'first',
       };
-      if (payload !== 'null') {
-        pay = {
-          ...state,
-          appraise: payload,
-          fetchAppraiseStatus: 'success',
-        };
-      }
-      console.log('pay', pay);
       return pay;
     },
 

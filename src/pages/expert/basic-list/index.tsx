@@ -3,7 +3,8 @@ import {
   Button,
   Card,
   Col,
-  DatePicker, Divider,
+  DatePicker,
+  Divider,
   Dropdown,
   Form,
   Icon,
@@ -15,21 +16,21 @@ import {
   Radio,
   Row,
   Select,
-  Table
+  Table,
 } from 'antd';
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { Dispatch } from 'redux';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
-import {routerRedux} from "dva/router";
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus=['未提交','已提交']
+const subStatus = ['未提交', '已提交'];
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -48,11 +49,13 @@ interface BasicListState {
   }: {
     listBasicList: StateType;
     loading: {
-      models: { [key: string]: boolean };
+      effects: {
+        [key: string]: string;
+      };
     };
   }) => ({
     listBasicList,
-    loading: loading.models.listBasicList,
+    loading: loading.effects['listBasicList/fetch'],
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
@@ -130,11 +133,12 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       content: '确定删除该任务吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listBasicList/delete',
-        payload: {
-        },
-      })},
+      onOk: () => {
+        dispatch({
+          type: 'listBasicList/delete',
+          payload: {},
+        });
+      },
     });
   };
 
@@ -145,22 +149,23 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       content: '确定提交该作品吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'listBasicList/up',
-        payload: {
-        },
-      })},
+      onOk: () => {
+        dispatch({
+          type: 'listBasicList/up',
+          payload: {},
+        });
+      },
     });
   };
 
-  detail(pid:number) {
+  detail(pid: number) {
     const { dispatch } = this.props;
     const id = pid;
     dispatch(
       routerRedux.push({
         pathname: `/expert/advanced/${id}`,
-        state:{id}
-      })
+        state: { id },
+      }),
     );
   }
 
@@ -174,7 +179,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     } = this.props;
 
     const { visible, done, current = {} } = this.state;
-
 
     // @ts-ignore
     // @ts-ignore
@@ -190,12 +194,12 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       {
         title: '项目类别',
         dataIndex: 'competitionType',
-        render: competitionType=>comType[competitionType]
+        render: competitionType => comType[competitionType],
       },
       {
         title: '状态',
         dataIndex: 'submitStatus',
-        render: submitStatus => subStatus[submitStatus]
+        render: submitStatus => subStatus[submitStatus],
       },
       {
         title: '操作',
@@ -204,7 +208,14 @@ class BasicList extends Component<BasicListProps, BasicListState> {
           <Fragment>
             <a onClick={() => this.detail(record.id)}>评审</a>
             <Divider type="vertical" />
-            <a key="submit" onClick={e=>{this.submitItem()}}>提交</a>
+            <a
+              key="submit"
+              onClick={e => {
+                this.submitItem();
+              }}
+            >
+              提交
+            </a>
           </Fragment>
         ),
       },
@@ -220,7 +231,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Table columns={columns} dataSource={list}/>
+              <Table columns={columns} dataSource={list} loading={loading} />
             </Card>
           </div>
         </PageHeaderWrapper>

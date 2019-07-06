@@ -24,7 +24,8 @@ export async function updateAppraise(params: {
   if (config.expertJudgeDebug) {
     return 'success';
   }
-  return request(`${config.domain}/saveJudgeDetail`, {
+  console.log('updateJudgeDetail');
+  return request(`${config.domain}/updateJudgeDetail`, {
     method: 'POST',
     data: params,
   });
