@@ -7,7 +7,7 @@ import {
   Divider,
   Dropdown,
   Icon,
-  Menu,
+  Menu, Modal,
   Popover, Progress,
   Row,
   Steps,
@@ -158,21 +158,33 @@ class Advanced extends Component<
 
   pass = (pid :string) =>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'profileAdvanced/passAdvanced',
-      payload: {
-        projectId: pid,
-      },
-    });
+    Modal.confirm({
+      title: '通过作品',
+      content: '确定通过该作品吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {dispatch({
+        type: 'profileAdvanced/passAdvanced',
+        payload: {
+          projectId: pid,
+        },
+      }); location.reload(true);},
+    })
   };
 
   reject = (pid :string) =>{
     const { dispatch } = this.props;
-    dispatch({
-      type: 'profileAdvanced/rejectAdvanced',
-      payload: {
-        projectId: pid,
-      },
+    Modal.confirm({
+      title: '不通过作品',
+      content: '确定不通过该作品吗？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {dispatch({
+        type: 'profileAdvanced/rejectAdvanced',
+        payload: {
+          projectId: pid,
+        },
+      }); location.reload(true);},
     });
   };
 

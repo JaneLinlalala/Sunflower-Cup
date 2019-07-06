@@ -166,12 +166,9 @@ class Register extends Component<UserLoginProps, UserLoginState> {
             )}
           </FormItem>
           <FormItem>
-            <a style={{ float: 'left', marginLeft: '20px' }} href="">
-              忘记密码
-            </a>
             <div style={{ float: 'right', marginRight: '20px' }}>
               <Link className={styles.register} to="/user/register">
-                用户注册
+                参赛者注册
               </Link>
             </div>
           </FormItem>

@@ -143,9 +143,6 @@ class Advanced extends Component<
               />
             </Card>
           </GridContent>
-          <Button icon="left" type="primary" onClick={e=>{this.download()}}>
-            返回
-          </Button>
         </div>
       </PageHeaderWrapper>
     );

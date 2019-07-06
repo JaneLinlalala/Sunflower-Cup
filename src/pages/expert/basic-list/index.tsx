@@ -83,8 +83,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
   submitItem = (judgeId:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
-      title: '提交作品',
-      content: '确定提交该作品吗？',
+      title: '提交评审',
+      content: '确定提交该评审结果吗？',
       okText: '确认',
       cancelText: '取消',
       onOk: () => {

@@ -360,7 +360,7 @@ class Advanced extends Component<AdvancedProps> {
                 onClick={this.handleOk}
                 loading={this.props.saveAppraiseLoading}
               >
-                提交
+                保存
               </Button>,
             ]}
           >
