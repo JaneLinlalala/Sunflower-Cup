@@ -1,10 +1,8 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList } from './service';
+import { queryFakeList, submitFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
-import {Simulate} from "react-dom/test-utils";
-import submit = Simulate.submit;
 
 export interface StateType {
   list: BasicListItemDataType[];
@@ -20,10 +18,8 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    delete: Effect;
     up: Effect;
     appendFetch: Effect;
-    submit: Effect;
   };
   reducers: {
     queryList: Reducer<StateType>;
@@ -46,13 +42,6 @@ const Model: ModelType = {
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *delete({ payload }, { call, put }) {
-      const response = yield call(deleteFakeList, payload);
-      yield put({
-        type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
-      });
-    },
     *up({ payload }, { call, put }) {
       const response = yield call(submitFakeList, payload);
       yield put({
@@ -65,19 +54,6 @@ const Model: ModelType = {
       yield put({
         type: 'appendList',
         payload: Array.isArray(response) ? response : [],
-      });
-    },
-    *submit({ payload }, { call, put }) {
-      let callback;
-      if (payload.id) {
-        callback = Object.keys(payload).length === 1 ? removeFakeList : updateFakeList;
-      } else {
-        callback = addFakeList;
-      }
-      const response = yield call(callback, payload); // post
-      yield put({
-        type: 'queryList',
-        payload: response,
       });
     },
   },

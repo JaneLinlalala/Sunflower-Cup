@@ -34,7 +34,6 @@ const columns = [
   {
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
   },
   {
     title: '学号',
@@ -44,17 +43,14 @@ const columns = [
   {
     title: '现学历',
     dataIndex: 'education',
-    key: 'education',
   },
   {
     title: '联系电话',
     dataIndex: 'phone',
-    key: 'phone',
   },
   {
     title: '邮箱',
     dataIndex: 'email',
-    key: 'email',
   },
 ];
 
@@ -123,10 +119,6 @@ class Advanced extends Component<
     });
     this.setStepDirection();
     window.addEventListener('resize', this.setStepDirection, { passive: true });
-    // if(data.competitionType === '0'){
-    //   diaplayMethod=['实物、产品','模型','图纸','磁盘','现场演示','图片','录像','']
-    // }
-    // else if(data.competitionType === '1'){}
   }
 
   componentWillUnmount() {
@@ -161,10 +153,7 @@ class Advanced extends Component<
   }
 
   render() {
-    const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
-    const { profileAdvanced, loading, data} = this.props;
-    const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
-    const {friends} = data;
+    const { loading, data} = this.props;
 
     const extra = (
       <Row

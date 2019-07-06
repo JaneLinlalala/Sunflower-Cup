@@ -1,14 +1,9 @@
 import { AnyAction, Reducer } from 'redux';
 import { EffectsCommandMap } from 'dva';
-import { addFakeList, queryFakeList, removeFakeList, updateFakeList, deleteFakeList, submitFakeList, createFakeList,backFakeList } from './service';
+import { queryFakeList,backFakeList } from './service';
 
 import { BasicListItemDataType } from './data.d';
-import {Simulate} from "react-dom/test-utils";
-import submit = Simulate.submit;
-import {Register} from "@/pages/user/login/service";
-import token from "@/utils/token";
-import {reloadAuthorized} from "@/utils/Authorized";
-import {routerRedux} from "dva/router";
+
 
 export interface StateType {
   list: BasicListItemDataType[];
@@ -24,11 +19,7 @@ export interface ModelType {
   state: StateType;
   effects: {
     fetch: Effect;
-    delete: Effect;
-    up: Effect;
-    new:Effect;
     appendFetch: Effect;
-    submit: Effect;
     back:Effect;
   };
   reducers: {
@@ -52,32 +43,11 @@ const Model: ModelType = {
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *delete({ payload }, { call, put }) {
-      const response = yield call(deleteFakeList, payload);
-      yield put({
-        type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
-      });
-    },
     *back({ payload }, { call, put }) {
       const response = yield call(backFakeList, payload);
       yield put({
         type: 'queryList',
         payload: response,
-      });
-    },
-    *up({ payload }, { call, put }) {
-      const response = yield call(submitFakeList, payload);
-      yield put({
-        type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
-      });
-    },
-    *new({ payload }, { call, put }) {
-      const response = yield call(createFakeList, payload);
-      yield put({
-        type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
       });
     },
     *appendFetch({ payload }, { call, put }) {
@@ -87,28 +57,9 @@ const Model: ModelType = {
         payload: Array.isArray(response) ? response : [],
       });
     },
-    *submit({ payload }, { call, put }) {
-      let callback;
-      if (payload.id) {
-        callback = Object.keys(payload).length === 1 ? removeFakeList : updateFakeList;
-      } else {
-        callback = addFakeList;
-      }
-      const response = yield call(callback, payload); // post
-      yield put({
-        type: 'queryList',
-        payload: response,
-      });
-    },
   },
 
   reducers: {
-    test(state, { payload }) {
-      return {
-        ...state,
-        payload,
-      };
-    },
     queryList(state, action) {
       return {
         ...state,

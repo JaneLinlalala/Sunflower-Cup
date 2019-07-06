@@ -109,25 +109,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { dispatch, form } = this.props;
-    const { current } = this.state;
-    const id = current ? current.id : '';
-
-    setTimeout(() => this.addBtn && this.addBtn.blur(), 0);
-    form.validateFields((err: string | undefined, fieldsValue: BasicListItemDataType) => {
-      if (err) return;
-      this.setState({
-        done: true,
-      });
-      dispatch({
-        type: 'listBasicList/submit',
-        payload: { id, ...fieldsValue },
-      });
-    });
-  };
-
   backItem = (projectId:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
@@ -141,22 +122,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
           payload: {projectId},
         });
         location.reload(true);
-      },
-    });
-  };
-
-  submitItem = () => {
-    const { dispatch } = this.props;
-    Modal.confirm({
-      title: '提交作品',
-      content: '确定提交该作品吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'listBasicList/up',
-          payload: {},
-        });
       },
     });
   };

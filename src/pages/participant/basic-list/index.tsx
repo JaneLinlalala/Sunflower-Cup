@@ -155,12 +155,11 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       payload: {
         studentId: sid,
       },
-      callback:(res:number)=>{
-        console.log(res)
+      callback:(id:number)=>{
         dispatch(
           routerRedux.push({
-            pathname: `/participant/step-form/${res}`,
-            state:{res}
+            pathname: `/participant/advanced-form/${id}`,
+            state:{id}
           })
         );
       }
@@ -183,7 +182,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     const id = pid;
     dispatch(
       routerRedux.push({
-        pathname: `/participant/step-form/${id}`,
+        pathname: `/participant/advanced-form/${id}`,
         state:{id}
       })
     );

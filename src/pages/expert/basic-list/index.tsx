@@ -28,7 +28,6 @@ import { routerRedux } from 'dva/router';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
-import {routerRedux} from "dva/router";
 import currentUserId from '@/utils/currentUserId';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
@@ -80,69 +79,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   }
 
-  showModal = () => {
-    this.setState({
-      visible: true,
-      current: undefined,
-    });
-  };
-
-  showEditModal = (item: BasicListItemDataType) => {
-    this.setState({
-      visible: true,
-      current: item,
-    });
-  };
-
-  handleDone = () => {
-    setTimeout(() => this.addBtn && this.addBtn.blur(), 0);
-    this.setState({
-      done: false,
-      visible: false,
-    });
-  };
-
-  handleCancel = () => {
-    setTimeout(() => this.addBtn && this.addBtn.blur(), 0);
-    this.setState({
-      visible: false,
-    });
-  };
-
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const { dispatch, form } = this.props;
-    const { current } = this.state;
-    const id = current ? current.id : '';
-
-    setTimeout(() => this.addBtn && this.addBtn.blur(), 0);
-    form.validateFields((err: string | undefined, fieldsValue: BasicListItemDataType) => {
-      if (err) return;
-      this.setState({
-        done: true,
-      });
-      dispatch({
-        type: 'listBasicList/submit',
-        payload: { id, ...fieldsValue },
-      });
-    });
-  };
-
-  deleteItem = () => {
-    const { dispatch } = this.props;
-    Modal.confirm({
-      title: '删除任务',
-      content: '确定删除该任务吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        dispatch({
-          type: 'listBasicList/delete',
-          payload: {},
-        });
-      },
-    });
-  };
 
   submitItem = (judgeId:number) => {
     const { dispatch } = this.props;
@@ -180,8 +116,6 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     const {
       form: { getFieldDecorator },
     } = this.props;
-
-    const { visible, done, current = {} } = this.state;
 
     // @ts-ignore
     // @ts-ignore

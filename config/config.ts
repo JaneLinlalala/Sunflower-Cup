@@ -145,11 +145,12 @@ export default {
               hideInMenu: true,
             },
             {
-              path: '/participant/step-form/:pid',
+              path: '/participant/advanced-form/:pid',
               name: '添加作品',
               icon: 'form',
-              component: './participant/step-form',
+              component: './participant/advanced-form',
               authority: ['user'],
+              hideInMenu: true,
             },
             {
               path: '/participant/step-form-2',

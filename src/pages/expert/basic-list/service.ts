@@ -13,58 +13,9 @@ export async function queryFakeList(params) {
   });
 }
 
-export async function deleteFakeList(params: ParamsType) {
-  return request(`${config.domain}/api/DeleteWork`, {
-    method: 'POST',
-    data: { id: 11 },
-  });
-}
-
 export async function submitFakeList(params) {
   return request(`${config.domain}/finishJudge`, {
     method: 'POST',
     data: params,
-  });
-}
-
-export async function removeFakeList(params: ParamsType) {
-  const { count = 5, ...restParams } = params;
-  return request('/api/fake_list', {
-    method: 'POST',
-    params: {
-      count,
-    },
-    data: {
-      ...restParams,
-      method: 'delete',
-    },
-  });
-}
-
-export async function addFakeList(params: ParamsType) {
-  const { count = 5, ...restParams } = params;
-  return request('/api/fake_list', {
-    method: 'POST',
-    params: {
-      count,
-    },
-    data: {
-      ...restParams,
-      method: 'post',
-    },
-  });
-}
-
-export async function updateFakeList(params: ParamsType) {
-  const { count = 5, ...restParams } = params;
-  return request('/api/fake_list', {
-    method: 'POST',
-    params: {
-      count,
-    },
-    data: {
-      ...restParams,
-      method: 'update',
-    },
   });
 }

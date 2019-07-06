@@ -10,7 +10,7 @@ export async function queryAdvancedProfile(params: any) {
 }
 
 export async function downloadZipFile() {
-  return request('http://liuterry.cn:8080/api/DownloadPDF', {
+  return request(`${config.domain}/api/DownloadPDF`, {
     method: 'POST',
   });
 }
