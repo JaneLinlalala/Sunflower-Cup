@@ -7,8 +7,8 @@ import { ConnectProps, ConnectState } from '@/models/connect';
 import ProLayout, {
   MenuDataItem,
   BasicLayoutProps as ProLayoutProps,
-  Settings,
   SettingDrawer,
+  Settings,
 } from '@ant-design/pro-layout';
 import React, { useState } from 'react';
 import Authorized from '@/utils/Authorized';
@@ -18,10 +18,12 @@ import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+
 export interface BasicLayoutProps extends ProLayoutProps, Omit<ConnectProps, 'location'> {
   breadcrumbNameMap: {
     [path: string]: MenuDataItem;
   };
+
   settings: Settings;
 }
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
@@ -40,29 +42,29 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
   });
 
 const footerRender: BasicLayoutProps['footerRender'] = (_, defaultDom) => {
-  if (!isAntDesignPro()) {
-    return defaultDom;
-  }
-
-  return (
-    <>
-      {defaultDom}
-      <div
-        style={{
-          padding: '0px 24px 24px',
-          textAlign: 'center',
-        }}
-      >
-        <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
-          <img
-            src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
-            width="82px"
-            alt="netlify logo"
-          />
-        </a>
-      </div>
-    </>
-  );
+  // if (!isAntDesignPro()) {
+  //   return defaultDom;
+  // }
+  //
+  // return (
+  //   <>
+  //     {defaultDom}
+  //     <div
+  //       style={{
+  //         padding: '0px 24px 24px',
+  //         textAlign: 'center',
+  //       }}
+  //     >
+  //       <a href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
+  //         <img
+  //           src="https://www.netlify.com/img/global/badges/netlify-color-bg.svg"
+  //           width="82px"
+  //           alt="netlify logo"
+  //         />
+  //       </a>
+  //     </div>
+  //   </>
+  // );
 };
 
 const BasicLayout: React.FC<BasicLayoutProps> = props => {
@@ -119,15 +121,15 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       >
         {children}
       </ProLayout>
-      <SettingDrawer
-        settings={settings}
-        onSettingChange={config =>
-          dispatch({
-            type: 'settings/changeSetting',
-            payload: config,
-          })
-        }
-      />
+      {/* <SettingDrawer */}
+      {/* settings={settings} */}
+      {/* onSettingChange={config => */}
+      {/*   dispatch({ */}
+      {/*     type: 'settings/changeSetting', */}
+      {/*     payload: config, */}
+      {/*   }) */}
+      {/* } */}
+      {/* /> */}
     </>
   );
 };

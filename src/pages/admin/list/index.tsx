@@ -26,9 +26,9 @@ interface BasicListProps extends FormComponentProps {
 
 @connect(
   ({
-     resultListState,
-     loading,
-   }: {
+    resultListState,
+    loading,
+  }: {
     resultListState: StateType;
     loading: {
       effects: { [key: string]: boolean };
@@ -55,12 +55,12 @@ class BasicList extends Component<BasicListProps> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const { dispatch, resultListState} = this.props;
+    const { dispatch, resultListState } = this.props;
     this.setState({ loading: false });
     let selectedProject = '';
     let count = this.state.selectedRowKeys.length;
     for (let i = 0; i < count; i += 1) {
-      if(this.props.resultListState.list[i].rewardLevel===0){
+      if (this.props.resultListState.list[i].rewardLevel === 0) {
         selectedProject += this.props.resultListState.list[i].id;
         if (i !== count - 1) {
           selectedProject += ',';
@@ -70,16 +70,29 @@ class BasicList extends Component<BasicListProps> {
         count++;
       }
     }
-    Modal.confirm({
-      title: '设置奖项',
-      content: '确定设置该奖项吗？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'resultListState/submit',
-        payload: { rewardLevel:resultListState.setReward, rewardProject:selectedProject },
-      }); location.reload(true);},
-    });
+    if (this.state.selectedRowKeys.length !== 0) {
+      Modal.confirm({
+        title: '设置奖项',
+        content: '确定设置该奖项吗？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          dispatch({
+            type: 'resultListState/submit',
+            payload: { rewardLevel: resultListState.setReward, rewardProject: selectedProject },
+          });
+          // eslint-disable-next-line no-restricted-globals
+          location.reload(true);
+        },
+      });
+    } else {
+      Modal.error({
+        title: '未选择项目！',
+        content: '请选择项目后再点击确定。',
+        okText: '确认',
+        cancelText: '取消',
+      });
+    }
   };
 
   confirmSubmit = () => {
@@ -91,17 +104,21 @@ class BasicList extends Component<BasicListProps> {
       content: '确定发布该决赛结果吗？',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => {dispatch({
-        type: 'resultListState/finish',
-      }); location.reload(true);},
+      onOk: () => {
+        dispatch({
+          type: 'resultListState/finish',
+        });
+        // eslint-disable-next-line no-restricted-globals
+        location.reload(true);
+      },
     });
   };
 
-  handleChange=(value:number) => {
-    const {resultListState } = this.props;
+  handleChange = (value: number) => {
+    const { resultListState } = this.props;
     console.log(`selected ${value}`);
     resultListState.setReward = value;
-  }
+  };
 
   onSelectChange = (selectedRowKeys: []) => {
     // eslint-disable-next-line no-console
@@ -122,7 +139,7 @@ class BasicList extends Component<BasicListProps> {
 
   render() {
     const { loading } = this.state;
-    const { list,comStatus } = this.props.resultListState;
+    const { list, comStatus } = this.props.resultListState;
     const { tableLoading } = this.props;
     const columns = [
       {
