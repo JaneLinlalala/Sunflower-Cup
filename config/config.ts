@@ -124,11 +124,19 @@ export default {
           Routes: ['src/pages/Authorized'],
           routes: [
             {
-              path: '/workplace',
-              name: '新闻通知',
+              path: '/firstpage',
+              name: '首页',
               icon: 'reconciliation',
-              component: './user/workplace',
+              component: './firstpage/news',
               authority: ['admin', 'user', 'expert'],
+            },
+            {
+              path:'firstpage/competition_result',
+              name: '竞赛结果',
+              component: './firstpage/competition_result',
+              authority: ['admin', 'user', 'expert'],
+              hideInMenu: true,
+
             },
             {
               path: '/participant/step-form/:pid',
@@ -158,6 +166,13 @@ export default {
               component: './participant/advanced',
               authority: ['user'],
               hideInMenu: true,
+            },
+            {
+              path: '/participant/advanced-form/:pid',
+              name: '添加作品2',
+              icon: 'form',
+              component: './participant/advanced-form',
+              authority: ['user'],
             },
             {
               path: '/expert/basic-list',
