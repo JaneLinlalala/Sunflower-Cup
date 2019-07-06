@@ -114,6 +114,12 @@ export default {
               component: './user/register-expert',
             },
             {
+              path: '/user/invitation-result',
+              name: '邀请结果',
+              component: './user/invitation-result',
+              hideInMenu: true,
+            },
+            {
               component: '404',
             },
           ],
