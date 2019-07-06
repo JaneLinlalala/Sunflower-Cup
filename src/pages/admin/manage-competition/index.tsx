@@ -131,6 +131,7 @@ class BasicList extends Component<BasicListProps> {
           bodyStyle={{ padding: '0 32px 40px 32px' }}
         >
           <Button
+            icon="plus"
             type="primary"
             onClick={this.handleNewCompetition}
             style={{ margin: '24px', marginLeft: '0px' }}
