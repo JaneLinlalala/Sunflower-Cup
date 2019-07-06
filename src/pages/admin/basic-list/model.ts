@@ -104,7 +104,6 @@ const Model: ModelType = {
 
   reducers: {
     test(state, { payload }) {
-      console.log(payload);
       return {
         ...state,
         payload,

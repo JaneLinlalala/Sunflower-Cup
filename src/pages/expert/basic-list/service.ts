@@ -6,10 +6,10 @@ interface ParamsType extends Partial<BasicListItemDataType> {
   count?: number;
 }
 
-export async function queryFakeList(params: ParamsType) {
-  return request(`${config.domain}/api/ViewWorkList`, {
+export async function queryFakeList(params) {
+  return request(`${config.domain}/getJudgeListForExpert`, {
     method: 'POST',
-    data: { studentId: 5 },
+    data:params,
   });
 }
 

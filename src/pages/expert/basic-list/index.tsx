@@ -28,6 +28,8 @@ import { routerRedux } from 'dva/router';
 import { StateType } from './model';
 import { BasicListItemDataType } from './data.d';
 import styles from './style.less';
+import {routerRedux} from "dva/router";
+import currentUserId from '@/utils/currentUserId';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
 const subStatus = ['未提交', '已提交'];
@@ -73,7 +75,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     dispatch({
       type: 'listBasicList/fetch',
       payload: {
-        count: 5,
+        expertId: currentUserId.get(),
       },
     });
   }
@@ -161,6 +163,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
   detail(pid: number) {
     const { dispatch } = this.props;
     const id = pid;
+    console.log(id);
     dispatch(
       routerRedux.push({
         pathname: `/expert/advanced/${id}`,
@@ -188,25 +191,25 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         dataIndex: 'projectName',
       },
       {
-        title: '参赛作者',
-        dataIndex: 'studentName',
-      },
-      {
         title: '项目类别',
         dataIndex: 'competitionType',
-        render: competitionType => comType[competitionType],
+        render: (val: number) => <span>{comType[val]}</span>,
+      },
+      {
+        title: '关键字',
+        dataIndex: 'keywords',
       },
       {
         title: '状态',
-        dataIndex: 'submitStatus',
-        render: submitStatus => subStatus[submitStatus],
+        dataIndex: 'judgeStatus',
+        render: (val: number) => <span>{subStatus[val]}</span>,
       },
       {
         title: '操作',
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.id)}>评审</a>
+            <a onClick={() => this.detail(record.projectId)}>评审</a>
             <Divider type="vertical" />
             <a
               key="submit"
