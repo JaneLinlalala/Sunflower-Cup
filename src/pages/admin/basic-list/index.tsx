@@ -53,11 +53,11 @@ interface BasicListState {
   }: {
     listBasicList: StateType;
     loading: {
-      models: { [key: string]: boolean };
+      effects: { [key: string]: boolean };
     };
   }) => ({
     listBasicList,
-    loading: loading.models.listBasicList,
+    loading: loading.effects['listBasicList/fetch'],
   }),
 )
 class BasicList extends Component<BasicListProps, BasicListState> {
@@ -109,7 +109,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  backItem = (projectId:number) => {
+  backItem = (projectId: number) => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '撤回作品',
@@ -119,8 +119,9 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {
         dispatch({
           type: 'listBasicList/back',
-          payload: {projectId},
+          payload: { projectId },
         });
+        // eslint-disable-next-line no-restricted-globals
         location.reload(true);
       },
     });
@@ -192,7 +193,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               onClick={e => {
                 this.backItem(record.id);
               }}
-              disabled={!(record.submitStatus===1)}
+              disabled={!(record.submitStatus === 1)}
             >
               撤回
             </a>
@@ -202,7 +203,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               onClick={e => {
                 this.select(record.id);
               }}
-              disabled={!(record.submitStatus===2)}
+              disabled={!(record.submitStatus === 2)}
             >
               选择专家
             </a>
@@ -221,7 +222,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
               style={{ marginTop: 24 }}
               bodyStyle={{ padding: '0 32px 40px 32px' }}
             >
-              <Table columns={columns} dataSource={list} />
+              <Table columns={columns} dataSource={list} loading={loading} />
             </Card>
           </div>
         </PageHeaderWrapper>
