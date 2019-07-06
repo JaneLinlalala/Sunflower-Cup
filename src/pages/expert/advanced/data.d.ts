@@ -86,6 +86,7 @@ export interface ListItemDataType {
   averageScore: string;
   submitStatus: string;
   studentId: string;
+  additionalMessage:string;
 }
 
 export interface FriendList {

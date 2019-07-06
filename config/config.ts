@@ -175,7 +175,7 @@ export default {
             },
             {
               path: '/expert/basic-list',
-              name: '作品列表-专家',
+              name: '作品列表',
               icon: 'profile',
               component: './expert/basic-list',
               authority: ['expert'],

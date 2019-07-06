@@ -15,7 +15,7 @@ import {
   Tooltip,
 } from 'antd';
 import { GridContent, PageHeaderWrapper } from '@ant-design/pro-layout';
-import React, { Component, Fragment } from 'react';
+import React, { Component} from 'react';
 
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
@@ -26,6 +26,7 @@ import styles from './style.less';
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
 const comType = ['科技发明制作', '调查报告和学术论文'];
+const displayType = ['作品可展示形式', '作品调查方式'];
 const proType = ['机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）', '信息技术（包括计算机、电信、通讯、电子等）','数理（包括数学、物理、地球与空间科学等）','生命科学(包括生物､农学､药学､医学､健康､卫生､食品等)','能源化工（包括能源、材料、石油、化学、化工、生态、环保等）','哲学社会科学（包括哲学、经济、社会、法律、教育、管理）'];
 const subStatus=['未提交','已提交','已通过','未通过']
 
@@ -113,7 +114,7 @@ class Advanced extends Component<
   };
 
   componentDidMount() {
-    const { dispatch,data } = this.props;
+    const { dispatch} = this.props;
     dispatch({
       type: 'profileAdvanced/fetchAdvanced',
       payload: {
@@ -176,9 +177,7 @@ class Advanced extends Component<
   };
 
   render() {
-    const { stepDirection, operationKey,loadingStatus, buttonDisabled } = this.state;
     const { profileAdvanced, loading, data} = this.props;
-    const { advancedOperation1, advancedOperation2, advancedOperation3 } = profileAdvanced;
     const {friends} = data;
 
     const extra = (
@@ -248,6 +247,7 @@ class Advanced extends Component<
               <Descriptions style={{ marginBottom: 24 }} column={1}>
                 <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
                 <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item>
+                <Descriptions.Item label={displayType[data.competitionType]}>{data.additionalMessage}</Descriptions.Item>
                 <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item>
                 <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item>
                 <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item>

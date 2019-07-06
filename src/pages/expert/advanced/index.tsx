@@ -23,6 +23,7 @@ import styles from './style.less';
 
 const getWindowWidth = () => window.innerWidth || document.documentElement.clientWidth;
 const comType = ['科技发明制作', '调查报告和学术论文'];
+const displayType = ['作品可展示形式', '作品调查方式'];
 const proType = [
   '机械与控制（包括机械、仪器仪表、自动化控制、工程、交通、建筑等）',
   '信息技术（包括计算机、电信、通讯、电子等）',
@@ -31,7 +32,7 @@ const proType = [
   '能源化工（包括能源、材料、石油、化学、化工、生态、环保等）',
   '哲学社会科学（包括哲学、经济、社会、法律、教育、管理）',
 ];
-const subStatus = ['未提交', '已提交'];
+const subStatus=['未提交','已提交','已通过','未通过'];
 const columns = [
   {
     title: '姓名',
@@ -317,6 +318,7 @@ class Advanced extends Component<AdvancedProps> {
               <Descriptions style={{ marginBottom: 24 }} column={1}>
                 <Descriptions.Item label="作品全称">{data.projectFullName}</Descriptions.Item>
                 <Descriptions.Item label="作品分类">{proType[data.projectType]}</Descriptions.Item>
+                <Descriptions.Item label={displayType[data.competitionType]}>{data.additionalMessage}</Descriptions.Item>
                 <Descriptions.Item label="关键字">{data.keywords}</Descriptions.Item>
                 <Descriptions.Item label="创新点">{data.invention}</Descriptions.Item>
                 <Descriptions.Item label="作品总体情况说明">{data.details}</Descriptions.Item>
