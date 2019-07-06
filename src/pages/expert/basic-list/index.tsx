@@ -32,7 +32,7 @@ import {routerRedux} from "dva/router";
 import currentUserId from '@/utils/currentUserId';
 
 const comType = ['科技发明制作', '调查报告和学术论文'];
-const subStatus = ['未提交', '已提交'];
+const subStatus = ['已提交', '未提交'];
 
 interface BasicListProps extends FormComponentProps {
   listBasicList: StateType;
@@ -144,7 +144,7 @@ class BasicList extends Component<BasicListProps, BasicListState> {
     });
   };
 
-  submitItem = () => {
+  submitItem = (judgeId:number) => {
     const { dispatch } = this.props;
     Modal.confirm({
       title: '提交作品',
@@ -154,8 +154,8 @@ class BasicList extends Component<BasicListProps, BasicListState> {
       onOk: () => {
         dispatch({
           type: 'listBasicList/up',
-          payload: {},
-        });
+          payload: {judgeId},
+        });location.reload(true);
       },
     });
   };
@@ -209,13 +209,14 @@ class BasicList extends Component<BasicListProps, BasicListState> {
         key: 'id',
         render: (text, record) => (
           <Fragment>
-            <a onClick={() => this.detail(record.projectId)}>评审</a>
+            <a onClick={() => this.detail(record.projectId)} disabled={!record.judgeStatus}>评审</a>
             <Divider type="vertical" />
             <a
               key="submit"
               onClick={e => {
-                this.submitItem();
+                this.submitItem(record.judgeId);
               }}
+              disabled={!record.judgeStatus}
             >
               提交
             </a>

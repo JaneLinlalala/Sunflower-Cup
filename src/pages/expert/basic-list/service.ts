@@ -20,10 +20,10 @@ export async function deleteFakeList(params: ParamsType) {
   });
 }
 
-export async function submitFakeList(params: ParamsType) {
-  return request(`${config.domain}/api/FinishWork`, {
+export async function submitFakeList(params) {
+  return request(`${config.domain}/finishJudge`, {
     method: 'POST',
-    data: { id: 11 },
+    data: params,
   });
 }
 
