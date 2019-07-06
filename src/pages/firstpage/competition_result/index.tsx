@@ -25,7 +25,7 @@ interface BasicListProps extends FormComponentProps {
   location: { state: { id: string } };
 }
 
-@connect(({ competitionResult }: { competitionResult: StateType2 }) => ({ competitionResult }))
+@connect( competitionResult => ({ competitionResult }))
 class BasicList extends Component<BasicListProps> {
   componentDidMount() {
     const { dispatch } = this.props;
